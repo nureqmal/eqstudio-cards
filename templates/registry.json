@@ -6,15 +6,6 @@
       "has_photo": false,
       "preview_emoji": "🌙",
       "desc": "Tema langit malam, bintang bersinar, navy & gold"
-    },
-    "dusty_blue": {
-      "name": "Dusty Blue- Biru",
-      "file": "dusty_blue.html",
-      "has_photo": false,
-      "has_video": false,
-      "has_gallery": false,
-      "preview_emoji": "🌊",
-      "desc": "Tema biru gelap"
     }
   },
   "Portrait": {
