@@ -1,14 +1,5 @@
 {
   "Essential": {
-    "rose_gold": {
-      "name": "Dark Luxury- Rose Gold",
-      "file": "rose_gold.html",
-      "has_photo": false,
-      "has_video": false,
-      "has_gallery": false,
-      "preview_emoji": "🌹",
-      "desc": "Kod #B76E79"
-    },
     "rose_gold_lux": {
       "name": "Dark Lux- Rose Gold",
       "file": "rose_gold_lux.html",
