@@ -8,6 +8,15 @@
       "has_gallery": false,
       "preview_emoji": "🌹",
       "desc": "Kod #B76E79"
+    },
+    "rose_gold_dark": {
+      "name": "Dark Lux- Rose Gold",
+      "file": "rose_gold_dark.html",
+      "has_photo": false,
+      "has_video": false,
+      "has_gallery": false,
+      "preview_emoji": "🌹",
+      "desc": "#B76E79"
     }
   },
   "Portrait": {
