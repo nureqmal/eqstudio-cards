@@ -8,6 +8,15 @@
       "has_gallery": false,
       "preview_emoji": "🍃",
       "desc": "#A8BBA3"
+    },
+    "dark_olive": {
+      "name": "Dark Lux- Dark Olive",
+      "file": "dark_olive.html",
+      "has_photo": false,
+      "has_video": false,
+      "has_gallery": false,
+      "preview_emoji": "🫒",
+      "desc": "#5E6650"
     }
   },
   "Portrait": {
