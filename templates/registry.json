@@ -1,12 +1,5 @@
 {
   "Essential": {
-    "v2_celestial": {
-      "name": "Celestial — Bintang & Bulan",
-      "file": "v2_celestial.html",
-      "has_photo": false,
-      "preview_emoji": "🌙",
-      "desc": "Tema langit malam, bintang bersinar, navy & gold"
-    },
     "rose_gold": {
       "name": "Dark Luxury- Rose Gold",
       "file": "rose_gold.html",
