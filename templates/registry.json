@@ -8,6 +8,16 @@
       "has_gallery": false,
       "preview_emoji": "🫒",
       "desc": "#5E6650"
+    },
+    "es_blush_pink": {
+      "name": "Blush Pink- Dark Lux",
+      "file": "es_blush_pink.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "has_video": false,
+      "has_gallery": false,
+      "preview_emoji": "🌸",
+      "desc": "#F6D6D6"
     }
   },
   "Portrait": {
