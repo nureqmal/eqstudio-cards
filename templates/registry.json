@@ -9,6 +9,16 @@
       "has_gallery": false,
       "preview_emoji": "🌸",
       "desc": "#F6D6D6"
+    },
+    "es_gold": {
+      "name": "Gold- Dark Lux",
+      "file": "es_gold.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "has_video": false,
+      "has_gallery": false,
+      "preview_emoji": "🪙",
+      "desc": "#D4B483"
     }
   },
   "Portrait": {
