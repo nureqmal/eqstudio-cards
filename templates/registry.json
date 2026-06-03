@@ -1,14 +1,5 @@
 {
   "Essential": {
-    "dark_olive": {
-      "name": "Dark Lux- Dark Olive",
-      "file": "dark_olive.html",
-      "has_photo": false,
-      "has_video": false,
-      "has_gallery": false,
-      "preview_emoji": "🫒",
-      "desc": "#5E6650"
-    },
     "es_blush_pink": {
       "name": "Blush Pink- Dark Lux",
       "file": "es_blush_pink.html",
