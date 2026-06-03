@@ -28,6 +28,16 @@
       "has_photo": true,
       "preview_emoji": "👑",
       "desc": "Tema mewah burgundy & champagne, gallery gambar"
+    },
+    "test": {
+      "name": "test",
+      "file": "test.html",
+      "has_photo": true,
+      "has_portrait_photo": false,
+      "has_video": false,
+      "has_gallery": false,
+      "preview_emoji": "🌸",
+      "desc": "#F6D6D6"
     }
   }
 }
