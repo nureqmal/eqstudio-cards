@@ -1,16 +1,5 @@
 {
-  "Essential": {
-    "es_gold": {
-      "name": "Gold- Dark Lux",
-      "file": "es_gold.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "has_video": false,
-      "has_gallery": false,
-      "preview_emoji": "🪙",
-      "desc": "#D4B483"
-    }
-  },
+  "Essential": {},
   "Portrait": {
     "portrait_royal": {
       "name": "Royal Velvet — Ada Gambar",
