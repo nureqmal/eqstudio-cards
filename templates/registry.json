@@ -1,4 +1,13 @@
 {
-  "Essential": {},
+  "Essential": {
+    "pink brush": {
+      "name": "Pink Brush- Light",
+      "file": "pink_brush.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#F6D6D6"
+    }
+  },
   "Portrait": {}
 }
