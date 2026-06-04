@@ -7,6 +7,14 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#FFFFF0, #E2725B"
+    },
+    "Blush Rose Gold": {
+      "name": "Blush Rose Gold",
+      "file": "blush_rose_gold.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#B76E79"
     }
   },
   "Portrait": {}
