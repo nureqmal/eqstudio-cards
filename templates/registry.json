@@ -15,6 +15,14 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#B76E79"
+    },
+    "Dusty Blue": {
+      "name": "Dusty Blue",
+      "file": "dusty_blue.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#8C9DAD"
     }
   },
   "Portrait": {}
