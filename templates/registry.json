@@ -79,6 +79,14 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#50C878"
+    },
+    "Potrait Burgundy Velvet": {
+      "name": "Burgundy Velvet",
+      "file": "potrait_burgundy_velvet.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#800020"
     }
   },
   "Portrait": {
