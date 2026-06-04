@@ -105,6 +105,14 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#87CEEB, #FFF700"
+    },
+    "Potrait Mint Cream": {
+      "name": "Mint Cream",
+      "file": "potrait_mint_cream.html",
+      "has_photo": true,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#F5FFFA"
     }
   }
 }
