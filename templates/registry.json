@@ -31,6 +31,14 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#F5F5DC"
+    },
+    "Sage Green Cream": {
+      "name": "Sage Green Cream",
+      "file": "sage_green_cream.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#8A9A5B, #F4EBDD"
     }
   },
   "Portrait": {}
