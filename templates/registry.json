@@ -47,6 +47,14 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "pink blush 3d"
+    },
+    "kad fixed": {
+      "name": "kad fixed",
+      "file": "kad_fixed.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "kad fixed"
     }
   },
   "Portrait": {}
