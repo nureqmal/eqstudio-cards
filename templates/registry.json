@@ -81,14 +81,5 @@
       "desc": "#50C878"
     }
   },
-  "Portrait": {
-    "test": {
-      "name": "test",
-      "file": "test.html",
-      "has_photo": true,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "test"
-    }
-  }
+  "Portrait": {}
 }
