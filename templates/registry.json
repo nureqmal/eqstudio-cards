@@ -1,15 +1,4 @@
 {
   "Essential": {},
-  "Portrait": {
-    "blue": {
-      "name": "BLUE",
-      "file": "blue.html",
-      "has_photo": true,
-      "has_portrait_photo": false,
-      "has_video": false,
-      "has_gallery": false,
-      "preview_emoji": "✨",
-      "desc": "BLUE"
-    }
-  }
+  "Portrait": {}
 }
