@@ -1,13 +1,6 @@
 {
   "Essential": {},
   "Portrait": {
-    "portrait_royal": {
-      "name": "Royal Velvet — Ada Gambar",
-      "file": "portrait_royal.html",
-      "has_photo": true,
-      "preview_emoji": "👑",
-      "desc": "Tema mewah burgundy & champagne, gallery gambar"
-    },
     "test": {
       "name": "test",
       "file": "test.html",
