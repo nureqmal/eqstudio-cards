@@ -113,6 +113,14 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#F5FFFA"
+    },
+    "Potrait Peach Apricot": {
+      "name": "Peach Apricot",
+      "file": "potrait_peach_apricot.html",
+      "has_photo": true,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#FAD0C4"
     }
   }
 }
