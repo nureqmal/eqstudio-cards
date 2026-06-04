@@ -1,4 +1,13 @@
 {
-  "Essential": {},
+  "Essential": {
+    "ivory teracotta": {
+      "name": "Ivory Teracotta",
+      "file": "ivory_teracotta.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#FFFFF0, #E2725B"
+    }
+  },
   "Portrait": {}
 }
