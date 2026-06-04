@@ -23,6 +23,14 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "pink blush 3"
+    },
+    "pink blush 4": {
+      "name": "pink blush 4",
+      "file": "pink_blush_4.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "pink blush 4"
     }
   },
   "Portrait": {}
