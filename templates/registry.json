@@ -55,6 +55,14 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#750851"
+    },
+    "Gold Luxury": {
+      "name": "Gold Luxury",
+      "file": "gold_luxury.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#D4af37"
     }
   },
   "Portrait": {}
