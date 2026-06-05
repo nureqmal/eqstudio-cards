@@ -279,13 +279,22 @@ function applyDummy(html) {
     html = injectDialogs(html);
 
   // ── PATCH TEMPLATE FUNCTIONS ──
-  // Guna indexOf -- selamat dari regex hell
+
+  function findFuncEnd(html, startIdx) {
+    var depth = 0, i = startIdx;
+    while (i < html.length) {
+      if (html[i] === '{') depth++;
+      else if (html[i] === '}') { depth--; if (depth === 0) return i + 1; }
+      i++;
+    }
+    return -1;
+  }
 
   // 1. Patch renderDoa
   var rdS = html.indexOf('function renderDoa(){');
   if (rdS !== -1) {
-    var rdE = html.indexOf('\n}', rdS) + 2;
-    html = html.slice(0, rdS) +
+    var rdE = findFuncEnd(html, rdS);
+    if (rdE !== -1) html = html.slice(0, rdS) +
       'function renderDoa(){var w=document.getElementById("doaWall");if(w)w.innerHTML='<div style="text-align:center;padding:1rem;font-size:0.7rem;color:var(--muted)">Jadilah yang pertama menghantar ucapan! \u2728</div>';}' +
       html.slice(rdE);
   }
@@ -293,8 +302,8 @@ function applyDummy(html) {
   // 2. Patch loadRSVPList
   var rlS = html.indexOf('function loadRSVPList(){');
   if (rlS !== -1) {
-    var rlE = html.indexOf('\n}', rlS) + 2;
-    html = html.slice(0, rlS) +
+    var rlE = findFuncEnd(html, rlS);
+    if (rlE !== -1) html = html.slice(0, rlS) +
       'function loadRSVPList(){var el=document.getElementById("rsvpList");if(el)el.innerHTML="";}' +
       html.slice(rlE);
   }
@@ -302,23 +311,23 @@ function applyDummy(html) {
   // 3. Patch submitDoa
   var sdS = html.indexOf('async function submitDoa(){');
   if (sdS !== -1) {
-    var sdE = html.indexOf('\n}', sdS) + 2;
-    html = html.slice(0, sdS) +
+    var sdE = findFuncEnd(html, sdS);
+    if (sdE !== -1) html = html.slice(0, sdS) +
       'async function submitDoa(){' +
-      'var n=document.getElementById("doaName").value.trim();' +
-      'var m=document.getElementById("doaMsg").value.trim();' +
-      'if(!n||!m){alert("Sila isi nama dan ucapan.");return;}' +
-      'try{await kadRef.child("doa").push({n:n,m:m,t:Date.now()});}catch(e){}' +
-      'document.getElementById("doaName").value="";' +
-      'document.getElementById("doaMsg").value="";' +
-      'var btn=document.querySelector("#doa .btn-g");' +
-      'if(btn){var ot=btn.textContent;btn.textContent="Dihantar! \u2728";btn.style.opacity="0.7";' +
-      'setTimeout(function(){btn.textContent=ot;btn.style.opacity="1";},2500);}' +
-      'var w=document.getElementById("doaWall");' +
-      'if(w){var ph=w.querySelector("[style]");if(ph)w.innerHTML="";' +
-      'var card=document.createElement("div");card.className="doa-card";' +
-      'card.innerHTML="<div class=\'doa-n\'>"+n+"</div><div class=\'doa-m\'>"+m+"</div>";' +
-      'w.insertBefore(card,w.firstChild);}' +
+        'var n=document.getElementById("doaName").value.trim();' +
+        'var m=document.getElementById("doaMsg").value.trim();' +
+        'if(!n||!m){alert("Sila isi nama dan ucapan.");return;}' +
+        'try{await kadRef.child("doa").push({n:n,m:m,t:Date.now()});}catch(e){}' +
+        'document.getElementById("doaName").value="";' +
+        'document.getElementById("doaMsg").value="";' +
+        'var btn=document.querySelector("#doa .btn-g");' +
+        'if(btn){var ot=btn.textContent;btn.textContent="Dihantar! \u2728";btn.style.opacity="0.7";' +
+        'setTimeout(function(){btn.textContent=ot;btn.style.opacity="1";},2500);}' +
+        'var w=document.getElementById("doaWall");' +
+        'if(w){var ph=w.querySelector("[style]");if(ph)w.innerHTML="";' +
+        'var card=document.createElement("div");card.className="doa-card";' +
+        'card.innerHTML="<div class=\'doa-n\'>"+n+"</div><div class=\'doa-m\'>"+m+"</div>";' +
+        'w.insertBefore(card,w.firstChild);}' +
       '}' +
       html.slice(sdE);
   }
@@ -326,23 +335,23 @@ function applyDummy(html) {
   // 4. Patch submitRSVP
   var srS = html.indexOf('async function submitRSVP(){');
   if (srS !== -1) {
-    var srE = html.indexOf('\n}', srS) + 2;
-    html = html.slice(0, srS) +
+    var srE = findFuncEnd(html, srS);
+    if (srE !== -1) html = html.slice(0, srS) +
       'async function submitRSVP(){' +
-      'var n=document.getElementById("rsvpName").value.trim();' +
-      'var count=document.getElementById("rsvpCount").value;' +
-      'var s=document.getElementById("rsvpStatus").value;' +
-      'if(!n||!count||!s){alert("Sila lengkapkan semua maklumat.");return;}' +
-      'if(s==="hadir"){try{await kadRef.child("rsvp").push({n:n,c:count,s:s,t:Date.now()});}catch(e){}}' +
-      'document.getElementById("rsvpForm").style.display="none";' +
-      'var succ=document.getElementById("rsvpSuccess");' +
-      'if(succ){succ.style.display="flex";' +
-      'var rc=document.getElementById("rsvpCards");' +
-      'if(rc)rc.innerHTML="<div class=\'rsvp-card\'>"+n+" \u00b7 "+count+" pax \u00b7 "+(s==="hadir"?"Insya-Allah Hadir \u2705":"Tidak Hadir \u274c")+"</div>";}' +
-      'var list=document.getElementById("rsvpList");' +
-      'if(list&&s==="hadir"){var row=document.createElement("div");row.className="re-row";' +
-      'row.innerHTML="<span class=\'re-n\'>"+n+"</span><span class=\'re-s\'>"+count+" \u00b7 \u2705 Hadir</span>";' +
-      'list.insertBefore(row,list.firstChild);}' +
+        'var n=document.getElementById("rsvpName").value.trim();' +
+        'var count=document.getElementById("rsvpCount").value;' +
+        'var s=document.getElementById("rsvpStatus").value;' +
+        'if(!n||!count||!s){alert("Sila lengkapkan semua maklumat.");return;}' +
+        'if(s==="hadir"){try{await kadRef.child("rsvp").push({n:n,c:count,s:s,t:Date.now()});}catch(e){}}' +
+        'document.getElementById("rsvpForm").style.display="none";' +
+        'var succ=document.getElementById("rsvpSuccess");' +
+        'if(succ){succ.style.display="flex";' +
+        'var rc=document.getElementById("rsvpCards");' +
+        'if(rc)rc.innerHTML="<div class=\'rsvp-card\'>"+n+" \u00b7 "+count+" pax \u00b7 "+(s==="hadir"?"Insya-Allah Hadir \u2705":"Tidak Hadir \u274c")+"</div>";}' +
+        'var list=document.getElementById("rsvpList");' +
+        'if(list&&s==="hadir"){var row=document.createElement("div");row.className="re-row";' +
+        'row.innerHTML="<span class=\'re-n\'>"+n+"</span><span class=\'re-s\'>"+count+" \u00b7 \u2705 Hadir</span>";' +
+        'list.insertBefore(row,list.firstChild);}' +
       '}' +
       html.slice(srE);
   }
