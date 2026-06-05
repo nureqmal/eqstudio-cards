@@ -48,7 +48,10 @@ body{background:#060b0a;font-family:sans-serif;min-height:100vh;overflow:hidden}
   position:fixed;top:38px;left:0;right:0;bottom:0;
   width:100%;height:calc(100vh - 38px);
   border:none;
+  overflow:hidden;
 }
+/* body jangan scroll — iframe yang scroll sendiri */
+body{ overflow:hidden; }
 </style>
 </head>
 <body>
@@ -70,7 +73,7 @@ body{background:#060b0a;font-family:sans-serif;min-height:100vh;overflow:hidden}
   <a href="https://eqstudio.nreqmal.workers.dev/#templates" style="color:#c9a44a;margin-top:12px;font-size:13px;">← Kembali ke Katalog</a>
 </div>
 
-<iframe id="demo-iframe" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+<iframe id="demo-iframe" sandbox="allow-scripts allow-same-origin allow-popups" scrolling="yes" allowtransparency="true"></iframe>
 
 <script>
 const DUMMY = {
@@ -131,9 +134,13 @@ function applyDummy(html) {
 
   // Inject CSS untuk block navigation keluar dari demo
   const demoStyle = `<style>
-    /* Demo mode — pastikan content visible */
-    body { overflow-y: auto !important; }
-  </style>`;
+    /* Demo mode */
+    body { overflow-y: auto !important; -webkit-overflow-scrolling: touch; }
+    /* Pastikan stickyNav nampak dalam iframe — push viewport */
+    #stickyNav { bottom: 0 !important; }
+    #audioBtn { bottom: 4rem !important; }
+    #shareBtn { bottom: 5rem !important; }
+  </style>`; 
   html = html.replace('</head>', demoStyle + '</head>');
 
   // Inject script untuk block redirect & prevent blank
