@@ -131,7 +131,7 @@ function injectDialogs(html) {
   html = html.replace('</head>', DIALOG_CSS_STR + '</head>');
   for(const [id, dialogHtml] of Object.entries(DIALOGS_MAP)) {
     const re = new RegExp('(<(?:section|div|button)[^>]*\\bid="' + id + '"[^>]*>)', 'i');
-    html = html.replace(re, '$1\n' + dialogHtml + '\n');
+    html = html.replace(re, (match) => match + '\n' + dialogHtml + '\n');
   }
   return html;
 }
@@ -161,9 +161,9 @@ function applyDummy(html){
   // Catch-all — fix any remaining malformed date from placeholder combo
   html=html.replace(
     /new Date\(['"]([0-9]{8})T([0-9]{2})([0-9]{2}):00['"]\)/g,
-    (_,d,h,m)=>{
-      const yr=d.slice(0,4),mo=d.slice(4,6),dy=d.slice(6,8);
-      return `new Date('${yr}-${mo}-${dy}T${h}:${m}:00')`;
+    function(_,d,h,m){
+      var yr=d.slice(0,4),mo=d.slice(4,6),dy=d.slice(6,8);
+      return "new Date('"+yr+"-"+mo+"-"+dy+"T"+h+":"+m+":00')";
     }
   );
 
