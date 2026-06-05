@@ -197,7 +197,7 @@ function applyDummy(html) {
     return '';
   });
 
-  html = html.replace(/const KAD_ID\s*=\s*['"][^'"]*['"]/, "const KAD_ID='demo-preview-mode'");
+  html = html.replace(/const KAD_ID\s*=\s*['"][^'"]*['"]/, "const KAD_ID='es-pb'");
 
   html = html.replace(
     /function initMonogram\(\)\{[\s\S]*?\}/,
@@ -213,20 +213,20 @@ function applyDummy(html) {
   );
 
   // Kosongkan RSVP & doa
-  var fbOverride = '<scr' + 'ipt>window.addEventListener("load",function(){' +
-    'var r=document.getElementById("rsvpList");if(r)r.innerHTML="";' +
-    'var d=document.querySelector(".doa-wall");if(d)d.innerHTML="";' +
-    'if(window.db){window.db.ref=function(){' +
-    'var ns={val:function(){return null;},forEach:function(){}}; ' +
-    'return{on:function(e,c){if(e==="value")c(ns);},once:function(){return Promise.resolve(ns);},'+
-    'orderByChild:function(){return{limitToLast:function(){return{on:function(e,c){c(ns);}}}}}},'+
-    'child:function(){return{on:function(e,c){c(ns);},set:function(){return Promise.resolve();},push:function(){return{set:function(){return Promise.resolve();}}}}}},'+
-    'set:function(){return Promise.resolve();},push:function(){return{set:function(){return Promise.resolve();}}}' +
-    '};};}' +
-    '});</' + 'script>';
-
-  html = html.replace('</body>', fbOverride + '</body>');
-  html = injectDialogs(html);
+  // Clear RSVP & doa setiap load -- _isTemplate=true (KAD_ID='es-pb') skip Firebase auto
+  var domClear = '<scr'+'ipt>' +
+    'window.addEventListener("DOMContentLoaded",function(){' +
+    '  function clr(){' +
+    '    var r=document.getElementById("rsvpList");if(r)r.innerHTML="";' +
+    '    var d=document.getElementById("doaWall");if(d)d.innerHTML="";' +
+    '    var rc=document.getElementById("rsvpCards");if(rc)rc.innerHTML="";' +
+    '  }' +
+    '  clr();setTimeout(clr,500);setTimeout(clr,1500);' +
+    '});' +
+    '</'+'script>';
+  html = html.replace('<head>', '<head>' + domClear);
+  
+    html = injectDialogs(html);
   return html;
 }
 
