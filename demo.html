@@ -295,7 +295,7 @@ function applyDummy(html) {
   if (rdS !== -1) {
     var rdE = findFuncEnd(html, rdS);
     if (rdE !== -1) html = html.slice(0, rdS) +
-      'function renderDoa(){var w=document.getElementById("doaWall");if(w)w.innerHTML='<div style="text-align:center;padding:1rem;font-size:0.7rem;color:var(--muted)">Jadilah yang pertama menghantar ucapan! \u2728</div>';}' +
+      'function renderDoa(){var w=document.getElementById("doaWall");if(w)w.innerHTML=\'<div style="text-align:center;padding:1rem;font-size:0.7rem;color:var(--muted)">Jadilah yang pertama menghantar ucapan! \u2728</div>\';}' +
       html.slice(rdE);
   }
 
