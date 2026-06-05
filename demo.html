@@ -277,6 +277,68 @@ function applyDummy(html) {
   html = html.replace('<head>', '<head>' + domClear);
   
     html = injectDialogs(html);
+
+  // ── PATCH TEMPLATE FUNCTIONS TERUS ──
+  // 1. Buang renderDoa -- supaya dia tak load dari Firebase
+  html = html.replace(
+    /function renderDoa\(\)\{[\s\S]*?^  \}/m,
+    'function renderDoa(){var w=document.getElementById("doaWall");if(w)w.innerHTML="<div style=\"font-size:0.65rem;color:var(--muted);text-align:center;padding:1rem;\">Jadilah yang pertama menghantar ucapan! \u2728</div>";}'
+  );
+
+  // 2. Buang loadRSVPList -- supaya dia tak load dari Firebase
+  html = html.replace(
+    /function loadRSVPList\(\)\{[\s\S]*?^  \}/m,
+    'function loadRSVPList(){var list=document.getElementById("rsvpList");if(list)list.innerHTML="";}'
+  );
+
+  // 3. Patch submitDoa -- allow push tapi render local
+  html = html.replace(
+    /async function submitDoa\(\)\{([\s\S]*?)
+\}/,
+    function(match) {
+      return 'async function submitDoa(){' +
+        'var n=document.getElementById("doaName").value.trim();' +
+        'var m=document.getElementById("doaMsg").value.trim();' +
+        'if(!n||!m){alert(window._lang==="en"?"Please fill in name and message.":"Sila isi nama dan ucapan.");return;}' +
+        'try{await kadRef.child("doa").push({n:n,m:m,t:Date.now()});}catch(e){}' +
+        'document.getElementById("doaName").value="";' +
+        'document.getElementById("doaMsg").value="";' +
+        'var btn=document.querySelector("#doa .btn-g");' +
+        'if(btn){var orig=btn.textContent;btn.textContent="Dihantar! \u2728";btn.style.opacity="0.7";setTimeout(function(){btn.textContent=orig;btn.style.opacity="1";},2500);}' +
+        'var w=document.getElementById("doaWall");' +
+        'if(w){var card=document.createElement("div");card.className="doa-card";' +
+        'card.innerHTML="<div class=\"doa-n\">"+n+"</div><div class=\"doa-m\">"+m+"</div>";' +
+        'card.style.animation="cardIn 0.4s ease";' +
+        'if(w.querySelector("[style*=\"padding:1rem\"]"))w.innerHTML="";' +
+        'w.insertBefore(card,w.firstChild);}' +
+      '}';
+    }
+  );
+
+  // 4. Patch submitRSVP -- allow push tapi render local
+  html = html.replace(
+    /async function submitRSVP\(\)\{([\s\S]*?)
+\}/,
+    function(match) {
+      return 'async function submitRSVP(){' +
+        'var n=document.getElementById("rsvpName").value.trim();' +
+        'var count=document.getElementById("rsvpCount").value;' +
+        'var s=document.getElementById("rsvpStatus").value;' +
+        'if(!n||!count||!s){alert(window._lang==="en"?"Please fill in all fields.":"Sila lengkapkan semua maklumat.");return;}' +
+        'if(s==="hadir"){try{await kadRef.child("rsvp").push({n:n,c:count,s:s,t:Date.now()});}catch(e){}}' +
+        'document.getElementById("rsvpForm").style.display="none";' +
+        'var succ=document.getElementById("rsvpSuccess");' +
+        'if(succ){succ.style.display="flex";' +
+        'var rc=document.getElementById("rsvpCards");' +
+        'if(rc)rc.innerHTML="<div class=\"rsvp-card\">"+n+" \u00b7 "+count+" pax \u00b7 "+(s==="hadir"?"Insya-Allah Hadir \u2705":"Tidak Hadir \u274c")+"</div>";}' +
+        'var list=document.getElementById("rsvpList");' +
+        'if(list&&s==="hadir"){var row=document.createElement("div");row.className="re-row";' +
+        'row.innerHTML="<span class=\"re-n\">"+n+"</span><span class=\"re-s\">"+count+" \u00b7 \u2705 Hadir</span>";' +
+        'list.insertBefore(row,list.firstChild);}' +
+      '}';
+    }
+  );
+
   return html;
 }
 
