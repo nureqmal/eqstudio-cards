@@ -129,12 +129,16 @@ const DIALOGS_MAP = {
 };
 
 function injectDialogs(html) {
-  html = html.replace('</head>', DIALOG_INJECT_CSS + '</head>');
+  if (html.indexOf('</head>') !== -1) {
+    html = html.replace('</head>', DIALOG_INJECT_CSS + '</head>');
+  } else {
+    html = DIALOG_INJECT_CSS + html;
+  }
   var ids = Object.keys(DIALOGS_MAP);
   for (var i = 0; i < ids.length; i++) {
     var id = ids[i];
     var dialogHtml = DIALOGS_MAP[id];
-    var re = new RegExp('(<(?:section|div|button)[^>]*\bid="' + id + '"[^>]*>)', 'i');
+    var re = new RegExp('(<(?:section|div)[^>]*id="' + id + '"[^>]*>)', 'i');
     html = html.replace(re, function(match) {
       return match + '\n' + dialogHtml + '\n';
     });
