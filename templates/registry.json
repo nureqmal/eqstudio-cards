@@ -6,7 +6,8 @@
       "has_photo": false,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#FFFFF0, #E2725B"
+      "desc": "#FFFFF0, #E2725B",
+      "preview_img": "previews/ivory_teracotta.png"
     },
     "Blush Rose Gold": {
       "name": "Blush Rose Gold",
