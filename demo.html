@@ -216,12 +216,62 @@ function applyDummy(html) {
   // Clear RSVP & doa setiap load -- _isTemplate=true (KAD_ID='es-pb') skip Firebase auto
   var domClear = '<scr'+'ipt>' +
     'window.addEventListener("DOMContentLoaded",function(){' +
+
+      // Kosongkan on load
     '  function clr(){' +
     '    var r=document.getElementById("rsvpList");if(r)r.innerHTML="";' +
     '    var d=document.getElementById("doaWall");if(d)d.innerHTML="";' +
     '    var rc=document.getElementById("rsvpCards");if(rc)rc.innerHTML="";' +
     '  }' +
     '  clr();setTimeout(clr,500);setTimeout(clr,1500);' +
+
+      // Override submitDoa -- allow write tapi render local je
+    '  var _origSubmitDoa=window.submitDoa;' +
+    '  window.submitDoa=async function(){' +
+    '    var n=document.getElementById("doaName").value.trim();' +
+    '    var m=document.getElementById("doaMsg").value.trim();' +
+    '    if(!n||!m){alert("Sila isi nama dan ucapan.");return;}' +
+    '    try{if(window.kadRef)await window.kadRef.child("doa").push({n:n,m:m,t:Date.now()});}catch(e){}' +
+    '    document.getElementById("doaName").value="";' +
+    '    document.getElementById("doaMsg").value="";' +
+    '    var btn=document.querySelector("#doa .btn-g");' +
+    '    if(btn){var orig=btn.textContent;btn.textContent="Dihantar! ✨";btn.style.opacity="0.7";setTimeout(function(){btn.textContent=orig;btn.style.opacity="1";},2500);}' +
+      // Inject entry ke doaWall secara local
+    '    var w=document.getElementById("doaWall");' +
+    '    if(w){' +
+    '      var card=document.createElement("div");' +
+    '      card.className="doa-card";' +
+    '      card.innerHTML="<div class=\"doa-n\">"+n+"</div><div class=\"doa-m\">"+m+"</div>";' +
+    '      card.style.animation="cardIn 0.4s ease";' +
+    '      w.insertBefore(card,w.firstChild);' +
+    '    }' +
+    '  };' +
+
+      // Override submitRSVP -- allow write tapi render local je
+    '  var _origSubmitRSVP=window.submitRSVP;' +
+    '  window.submitRSVP=async function(){' +
+    '    var n=document.getElementById("rsvpName").value.trim();' +
+    '    var count=document.getElementById("rsvpCount").value;' +
+    '    var s=document.getElementById("rsvpStatus").value;' +
+    '    if(!n||!count||!s){alert("Sila lengkapkan semua maklumat.");return;}' +
+    '    if(s==="hadir"){try{if(window.kadRef)await window.kadRef.child("rsvp").push({n:n,c:count,s:s,t:Date.now()});}catch(e){}}' +
+    '    document.getElementById("rsvpForm").style.display="none";' +
+    '    var succ=document.getElementById("rsvpSuccess");' +
+    '    if(succ){' +
+    '      succ.style.display="flex";' +
+    '      var rc=document.getElementById("rsvpCards");' +
+    '      if(rc)rc.innerHTML="<div class=\"rsvp-card\">"+n+" · "+count+" pax · "+(s==="hadir"?"Insya-Allah Hadir ✅":"Tidak Hadir")+"</div>";' +
+    '    }' +
+      // Inject ke rsvpList local
+    '    var list=document.getElementById("rsvpList");' +
+    '    if(list&&s==="hadir"){' +
+    '      var row=document.createElement("div");' +
+    '      row.className="re-row";' +
+    '      row.innerHTML="<span class=\"re-n\">"+n+"</span><span class=\"re-s\">"+count+" · ✅ Hadir</span>";' +
+    '      list.insertBefore(row,list.firstChild);' +
+    '    }' +
+    '  };' +
+
     '});' +
     '</'+'script>';
   html = html.replace('<head>', '<head>' + domClear);
