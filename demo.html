@@ -6,26 +6,22 @@
 <title>Demo — EQstudio</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#060b0a;font-family:sans-serif;min-height:100vh;overflow:hidden}
+html,body{width:100%;height:100%;overflow:hidden;background:#060b0a;}
 
-#demo-watermark{
-  position:fixed;top:0;left:0;right:0;z-index:99999;
-  background:linear-gradient(135deg,#c9a44a,#e2c06a,#c9a44a);
-  color:#060b0a;font-family:sans-serif;font-size:11px;font-weight:700;
-  letter-spacing:.2em;text-transform:uppercase;
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  padding:9px 20px;height:38px;
-}
-#demo-watermark a{
-  color:#060b0a;text-decoration:none;font-weight:800;
-  border-bottom:1px solid rgba(6,11,10,.4);
+/* IFRAME — penuh screen */
+#demo-iframe{
+  display:none;
+  position:fixed;inset:0;
+  width:100%;height:100%;
+  border:none;
 }
 
+/* LOADING */
 #demo-loading{
-  position:fixed;inset:0;top:38px;
+  position:fixed;inset:0;z-index:200;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:16px;color:rgba(240,237,230,.4);font-size:12px;letter-spacing:.2em;
-  background:#060b0a;z-index:100;
+  gap:16px;background:#060b0a;
+  color:rgba(240,237,230,.4);font-family:sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;
 }
 .spinner{
   width:28px;height:28px;border-radius:50%;
@@ -34,48 +30,124 @@ body{background:#060b0a;font-family:sans-serif;min-height:100vh;overflow:hidden}
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ERROR */
 #demo-error{
-  position:fixed;inset:0;top:38px;
+  position:fixed;inset:0;z-index:200;
   display:none;flex-direction:column;align-items:center;justify-content:center;
-  gap:12px;text-align:center;padding:40px;
-  color:rgba(240,237,230,.5);background:#060b0a;
+  gap:12px;text-align:center;padding:40px;background:#060b0a;
+  color:rgba(240,237,230,.5);
 }
 #demo-error h2{color:#c9a44a;font-size:22px;font-family:serif;font-style:italic;}
 
-/* Iframe fills full viewport below watermark */
-#demo-iframe{
-  display:none;
-  position:fixed;top:38px;left:0;right:0;bottom:0;
-  width:100%;height:calc(100vh - 38px);
-  border:none;
-  overflow:hidden;
+/* DEMO OVERLAY POPUP */
+#demo-overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(6,11,10,.82);
+  backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  opacity:0;
+  animation:overlayIn .4s ease .3s forwards;
 }
-/* body jangan scroll — iframe yang scroll sendiri */
-body{ overflow:hidden; }
+@keyframes overlayIn{to{opacity:1}}
+
+.demo-card{
+  background:linear-gradient(160deg,#0f1a17,#091210);
+  border:1px solid rgba(201,164,74,.25);
+  border-radius:4px;
+  padding:36px 32px 28px;
+  max-width:340px;width:100%;
+  text-align:center;
+  transform:translateY(20px);
+  animation:cardIn .4s ease .4s forwards;
+  opacity:0;
+}
+@keyframes cardIn{to{opacity:1;transform:translateY(0)}}
+
+.demo-badge{
+  display:inline-block;
+  font-family:sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.35em;text-transform:uppercase;color:#060b0a;
+  background:linear-gradient(135deg,#c9a44a,#e2c06a);
+  padding:5px 14px;border-radius:2px;margin-bottom:20px;
+}
+.demo-card h2{
+  font-family:Georgia,serif;font-size:22px;font-style:italic;
+  color:#f0ede6;margin-bottom:10px;line-height:1.3;
+}
+.demo-card p{
+  font-family:sans-serif;font-size:12px;color:rgba(240,237,230,.45);
+  line-height:1.8;margin-bottom:24px;letter-spacing:.02em;
+}
+.demo-card p strong{color:rgba(201,164,74,.7);}
+
+.demo-btn-primary{
+  display:block;width:100%;padding:14px;margin-bottom:10px;
+  background:linear-gradient(135deg,#c9a44a,#e2c06a,#c9a44a);
+  color:#060b0a;font-family:sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.25em;text-transform:uppercase;
+  border:none;border-radius:2px;cursor:pointer;
+  text-decoration:none;
+  transition:opacity .2s;
+}
+.demo-btn-primary:hover{opacity:.85}
+
+.demo-btn-ghost{
+  display:block;width:100%;padding:13px;
+  background:transparent;
+  color:rgba(240,237,230,.4);font-family:sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.08);border-radius:2px;cursor:pointer;
+  transition:all .2s;
+}
+.demo-btn-ghost:hover{border-color:rgba(255,255,255,.2);color:rgba(240,237,230,.7);}
+
+.demo-divider{
+  width:32px;height:1px;background:rgba(201,164,74,.2);
+  margin:20px auto 16px;
+}
+.demo-note{
+  font-family:sans-serif;font-size:10px;color:rgba(240,237,230,.2);
+  letter-spacing:.05em;
+}
 </style>
 </head>
 <body>
 
-<div id="demo-watermark">
-  <span>✦ DEMO SAHAJA — Maklumat adalah rekaan</span>
-  <span style="opacity:.4">·</span>
-  <a href="https://eqstudio.nreqmal.workers.dev/#tempah">Tempah Kad Anda →</a>
-</div>
-
 <div id="demo-loading">
   <div class="spinner"></div>
-  <span>MEMUATKAN DEMO...</span>
+  <span>Memuatkan Demo...</span>
 </div>
 
 <div id="demo-error">
   <h2>Template tidak dijumpai</h2>
   <p style="font-size:13px;margin-top:4px">Demo untuk template ini tidak tersedia.</p>
-  <a href="https://eqstudio.nreqmal.workers.dev/#templates" style="color:#c9a44a;margin-top:12px;font-size:13px;">← Kembali ke Katalog</a>
+  <a href="https://eqstudio.nreqmal.workers.dev/#templates" style="color:#c9a44a;margin-top:12px;font-size:13px;display:inline-block">← Kembali ke Katalog</a>
 </div>
 
-<iframe id="demo-iframe" sandbox="allow-scripts allow-same-origin allow-popups" scrolling="yes" allowtransparency="true"></iframe>
+<iframe id="demo-iframe" sandbox="allow-scripts allow-same-origin allow-popups" scrolling="yes"></iframe>
+
+<!-- OVERLAY POPUP -->
+<div id="demo-overlay">
+  <div class="demo-card">
+    <span class="demo-badge">✦ Preview Demo</span>
+    <h2>Ini adalah demo<br>template sahaja</h2>
+    <p>Nama, tarikh &amp; maklumat adalah <strong>rekaan semata-mata</strong>.<br>Kad sebenar akan diisi dengan<br>maklumat majlis anda.</p>
+    <button class="demo-btn-ghost" onclick="closeOverlay()">Tengok Demo →</button>
+    <div class="demo-divider"></div>
+    <a href="https://eqstudio.nreqmal.workers.dev/#tempah" class="demo-btn-primary">Tempah Kad Saya</a>
+    <p class="demo-note">Siap dalam 48 jam · dari RM29</p>
+  </div>
+</div>
 
 <script>
+function closeOverlay(){
+  const el = document.getElementById('demo-overlay');
+  el.style.transition = 'opacity .3s ease';
+  el.style.opacity = '0';
+  setTimeout(()=>el.remove(), 300);
+}
+
 const DUMMY = {
   groom_name:'Izzat', bride_name:'Hana',
   groom_full:'Muhammad Izzat bin Ibrahim', bride_full:'Nur Hana binti Abdullah',
@@ -115,76 +187,33 @@ const DUMMY = {
   order_id:'DEMO0000000000', kad_id:'demo0000000000',
 };
 
-function applyDummy(html) {
-  // Replace {{PLACEHOLDER}} — case insensitive
-  html = html.replace(/\{\{(\w+)\}\}/g, (_, key) => {
-    if (DUMMY[key] !== undefined) return DUMMY[key];
-    if (DUMMY[key.toLowerCase()] !== undefined) return DUMMY[key.toLowerCase()];
+function applyDummy(html){
+  html = html.replace(/\{\{(\w+)\}\}/g, (_,key) => {
+    if(DUMMY[key] !== undefined) return DUMMY[key];
+    if(DUMMY[key.toLowerCase()] !== undefined) return DUMMY[key.toLowerCase()];
     return '';
   });
-
-  // Fix KAD_ID
   html = html.replace(/const KAD_ID\s*=\s*['"][^'"]*['"]/, "const KAD_ID='demo0000000000'");
-
-  // Neutralize Firebase writes supaya tak buat noise
-  html = html.replace(
-    /(database|db)\.ref\([^)]*\)\.(set|push|update)\s*\(/g,
-    '((()=>Promise.resolve())('
-  );
-
-  // Inject CSS untuk block navigation keluar dari demo
-  const demoStyle = `<style>
-    /* Demo mode */
-    body { overflow-y: auto !important; -webkit-overflow-scrolling: touch; }
-    /* Pastikan stickyNav nampak dalam iframe — push viewport */
-    #stickyNav { bottom: 0 !important; }
-    #audioBtn { bottom: 4rem !important; }
-    #shareBtn { bottom: 5rem !important; }
-  </style>`; 
-  html = html.replace('</head>', demoStyle + '</head>');
-
-  // Inject script untuk block redirect & prevent blank
-  const demoScript = `<script>
-    // Block navigation supaya iframe tak jadi blank
-    window.addEventListener('beforeunload', function(e){ e.preventDefault(); e.returnValue=''; });
-    // Override location changes
-    (function(){
-      const _href = Object.getOwnPropertyDescriptor(window.location, 'href');
-      try {
-        Object.defineProperty(window.location, 'href', {
-          set: function(v){ console.log('[DEMO] blocked navigation to:', v); }
-        });
-      } catch(e){}
-    })();
-    // Block window.open yang mungkin cause redirect
-    const _open = window.open;
-    window.open = function(url, target) {
-      if(target === '_self') { console.log('[DEMO] blocked _self open'); return null; }
-      return _open.apply(window, arguments);
-    };
-  <\/script>`;
-  html = html.replace('</body>', demoScript + '</body>');
-
   return html;
 }
 
-(async () => {
-  const params = new URLSearchParams(location.search);
-  const tmpl   = params.get('t');
+(async()=>{
+  const params  = new URLSearchParams(location.search);
+  const tmpl    = params.get('t');
   const loading = document.getElementById('demo-loading');
   const error   = document.getElementById('demo-error');
   const iframe  = document.getElementById('demo-iframe');
 
-  if (!tmpl) {
-    loading.style.display = 'none';
-    error.style.display   = 'flex';
+  if(!tmpl){
+    loading.style.display='none';
+    error.style.display='flex';
     return;
   }
 
-  try {
-    const url = 'https://raw.githubusercontent.com/nureqmal/eqstudio-cards/main/templates/' + tmpl + '?v=' + Date.now();
+  try{
+    const url = 'https://raw.githubusercontent.com/nureqmal/eqstudio-cards/main/templates/'+tmpl+'?v='+Date.now();
     const res = await fetch(url);
-    if (!res.ok) throw new Error('404');
+    if(!res.ok) throw new Error('404');
     const raw  = await res.text();
     const html = applyDummy(raw);
 
@@ -192,9 +221,9 @@ function applyDummy(html) {
     iframe.style.display = 'block';
     loading.style.display = 'none';
 
-  } catch(e) {
-    loading.style.display = 'none';
-    error.style.display   = 'flex';
+  }catch(e){
+    loading.style.display='none';
+    error.style.display='flex';
   }
 })();
 </script>
