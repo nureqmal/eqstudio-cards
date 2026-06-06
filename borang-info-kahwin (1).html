@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EQStudio — Borang Maklumat Kahwin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #060b0a;
+  --bg2:      #0d1a17;
+  --bg3:      #091210;
+  --border:   rgba(255,255,255,0.08);
+  --emerald:  #0d6b52;
+  --gold:     #c9a44a;
+  --gold2:    #e2c06a;
+  --gold-g:   linear-gradient(135deg,#c9a44a,#e2c06a,#c9a44a);
+  --text:     #f0ede6;
+  --text2:    rgba(240,237,230,0.55);
+  --text3:    rgba(240,237,230,0.25);
+  --ff-d:    'Playfair Display', serif;
+  --ff-ui:   'Syne', sans-serif;
+  --ff-b:    'Lato', sans-serif;
+  --ease:    cubic-bezier(0.25,0,0,1);
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--ff-b);
+  font-weight:300;
+  line-height:1.6;
+  min-height:100vh;
+}
+
+/* noise */
+body::before {
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:0.35;
+}
+
+/* glow */
+body::after {
+  content:''; position:fixed; top:-200px; right:-200px; width:600px; height:600px;
+  border-radius:50%; background:rgba(13,107,82,0.12); filter:blur(120px);
+  pointer-events:none; z-index:0;
+}
+
+.wrap {
+  position:relative; z-index:1;
+  max-width:720px; margin:0 auto;
+  padding:60px 24px 100px;
+}
+
+/* ── HEADER ── */
+.header { text-align:center; margin-bottom:56px; }
+.header-logo {
+  font-family:var(--ff-ui); font-size:18px; font-weight:800;
+  letter-spacing:0.12em; text-transform:uppercase; color:var(--text);
+  margin-bottom:32px; display:inline-block;
+}
+.header-logo span { color:var(--gold); }
+.header-tag {
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--ff-ui); font-size:10px; font-weight:600;
+  letter-spacing:0.35em; text-transform:uppercase; color:var(--gold);
+  margin-bottom:20px;
+}
+.header-tag-line { width:24px; height:1px; background:var(--gold); }
+.header h1 {
+  font-family:var(--ff-d); font-size:clamp(32px,5vw,52px);
+  font-weight:700; line-height:1.05; letter-spacing:-0.02em;
+  margin-bottom:16px;
+}
+.header h1 em { font-style:italic; color:var(--gold); }
+.header p { font-size:14px; color:var(--text2); line-height:1.8; max-width:440px; margin:0 auto; }
+
+/* ── CATEGORY TOGGLE ── */
+.cat-toggle {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:12px; margin-bottom:48px;
+}
+.cat-btn {
+  padding:20px 16px; border:1px solid var(--border);
+  background:var(--bg2); border-radius:4px; cursor:pointer;
+  transition:all .35s var(--ease); text-align:left;
+}
+.cat-btn:hover { border-color:rgba(201,164,74,0.3); }
+.cat-btn.active {
+  border-color:var(--gold);
+  background:rgba(201,164,74,0.06);
+  box-shadow:0 0 0 1px rgba(201,164,74,0.15), inset 0 1px 0 rgba(201,164,74,0.1);
+}
+.cat-btn-emoji { font-size:22px; margin-bottom:8px; display:block; }
+.cat-btn-name {
+  font-family:var(--ff-ui); font-size:13px; font-weight:700;
+  color:var(--text); margin-bottom:4px;
+}
+.cat-btn.active .cat-btn-name { color:var(--gold2); }
+.cat-btn-desc { font-size:11px; color:var(--text3); line-height:1.5; }
+.cat-btn-badge {
+  display:inline-block; margin-top:8px;
+  padding:3px 10px; border-radius:2px; font-family:var(--ff-ui);
+  font-size:9px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase;
+}
+.badge-essential { background:rgba(13,107,82,.7); color:#a8f0d4; }
+.badge-portrait   { background:rgba(180,80,70,.7); color:#fde0d0; }
+
+/* ── SECTION ── */
+.section {
+  margin-bottom:40px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:4px;
+  overflow:hidden;
+}
+.section-head {
+  padding:20px 24px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:14px;
+}
+.section-num {
+  width:32px; height:32px; border-radius:50%;
+  border:1px solid rgba(201,164,74,0.25);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--ff-d); font-size:14px; font-style:italic; color:var(--gold);
+  flex-shrink:0;
+}
+.section-title {
+  font-family:var(--ff-ui); font-size:13px; font-weight:700;
+  letter-spacing:0.08em; text-transform:uppercase; color:var(--text);
+}
+.section-subtitle { font-size:11px; color:var(--text3); margin-top:2px; }
+.section-body { padding:24px; }
+
+/* ── GRID ── */
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+@media(max-width:560px) {
+  .grid-2 { grid-template-columns:1fr; }
+  .grid-3 { grid-template-columns:1fr 1fr; }
+}
+
+/* ── FIELD ── */
+.field { display:flex; flex-direction:column; gap:6px; }
+.field + .field { margin-top:16px; }
+.grid-2 .field, .grid-3 .field { margin-top:0; }
+label {
+  font-family:var(--ff-ui); font-size:10px; font-weight:600;
+  letter-spacing:0.2em; text-transform:uppercase; color:var(--text2);
+}
+label .req { color:var(--gold); margin-left:2px; }
+input, textarea, select {
+  background:#0a1512; color:var(--text);
+  border:1px solid var(--border);
+  border-radius:3px; padding:11px 14px;
+  font-family:var(--ff-b); font-size:14px; font-weight:300;
+  outline:none; transition:border-color .25s, box-shadow .25s;
+  width:100%;
+}
+input::placeholder, textarea::placeholder { color:var(--text3); }
+input:focus, textarea:focus, select:focus {
+  border-color:rgba(201,164,74,0.45);
+  box-shadow:0 0 0 3px rgba(201,164,74,0.08);
+}
+select { cursor:pointer; }
+select option { background:#0a1512; }
+textarea { resize:vertical; min-height:80px; }
+.hint { font-size:11px; color:var(--text3); margin-top:4px; }
+
+/* divider */
+.field-divider {
+  border:none; border-top:1px solid var(--border);
+  margin:20px 0;
+}
+
+/* side-label */
+.side-label {
+  font-family:var(--ff-ui); font-size:11px; font-weight:600;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:16px; display:block;
+}
+
+/* ── PORTRAIT SECTION ── */
+.portrait-only { display:none; }
+body.mode-portrait .portrait-only { display:block; }
+body.mode-portrait .essential-only { display:none; }
+
+/* ── ATURCARA ROW ── */
+.aturcara-row {
+  display:grid; grid-template-columns:auto 1fr;
+  gap:10px 16px; align-items:center;
+  margin-bottom:12px;
+}
+.aturcara-icon { font-size:16px; line-height:1; color:var(--text2); }
+.aturcara-label {
+  font-family:var(--ff-ui); font-size:10px; font-weight:600;
+  letter-spacing:0.15em; text-transform:uppercase; color:var(--text3);
+  margin-bottom:4px;
+}
+
+/* ── FILE UPLOAD ── */
+.file-upload-wrap {
+  position:relative;
+}
+.file-upload-label {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; padding:28px 20px;
+  border:1px dashed rgba(201,164,74,0.25);
+  border-radius:4px; background:#060f0c;
+  cursor:pointer; transition:all .3s var(--ease);
+  text-align:center;
+}
+.file-upload-label:hover {
+  border-color:rgba(201,164,74,0.5);
+  background:rgba(201,164,74,0.04);
+}
+.file-upload-label.has-file {
+  border-color:rgba(13,107,82,0.5);
+  background:rgba(13,107,82,0.06);
+}
+.file-upload-icon { font-size:24px; opacity:0.5; }
+.file-upload-text {
+  font-family:var(--ff-ui); font-size:10px; font-weight:600;
+  letter-spacing:0.15em; text-transform:uppercase; color:var(--text3);
+}
+.file-upload-label.has-file .file-upload-text { color:#4ade80; }
+.file-upload-sub { font-size:11px; color:var(--text3); }
+input[type="file"] { display:none; }
+.file-preview {
+  width:100%; max-height:160px; object-fit:cover;
+  border-radius:3px; margin-top:8px; display:none;
+}
+.file-preview.show { display:block; }
+
+/* ── SUBMIT ── */
+.submit-wrap { margin-top:48px; text-align:center; }
+.submit-wrap p { font-size:13px; color:var(--text3); margin-bottom:20px; line-height:1.7; }
+.btn-submit {
+  display:inline-flex; align-items:center; gap:12px;
+  padding:18px 48px;
+  background:var(--gold-g); color:#060b0a;
+  font-family:var(--ff-ui); font-size:12px; font-weight:700;
+  letter-spacing:0.25em; text-transform:uppercase;
+  border:none; border-radius:2px; cursor:pointer;
+  transition:transform .3s var(--ease), box-shadow .3s, opacity .3s;
+  position:relative; overflow:hidden;
+}
+.btn-submit::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.25),transparent);
+  opacity:0; transition:opacity .3s;
+}
+.btn-submit:hover { transform:translateY(-3px); box-shadow:0 20px 60px rgba(201,164,74,0.35); }
+.btn-submit:hover::before { opacity:1; }
+.btn-submit svg { width:18px; height:18px; flex-shrink:0; }
+
+/* ── SUCCESS ── */
+#success {
+  display:none; text-align:center; padding:48px 24px;
+  background:var(--bg2); border:1px solid rgba(13,107,82,0.3);
+  border-radius:4px; margin-top:48px;
+}
+#success .s-icon { font-size:48px; margin-bottom:20px; display:block; }
+#success h2 { font-family:var(--ff-d); font-size:28px; font-style:italic; color:var(--gold); margin-bottom:12px; }
+#success p { font-size:14px; color:var(--text2); line-height:1.8; }
+
+/* ── VALIDATION ── */
+input.error, textarea.error, select.error {
+  border-color:rgba(220,80,60,0.6);
+  box-shadow:0 0 0 3px rgba(220,80,60,0.08);
+}
+.err-msg { font-size:11px; color:#e07060; margin-top:4px; }
+
+/* ── PROGRESS BAR ── */
+.progress-wrap {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  height:2px; background:rgba(255,255,255,0.05);
+}
+.progress-bar {
+  height:100%; background:var(--gold-g);
+  transition:width .4s var(--ease);
+  width:0%;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align:center; margin-top:60px;
+  font-family:var(--ff-ui); font-size:10px;
+  letter-spacing:0.2em; text-transform:uppercase; color:var(--text3);
+}
+.footer span { color:var(--gold); }
+
+/* ── SOCIAL PROOF ── */
+.live-bar {
+  display:flex; align-items:center; justify-content:center; gap:16px;
+  padding:10px 20px; margin-bottom:32px;
+  background:rgba(13,107,82,0.08);
+  border:1px solid rgba(13,107,82,0.2);
+  border-radius:40px; flex-wrap:wrap;
+}
+.live-dot-wrap { display:flex; align-items:center; gap:7px; }
+.live-dot { width:7px; height:7px; border-radius:50%; background:#4ade80; flex-shrink:0;
+  animation:livepulse 1.8s ease-in-out infinite; }
+@keyframes livepulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+.live-text { font-family:var(--ff-ui); font-size:10px; font-weight:600;
+  letter-spacing:0.15em; text-transform:uppercase; color:rgba(240,237,230,0.5); }
+.live-text strong { color:#4ade80; }
+.live-divider { width:1px; height:14px; background:rgba(255,255,255,0.08); }
+.live-activity { font-family:var(--ff-ui); font-size:10px; color:rgba(240,237,230,0.35);
+  letter-spacing:0.05em; }
+.live-activity span { color:var(--gold); }
+
+/* toast notif */
+.toast-wrap { position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
+  z-index:999; display:flex; flex-direction:column; align-items:center; gap:10px;
+  pointer-events:none; }
+.toast {
+  display:flex; align-items:center; gap:10px;
+  padding:11px 18px;
+  background:rgba(13,26,23,0.95);
+  border:1px solid rgba(201,164,74,0.2);
+  border-radius:40px;
+  backdrop-filter:blur(12px);
+  font-family:var(--ff-ui); font-size:11px; color:rgba(240,237,230,0.7);
+  letter-spacing:0.05em;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  opacity:0; transform:translateY(12px);
+  transition:opacity .4s, transform .4s;
+  white-space:nowrap;
+}
+.toast.show { opacity:1; transform:translateY(0); }
+.toast-avatar {
+  width:22px; height:22px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; font-family:var(--ff-ui);
+  flex-shrink:0; color:#060b0a;
+}
+.toast em { font-style:normal; color:var(--gold2); }
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.section { animation:fadeUp .6s var(--ease) both; }
+.section:nth-child(1) { animation-delay:.1s; }
+.section:nth-child(2) { animation-delay:.15s; }
+.section:nth-child(3) { animation-delay:.2s; }
+.section:nth-child(4) { animation-delay:.25s; }
+.section:nth-child(5) { animation-delay:.3s; }
+.section:nth-child(6) { animation-delay:.35s; }
+.section:nth-child(7) { animation-delay:.4s; }
+.section:nth-child(8) { animation-delay:.45s; }
+</style>
+</head>
+<body class="mode-essential">
+
+<!-- Progress -->
+<div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<div class="wrap">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-logo"><span>EQ</span>studio</div>
+    <div class="header-tag">
+      <div class="header-tag-line"></div>
+      Borang Maklumat Kad Digital
+      <div class="header-tag-line"></div>
+    </div>
+    <h1>Cerita <em>cinta</em> anda<br>bermula di sini</h1>
+    <p>Isi maklumat kahwin anda dengan lengkap. Kami akan gunakan info ini untuk siapkan kad digital anda. ✦</p>
+  </div>
+
+  <!-- Live Bar -->
+  <div class="live-bar">
+    <div class="live-dot-wrap">
+      <div class="live-dot"></div>
+      <div class="live-text"><strong id="live-count">7</strong> sedang mengisi borang</div>
+    </div>
+    <div class="live-divider"></div>
+    <div class="live-activity">Terakhir submit: <span id="last-submit">3 minit lalu</span></div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <!-- Category Toggle -->
+  <div class="cat-toggle">
+    <div class="cat-btn active" id="btn-essential" onclick="setCategory('essential')">
+      <span class="cat-btn-emoji">⭐</span>
+      <div class="cat-btn-name">Essential</div>
+      <div class="cat-btn-desc">Kad elegan tanpa gambar. Fokus pada tipografi & warna.</div>
+      <span class="cat-btn-badge badge-essential">Essential</span>
+    </div>
+    <div class="cat-btn" id="btn-portrait" onclick="setCategory('portrait')">
+      <span class="cat-btn-emoji">📸</span>
+      <div class="cat-btn-name">Portrait</div>
+      <div class="cat-btn-desc">Kad dengan 2 slot gambar. Hero portrait + banner cinematic.</div>
+      <span class="cat-btn-badge badge-portrait">Portrait</span>
+    </div>
+  </div>
+
+  <!-- Template yang dipilih -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">✦</div>
+      <div>
+        <div class="section-title">Template</div>
+        <div class="section-subtitle">Yang anda pilih semasa booking</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Pilih Template <span class="req">*</span></label>
+        <select id="template_name" onchange="updateProgress()" required>
+          <option value="">— Pilih template anda —</option>
+          <optgroup label="⭐ Essential (Tanpa Gambar)" id="optgroup-essential">
+            <option value="Rose Gold">🌹 Rose Gold</option>
+            <option value="Sage Green">🌿 Sage Green</option>
+            <option value="Champagne Gold">🥂 Champagne Gold</option>
+            <option value="Dark Olive">🫒 Dark Olive</option>
+            <option value="Dusty Blue">🔵 Dusty Blue</option>
+            <option value="Emerald Green">💎 Emerald Green</option>
+            <option value="Navy">🫐 Navy</option>
+            <option value="Terracotta">🏺 Terracotta</option>
+            <option value="Blush Pink">🌸 Blush Pink</option>
+            <option value="Mauve">💜 Mauve</option>
+            <option value="Charcoal">⚫ Charcoal</option>
+            <option value="Dark Brown">🤎 Dark Brown</option>
+            <option value="Chocolate Brown">🍫 Chocolate Brown</option>
+          </optgroup>
+          <optgroup label="📸 Portrait (Dengan Gambar)" id="optgroup-portrait">
+            <option value="Dusty Blue Portrait">📸 Dusty Blue Portrait</option>
+          </optgroup>
+        </select>
+        <div class="hint">Senarai template dikemaskini mengikut kategori yang anda pilih di atas</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 1. Pengantin -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">1</div>
+      <div>
+        <div class="section-title">Maklumat Pengantin</div>
+        <div class="section-subtitle">Nama panggilan & nama penuh</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <span class="side-label">🤵 Pengantin Lelaki</span>
+      <div class="grid-2">
+        <div class="field">
+          <label>Nama Panggilan <span class="req">*</span></label>
+          <input type="text" id="groom_name" placeholder="Ahmad" required>
+        </div>
+        <div class="field">
+          <label>Nama Penuh</label>
+          <input type="text" id="groom_full" placeholder="Ahmad bin Abdullah">
+        </div>
+        <div class="field">
+          <label>Nama Bapa</label>
+          <input type="text" id="groom_father" placeholder="Abdullah bin Salleh">
+        </div>
+        <div class="field">
+          <label>Nama Ibu</label>
+          <input type="text" id="groom_mother" placeholder="Siti binti Ahmad">
+        </div>
+      </div>
+
+      <hr class="field-divider">
+
+      <span class="side-label">👰 Pengantin Perempuan</span>
+      <div class="grid-2">
+        <div class="field">
+          <label>Nama Panggilan <span class="req">*</span></label>
+          <input type="text" id="bride_name" placeholder="Sarah" required>
+        </div>
+        <div class="field">
+          <label>Nama Penuh</label>
+          <input type="text" id="bride_full" placeholder="Sarah binti Ibrahim">
+        </div>
+        <div class="field">
+          <label>Nama Bapa</label>
+          <input type="text" id="bride_father" placeholder="Ibrahim bin Hassan">
+        </div>
+        <div class="field">
+          <label>Nama Ibu</label>
+          <input type="text" id="bride_mother" placeholder="Aminah binti Yusof">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Tuan Rumah & Mesej -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">2</div>
+      <div>
+        <div class="section-title">Tuan Rumah & Jemputan</div>
+        <div class="section-subtitle">Nama keluarga & mesej kad</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Pihak Tuan Rumah <span class="req">*</span></label>
+        <select id="host_side">
+          <option value="perempuan">Pihak Perempuan</option>
+          <option value="lelaki">Pihak Lelaki</option>
+          <option value="kedua">Kedua-dua Pihak</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nama Keluarga Tuan Rumah</label>
+        <input type="text" id="host_family" placeholder="cth: Keluarga Haji Ibrahim">
+        <div class="hint">Kosongkan jika nak auto-generate dari nama bapa</div>
+      </div>
+      <div class="field">
+        <label>Nama Penuh (untuk footer)</label>
+        <input type="text" id="host_family_full" placeholder="cth: Keluarga Haji Ibrahim & Keluarga Haji Salleh">
+      </div>
+      <div class="field">
+        <label>Mesej Jemputan (BM)</label>
+        <textarea id="host_message_bm" placeholder="Dengan penuh kerendahan hati, kami menjemput..."></textarea>
+      </div>
+      <div class="field">
+        <label>Mesej Jemputan (EN) — jika ada</label>
+        <textarea id="host_message_en" placeholder="With heartfelt gratitude, we invite..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Tarikh & Masa -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">3</div>
+      <div>
+        <div class="section-title">Tarikh & Masa</div>
+        <div class="section-subtitle">Tarikh majlis dan waktu</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="field">
+          <label>Tarikh Majlis <span class="req">*</span></label>
+          <input type="date" id="event_date" required>
+        </div>
+        <div class="field">
+          <label>Tarikh Hijri</label>
+          <input type="text" id="date_hijri" placeholder="cth: 15 Safar 1448H">
+        </div>
+        <div class="field">
+          <label>Masa Mula <span class="req">*</span></label>
+          <input type="text" id="time_start" placeholder="cth: 11:00 PG" value="11:00 PG" required>
+        </div>
+        <div class="field">
+          <label>Masa Tamat</label>
+          <input type="text" id="time_end" placeholder="cth: 4:00 PTG" value="4:00 PTG">
+        </div>
+      </div>
+
+      <hr class="field-divider">
+      <span class="side-label">🕐 Aturcara Majlis</span>
+
+      <div class="aturcara-row">
+        <div class="aturcara-icon">🌅</div>
+        <div class="field">
+          <div class="aturcara-label">Ketibaan Tetamu</div>
+          <input type="text" id="time_arrival" placeholder="11:00 PG">
+        </div>
+      </div>
+      <div class="aturcara-row">
+        <div class="aturcara-icon">🌸</div>
+        <div class="field">
+          <div class="aturcara-label">Akad Nikah</div>
+          <input type="text" id="time_akad" placeholder="11:30 PG">
+        </div>
+      </div>
+      <div class="aturcara-row">
+        <div class="aturcara-icon">👑</div>
+        <div class="field">
+          <div class="aturcara-label">Persandingan</div>
+          <input type="text" id="time_bersanding" placeholder="12:30 TG">
+        </div>
+      </div>
+      <div class="aturcara-row">
+        <div class="aturcara-icon">🍽️</div>
+        <div class="field">
+          <div class="aturcara-label">Jamuan Makan</div>
+          <input type="text" id="time_makan" placeholder="1:00 PTG">
+        </div>
+      </div>
+      <div class="aturcara-row">
+        <div class="aturcara-icon">🌙</div>
+        <div class="field">
+          <div class="aturcara-label">Majlis Bersurai</div>
+          <input type="text" id="time_bersurai" placeholder="4:00 PTG">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Lokasi -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">4</div>
+      <div>
+        <div class="section-title">Lokasi Majlis</div>
+        <div class="section-subtitle">Dewan, alamat dan link navigasi</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Nama Dewan / Tempat <span class="req">*</span></label>
+        <input type="text" id="venue_name" placeholder="cth: Dewan Belia Taman Jaya" required>
+      </div>
+      <div class="field">
+        <label>Nama Penuh Venue</label>
+        <input type="text" id="venue_fullname" placeholder="cth: Dewan Serbaguna Taman Jaya, Petaling Jaya">
+      </div>
+      <div class="field">
+        <label>Alamat Penuh</label>
+        <textarea id="venue_address" placeholder="No. 1, Jalan Taman Jaya,&#10;47500 Petaling Jaya, Selangor"></textarea>
+      </div>
+      <div class="field">
+        <label>Bandar / Negeri</label>
+        <input type="text" id="venue_city" placeholder="cth: Petaling Jaya, Selangor">
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Link Waze (pilihan)</label>
+          <input type="url" id="waze_link" placeholder="https://waze.com/...">
+          <div class="hint">Kosongkan untuk auto-generate</div>
+        </div>
+        <div class="field">
+          <label>Link Google Maps (pilihan)</label>
+          <input type="url" id="gmap_link" placeholder="https://maps.google.com/...">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Contact Person -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">5</div>
+      <div>
+        <div class="section-title">Contact Person</div>
+        <div class="section-subtitle">Untuk tetamu hubungi jika perlu</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div>
+          <span class="side-label" style="font-size:10px">Contact 1</span>
+          <div class="field">
+            <label>Nama</label>
+            <input type="text" id="contact1_name" placeholder="Kak Lina">
+          </div>
+          <div class="field">
+            <label>No. Telefon / WhatsApp</label>
+            <input type="tel" id="contact1_phone" placeholder="0123456789">
+          </div>
+        </div>
+        <div>
+          <span class="side-label" style="font-size:10px">Contact 2 (pilihan)</span>
+          <div class="field">
+            <label>Nama</label>
+            <input type="text" id="contact2_name" placeholder="Abang Razi">
+          </div>
+          <div class="field">
+            <label>No. Telefon / WhatsApp</label>
+            <input type="tel" id="contact2_phone" placeholder="0129876543">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Dress Code -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">6</div>
+      <div>
+        <div class="section-title">Dress Code & Warna Tema</div>
+        <div class="section-subtitle">Pilihan warna untuk tetamu</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="field">
+          <label>Tema Dress Code (BM)</label>
+          <input type="text" id="dresscode_theme" placeholder="cth: Pastel & Nude">
+        </div>
+        <div class="field">
+          <label>Tema Dress Code (EN)</label>
+          <input type="text" id="dresscode_theme_en" placeholder="cth: Pastel & Nude Tones">
+        </div>
+      </div>
+      <div class="field">
+        <label>Nota Dress Code</label>
+        <input type="text" id="dresscode_note" placeholder="cth: Elakkan warna putih & hitam">
+      </div>
+
+      <hr class="field-divider">
+      <span class="side-label">🎨 Warna Tema (sehingga 5 warna)</span>
+      <div id="color-fields">
+        <div class="grid-3" style="margin-bottom:12px">
+          <div class="field">
+            <label>Warna 1</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="color" id="color1_hex" value="#c9a44a" style="width:44px;height:38px;padding:2px;cursor:pointer;flex-shrink:0">
+              <input type="text" id="color1_name" placeholder="Gold" style="flex:1">
+            </div>
+          </div>
+          <div class="field">
+            <label>Warna 2</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="color" id="color2_hex" value="#f0e8d8" style="width:44px;height:38px;padding:2px;cursor:pointer;flex-shrink:0">
+              <input type="text" id="color2_name" placeholder="Ivory" style="flex:1">
+            </div>
+          </div>
+          <div class="field">
+            <label>Warna 3</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="color" id="color3_hex" value="#d4c5b2" style="width:44px;height:38px;padding:2px;cursor:pointer;flex-shrink:0">
+              <input type="text" id="color3_name" placeholder="Blush" style="flex:1">
+            </div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Warna 4 (pilihan)</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="color" id="color4_hex" value="#8b7355" style="width:44px;height:38px;padding:2px;cursor:pointer;flex-shrink:0">
+              <input type="text" id="color4_name" placeholder="Mocha" style="flex:1">
+            </div>
+          </div>
+          <div class="field">
+            <label>Warna 5 (pilihan)</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input type="color" id="color5_hex" value="#4a3728" style="width:44px;height:38px;padding:2px;cursor:pointer;flex-shrink:0">
+              <input type="text" id="color5_name" placeholder="Espresso" style="flex:1">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Muzik -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">7</div>
+      <div>
+        <div class="section-title">Muzik Latar</div>
+        <div class="section-subtitle">Lagu yang nak dimainkan dalam kad</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="field">
+          <label>Nama Lagu & Artis</label>
+          <input type="text" id="music_label" placeholder="cth: Beautiful In White — Westlife">
+        </div>
+        <div class="field">
+          <label>Link YouTube</label>
+          <input type="url" id="music_url" placeholder="https://www.youtube.com/watch?v=...">
+          <div class="hint">Copy link dari YouTube je — kami akan uruskan selebihnya ✦</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Kisah Cinta -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">8</div>
+      <div>
+        <div class="section-title">Kisah Cinta (Love Story)</div>
+        <div class="section-subtitle">Cerita perjalanan hubungan anda</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="field">
+          <label>Tahun 1</label>
+          <input type="text" id="love_year_1" placeholder="2020">
+        </div>
+        <div class="field">
+          <label>Cerita 1</label>
+          <input type="text" id="love_story_1" placeholder="Mula berkenalan...">
+        </div>
+        <div class="field">
+          <label>Tahun 2</label>
+          <input type="text" id="love_year_2" placeholder="2021">
+        </div>
+        <div class="field">
+          <label>Cerita 2</label>
+          <input type="text" id="love_story_2" placeholder="Mula bercinta...">
+        </div>
+        <div class="field">
+          <label>Tahun 3</label>
+          <input type="text" id="love_year_3" placeholder="2024">
+        </div>
+        <div class="field">
+          <label>Cerita 3</label>
+          <input type="text" id="love_story_3" placeholder="Bertunang...">
+        </div>
+      </div>
+      <div class="field" style="margin-top:16px">
+        <label>Tahun Kahwin (tahun 4)</label>
+        <input type="text" id="love_year_4" placeholder="2025">
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. QR Code -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-num">9</div>
+      <div>
+        <div class="section-title">QR Code Salam Kaut</div>
+        <div class="section-subtitle">Maybank2U / Touch 'n Go / DuitNow</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Upload Gambar QR Code</label>
+        <div class="file-upload-wrap">
+          <label class="file-upload-label" id="lbl-qr" for="qr_file">
+            <span class="file-upload-icon">💸</span>
+            <span class="file-upload-text">Tekan untuk pilih gambar QR</span>
+            <span class="file-upload-sub">PNG / JPG — screenshot dari app banking anda</span>
+          </label>
+          <input type="file" id="qr_file" accept="image/*" onchange="handleFile('qr_file','lbl-qr','prev-qr','qr_b64')">
+          <img id="prev-qr" class="file-preview" alt="QR Preview">
+        </div>
+        <input type="hidden" id="qr_b64">
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. Gambar (Portrait only) -->
+  <div class="section portrait-only">
+    <div class="section-head">
+      <div class="section-num">10</div>
+      <div>
+        <div class="section-title">Gambar (Portrait Template)</div>
+        <div class="section-subtitle">2 slot gambar — hero portrait + banner cinematic</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="grid-2">
+        <div class="field">
+          <label>🖼️ Gambar Hero (Portrait)</label>
+          <div class="file-upload-wrap">
+            <label class="file-upload-label" id="lbl-photo1" for="photo1_file">
+              <span class="file-upload-icon">🖼️</span>
+              <span class="file-upload-text">Pilih gambar hero</span>
+              <span class="file-upload-sub">Nisbah 3:4 — potret (portrait)</span>
+            </label>
+            <input type="file" id="photo1_file" accept="image/*" onchange="handleFile('photo1_file','lbl-photo1','prev-photo1','photo1_b64')">
+            <img id="prev-photo1" class="file-preview" alt="Hero Preview">
+          </div>
+          <input type="hidden" id="photo1_b64">
+        </div>
+        <div class="field">
+          <label>🎬 Gambar Cinematic (Landscape)</label>
+          <div class="file-upload-wrap">
+            <label class="file-upload-label" id="lbl-photo2" for="photo2_file">
+              <span class="file-upload-icon">🎬</span>
+              <span class="file-upload-text">Pilih gambar cinematic</span>
+              <span class="file-upload-sub">Nisbah 16:9 — landscape</span>
+            </label>
+            <input type="file" id="photo2_file" accept="image/*" onchange="handleFile('photo2_file','lbl-photo2','prev-photo2','photo2_b64')">
+            <img id="prev-photo2" class="file-preview" alt="Cinematic Preview">
+          </div>
+          <input type="hidden" id="photo2_b64">
+        </div>
+      </div>
+      <div class="hint" style="margin-top:12px">💡 Kami akan proses dan optimise gambar anda sebelum masuk dalam kad</div>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit-wrap">
+    <p>Semak semula maklumat di atas sebelum hantar.<br>Kami akan proses dalam masa <strong style="color:var(--gold)">1–3 hari bekerja</strong> ✦</p>
+    <button class="btn-submit" onclick="handleSubmit()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+      Hantar Maklumat ke EQStudio
+    </button>
+  </div>
+
+  <!-- Success -->
+  <div id="success">
+    <span class="s-icon">💍</span>
+    <h2>Terima kasih!</h2>
+    <p>Maklumat anda telah dihantar ke EQStudio via WhatsApp.<br>Kami akan proses dan maklumkan dalam masa <strong style="color:var(--gold)">1–3 hari bekerja</strong>.<br><br>Sebarang pertanyaan, boleh WA kami terus. ✦</p>
+  </div>
+
+  <div class="footer">
+    <p>✦ <span>EQStudio</span> · Kad Digital Perkahwinan ✦</p>
+  </div>
+
+</div>
+
+<script>
+// ── CONFIG ──
+const WA_NUMBER = '601154151433';
+
+// ── TEMPLATE LIST BY CATEGORY ──
+const TEMPLATES = {
+  essential: [
+    'Ivory Teracotta',
+    'Blush Rose Gold',
+    'Dusty Blue',
+    'Beige',
+    'Sage Green Cream',
+    'Forrest Copper',
+    'Gold Luxury',
+    'Midnight Navy',
+    'Emerald Royal',
+    'Burgundy Velvet',
+  ],
+  portrait: [
+    'Butter Yellow Ivory',
+    'Blush Pink Lavender',
+    'Sky Blue Lemon',
+    'Mint Cream',
+    'Peach Apricot',
+    'Chocolate Copper',
+    'Burgundy Velvet',
+    'Midnight Sapphire Gold',
+    'Obsidian Black Gold',
+    'Emerald Imperial Gold',
+  ]
+};
+
+// ── CATEGORY ──
+function setCategory(cat) {
+  document.body.className = 'mode-' + cat;
+  document.getElementById('btn-essential').classList.toggle('active', cat === 'essential');
+  document.getElementById('btn-portrait').classList.toggle('active', cat === 'portrait');
+
+  // Update template dropdown
+  const sel = document.getElementById('template_name');
+  sel.innerHTML = '<option value="">— Pilih template anda —</option>';
+  const list = TEMPLATES[cat] || [];
+  list.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    sel.appendChild(opt);
+  });
+  updateProgress();
+}
+
+// ── FILE UPLOAD ──
+function handleFile(inputId, labelId, previewId, hiddenId) {
+  const file = document.getElementById(inputId).files[0];
+  if (!file) return;
+  const label = document.getElementById(labelId);
+  const preview = document.getElementById(previewId);
+
+  label.classList.add('has-file');
+  label.querySelector('.file-upload-text').textContent = file.name;
+  label.querySelector('.file-upload-sub').textContent = (file.size / 1024).toFixed(0) + ' KB';
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    if (hiddenId) document.getElementById(hiddenId).value = e.target.result;
+    if (preview) { preview.src = e.target.result; preview.classList.add('show'); }
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── PROGRESS ──
+function updateProgress() {
+  const required = ['template_name','groom_name','bride_name','event_date','time_start','venue_name'];
+  let filled = required.filter(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim();
+  }).length;
+  const pct = Math.round((filled / required.length) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+document.querySelectorAll('input, textarea, select').forEach(el => {
+  el.addEventListener('input', updateProgress);
+  el.addEventListener('change', updateProgress);
+});
+
+// ── HELPERS ──
+function v(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+function formatWALine(label, val) {
+  if (!val) return '';
+  return `\n*${label}:* ${val}`;
+}
+
+// ── VALIDATE ──
+function validate() {
+  const required = [
+    { id: 'template_name', label: 'Template' },
+    { id: 'groom_name',    label: 'Nama panggilan pengantin lelaki' },
+    { id: 'bride_name',    label: 'Nama panggilan pengantin perempuan' },
+    { id: 'event_date',    label: 'Tarikh majlis' },
+    { id: 'time_start',    label: 'Masa mula' },
+    { id: 'venue_name',    label: 'Nama dewan / tempat' },
+  ];
+  let ok = true;
+  document.querySelectorAll('.err-msg').forEach(e => e.remove());
+  document.querySelectorAll('input.error, select.error, textarea.error').forEach(e => e.classList.remove('error'));
+
+  required.forEach(({ id, label }) => {
+    const el = document.getElementById(id);
+    if (el && !el.value.trim()) {
+      el.classList.add('error');
+      const msg = document.createElement('div');
+      msg.className = 'err-msg';
+      msg.textContent = `⚠️ ${label} wajib diisi`;
+      el.parentNode.appendChild(msg);
+      if (ok) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.focus(); }
+      ok = false;
+    }
+  });
+  return ok;
+}
+
+// ── SUBMIT ──
+async function handleSubmit() {
+  if (!validate()) return;
+
+  const isPortrait = document.body.classList.contains('mode-portrait');
+  const cat = isPortrait ? 'Portrait' : 'Essential';
+
+  let msg = `Assalamualaikum EQStudio! 🌸\n\n`;
+  msg += `✦ *MAKLUMAT KAD DIGITAL* ✦\n`;
+  msg += `━━━━━━━━━━━━━━━━━━━━\n`;
+
+  msg += `\n🎨 *TEMPLATE*`;
+  msg += formatWALine('Kategori', cat);
+  msg += formatWALine('Template', v('template_name'));
+
+  msg += `\n\n👫 *PENGANTIN*`;
+  msg += formatWALine('Lelaki (panggilan)', v('groom_name'));
+  msg += formatWALine('Lelaki (penuh)', v('groom_full'));
+  msg += formatWALine('Bapa lelaki', v('groom_father'));
+  msg += formatWALine('Ibu lelaki', v('groom_mother'));
+  msg += formatWALine('Perempuan (panggilan)', v('bride_name'));
+  msg += formatWALine('Perempuan (penuh)', v('bride_full'));
+  msg += formatWALine('Bapa perempuan', v('bride_father'));
+  msg += formatWALine('Ibu perempuan', v('bride_mother'));
+
+  msg += `\n\n🏠 *TUAN RUMAH*`;
+  const hostSideMap = { perempuan: 'Pihak Perempuan', lelaki: 'Pihak Lelaki', kedua: 'Kedua-dua Pihak' };
+  msg += formatWALine('Pihak', hostSideMap[v('host_side')] || v('host_side'));
+  msg += formatWALine('Nama keluarga', v('host_family'));
+  msg += formatWALine('Nama penuh (footer)', v('host_family_full'));
+  msg += formatWALine('Mesej BM', v('host_message_bm'));
+  msg += formatWALine('Mesej EN', v('host_message_en'));
+
+  msg += `\n\n📅 *TARIKH & MASA*`;
+  msg += formatWALine('Tarikh', v('event_date'));
+  msg += formatWALine('Tarikh Hijri', v('date_hijri'));
+  msg += formatWALine('Masa mula', v('time_start'));
+  msg += formatWALine('Masa tamat', v('time_end'));
+  msg += formatWALine('Ketibaan tetamu', v('time_arrival'));
+  msg += formatWALine('Akad Nikah', v('time_akad'));
+  msg += formatWALine('Persandingan', v('time_bersanding'));
+  msg += formatWALine('Jamuan Makan', v('time_makan'));
+  msg += formatWALine('Majlis bersurai', v('time_bersurai'));
+
+  msg += `\n\n📍 *LOKASI*`;
+  msg += formatWALine('Nama dewan', v('venue_name'));
+  msg += formatWALine('Nama penuh', v('venue_fullname'));
+  msg += formatWALine('Alamat', v('venue_address'));
+  msg += formatWALine('Bandar/Negeri', v('venue_city'));
+  msg += formatWALine('Link Waze', v('waze_link'));
+  msg += formatWALine('Link GMaps', v('gmap_link'));
+
+  msg += `\n\n📞 *CONTACT PERSON*`;
+  if (v('contact1_name') || v('contact1_phone')) {
+    msg += formatWALine('Nama 1', v('contact1_name'));
+    msg += formatWALine('No. 1', v('contact1_phone'));
+  }
+  if (v('contact2_name') || v('contact2_phone')) {
+    msg += formatWALine('Nama 2', v('contact2_name'));
+    msg += formatWALine('No. 2', v('contact2_phone'));
+  }
+
+  msg += `\n\n👗 *DRESS CODE*`;
+  msg += formatWALine('Tema (BM)', v('dresscode_theme'));
+  msg += formatWALine('Tema (EN)', v('dresscode_theme_en'));
+  msg += formatWALine('Nota', v('dresscode_note'));
+  const colors = [1,2,3,4,5].map(i => {
+    const hex = v('color'+i+'_hex');
+    const name = v('color'+i+'_name');
+    if (!name) return '';
+    return `${name} (${hex})`;
+  }).filter(Boolean);
+  if (colors.length) msg += formatWALine('Warna tema', colors.join(', '));
+
+  const musicLabel = v('music_label'), musicUrl = v('music_url');
+  if (musicLabel || musicUrl) {
+    msg += `\n\n🎵 *MUZIK LATAR*`;
+    msg += formatWALine('Lagu', musicLabel);
+    msg += formatWALine('YouTube', musicUrl);
+  }
+
+  const l1 = v('love_year_1'), l2 = v('love_year_2'), l3 = v('love_year_3');
+  if (l1 || l2 || l3) {
+    msg += `\n\n💑 *KISAH CINTA*`;
+    if (l1) msg += formatWALine(v('love_year_1'), v('love_story_1'));
+    if (l2) msg += formatWALine(v('love_year_2'), v('love_story_2'));
+    if (l3) msg += formatWALine(v('love_year_3'), v('love_story_3'));
+    msg += formatWALine('Tahun kahwin', v('love_year_4'));
+  }
+
+  // QR — note je, gambar hantar berasingan
+  const qrFile = document.getElementById('qr_file');
+  const hasQR = qrFile && qrFile.files.length > 0;
+  if (hasQR) {
+    msg += `\n\n💸 *QR SALAM KAUT*`;
+    msg += `\n_(Gambar QR disertakan berasingan dalam WA ini)_`;
+  }
+
+  // Portrait — note
+  if (isPortrait) {
+    const p1 = document.getElementById('photo1_file');
+    const p2 = document.getElementById('photo2_file');
+    msg += `\n\n📸 *GAMBAR (PORTRAIT)*`;
+    if (p1 && p1.files.length > 0) msg += `\n✅ Hero: ${p1.files[0].name}`;
+    if (p2 && p2.files.length > 0) msg += `\n✅ Cinematic: ${p2.files[0].name}`;
+    msg += `\n_(Sila hantar gambar-gambar di atas dalam WA ini)_`;
+  }
+
+  msg += `\n\n━━━━━━━━━━━━━━━━━━━━\nTerima kasih EQStudio! 🙏`;
+
+  const waUrl = 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg);
+  window.open(waUrl, '_blank');
+
+  document.querySelector('.submit-wrap').style.display = 'none';
+  const s = document.getElementById('success');
+  s.style.display = 'block';
+  s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+// ── SOCIAL PROOF ──
+const NAMES = [
+  'Aisyah','Nurul','Farah','Liyana','Hanim','Syafiqah','Nadia','Amirah',
+  'Hafizah','Suraya','Hidayah','Zulaikha','Siti','Farhana','Intan',
+  'Aiman','Haziq','Izzat','Hafiz','Azri','Danish','Ridhwan','Syafiq','Faris'
+];
+const TEMPLATES_DISPLAY = [
+  'Ivory Teracotta','Burgundy Velvet','Butter Yellow Ivory',
+  'Emerald Imperial Gold','Blush Rose Gold','Dusty Blue',
+  'Gold Luxury','Midnight Navy','Sage Green Cream','Peach Apricot'
+];
+const ACTIONS = [
+  n => `<em>${n}</em> baru mula isi borang`,
+  n => `<em>${n}</em> sedang pilih template`,
+  n => `<em>${n}</em> baru submit maklumat`,
+  n => `<em>${n}</em> tengah isi tarikh majlis`,
+  n => `<em>${n}</em> pilih <em>${TEMPLATES_DISPLAY[Math.floor(Math.random()*TEMPLATES_DISPLAY.length)]}</em>`,
+];
+const COLORS = ['#c9a44a','#0d8264','#e2a0a0','#a0c0e2','#b8a0e2','#e2c0a0'];
+
+function randName() { return NAMES[Math.floor(Math.random()*NAMES.length)]; }
+function randInt(a,b) { return a + Math.floor(Math.random()*(b-a+1)); }
+
+// Live count jitter
+let liveN = randInt(5,11);
+function jitterCount() {
+  liveN = Math.max(3, Math.min(15, liveN + (Math.random() > 0.5 ? 1 : -1)));
+  const el = document.getElementById('live-count');
+  if (el) el.textContent = liveN;
+  setTimeout(jitterCount, randInt(6000, 14000));
+}
+jitterCount();
+
+// Last submit time jitter
+let lastMin = randInt(1,5);
+function jitterLast() {
+  lastMin = Math.max(1, lastMin + (Math.random() > 0.6 ? 1 : -1));
+  const el = document.getElementById('last-submit');
+  if (el) el.textContent = lastMin + ' minit lalu';
+  setTimeout(jitterLast, randInt(30000, 90000));
+}
+jitterLast();
+
+// Toast notifications
+function showToast(html, color) {
+  const wrap = document.getElementById('toastWrap');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  const initial = randName()[0].toUpperCase();
+  toast.innerHTML = `<div class="toast-avatar" style="background:${color}">${initial}</div>${html}`;
+  wrap.appendChild(toast);
+  requestAnimationFrame(() => { requestAnimationFrame(() => toast.classList.add('show')); });
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 500);
+  }, 4000);
+}
+
+function fireToast() {
+  const name = randName();
+  const action = ACTIONS[Math.floor(Math.random()*ACTIONS.length)];
+  const color = COLORS[Math.floor(Math.random()*COLORS.length)];
+  showToast(action(name), color);
+  setTimeout(fireToast, randInt(8000, 22000));
+}
+setTimeout(fireToast, randInt(3000, 7000));
+
+// Init — baca URL params dulu, then set category
+const _params = new URLSearchParams(window.location.search);
+const _pCat = (_params.get('cat') || 'essential').toLowerCase();
+const _pTemplate = _params.get('template') || '';
+
+setCategory(_pCat === 'portrait' ? 'portrait' : 'essential');
+
+// Auto-select template kalau ada dalam URL
+if (_pTemplate) {
+  const sel = document.getElementById('template_name');
+  for (let i = 0; i < sel.options.length; i++) {
+    if (sel.options[i].value.toLowerCase() === _pTemplate.toLowerCase()) {
+      sel.selectedIndex = i;
+      break;
+    }
+  }
+  updateProgress();
+}
+</script>
+</body>
+</html>
