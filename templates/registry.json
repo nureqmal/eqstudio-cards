@@ -91,7 +91,8 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#750851",
-      "popular": true
+      "popular": true,
+      "preview_img": "previews/burgundy_velvet_edited.png"
     }
   },
   "Portrait": {
