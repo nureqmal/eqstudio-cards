@@ -169,6 +169,14 @@
       "desc": "#50C878, #DEAF79",
       "popular": true,
       "preview_img": "previews/portrait_emerald_imperial_gold.png"
+    },
+    "potrait Burgundy Velvet edited": {
+      "name": "Burgundy Velvet",
+      "file": "potrait_burgundy_velvet_edited.html",
+      "has_photo": true,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#750851"
     }
   }
 }
