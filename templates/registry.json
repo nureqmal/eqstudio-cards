@@ -50,16 +50,6 @@
       "preview_emoji": "✨",
       "desc": "#B87333"
     },
-    "Burgundy Velvet": {
-      "name": "Burgundy Velvet",
-      "file": "burgundy_velvet.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#750851",
-      "popular": true,
-      "preview_img": "previews/burgundy_velvet.png"
-    },
     "Gold Luxury": {
       "name": "Gold Luxury",
       "file": "gold_luxury.html",
