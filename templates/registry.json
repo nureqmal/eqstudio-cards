@@ -92,7 +92,8 @@
       "has_photo": true,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#FFFD74, #FFFFF0"
+      "desc": "#FFFD74, #FFFFF0",
+      "popular": true
     },
     "Portrait Blush Pink Lavender": {
       "name": "Blush Pink Lavender",
