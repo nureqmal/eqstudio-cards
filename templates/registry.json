@@ -167,7 +167,8 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#50C878, #DEAF79",
-      "popular": true
+      "popular": true,
+      "preview_img": "previews/portrait_emerald_imperial_gold.png"
     }
   }
 }
