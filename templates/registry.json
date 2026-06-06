@@ -165,7 +165,8 @@
       "has_photo": true,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#50C878, #DEAF79"
+      "desc": "#50C878, #DEAF79",
+      "popular": true
     }
   }
 }
