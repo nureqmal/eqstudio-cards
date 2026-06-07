@@ -80,7 +80,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#060b0a;}
   <a href="https://eqstudio.nreqmal.workers.dev/#templates" style="color:#c9a44a;margin-top:12px;font-size:13px;display:inline-block">&#8592; Kembali ke Katalog</a>
 </div>
 
-<iframe id="demo-iframe" sandbox="allow-scripts allow-same-origin allow-popups" scrolling="yes"></iframe>
+<iframe id="demo-iframe" sandbox="allow-scripts allow-popups allow-forms" scrolling="yes"></iframe>
 
 <div id="demo-overlay">
   <div class="demo-card">
@@ -376,7 +376,7 @@ document.getElementById('btnTengok').addEventListener('click', function() {
   if (!tmpl) { loading.style.display = 'none'; error.style.display = 'flex'; return; }
 
   try {
-    var url = 'https://raw.githubusercontent.com/nureqmal/eqstudio-cards/main/templates/' + tmpl + '?v=' + Date.now();
+    var url = 'https://raw.githubusercontent.com/nureqmal/eqstudio-cards/main/templates/' + tmpl;
     var res = await fetch(url);
     if (!res.ok) throw new Error('404');
     var html = applyDummy(await res.text());
@@ -384,6 +384,7 @@ document.getElementById('btnTengok').addEventListener('click', function() {
     iframe.style.display = 'block';
     loading.style.display = 'none';
   } catch(e) {
+    console.error('Demo load error:', e, 'template:', tmpl);
     loading.style.display = 'none';
     error.style.display = 'flex';
   }
