@@ -91,14 +91,6 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#750851"
-    },
-    "Velvet Merah": {
-      "name": "Velvet Merah",
-      "file": "velvet_merah.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": ""
     }
   },
   "Portrait": {
