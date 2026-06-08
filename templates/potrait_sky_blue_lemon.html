@@ -605,6 +605,9 @@ body{animation:bgBreath 5s ease-in-out infinite;}
 
 /* RSVP */
 .rsvp-entries{margin-top:0.9rem;display:flex;flex-direction:column;gap:0.45rem;}
+#rsvpList::-webkit-scrollbar{width:2px;}
+#rsvpList::-webkit-scrollbar-track{background:transparent;}
+#rsvpList::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:2px;}
 .re{display:flex;justify-content:space-between;align-items:center;padding:0.62rem 0.9rem;background:rgba(200,119,138,0.08);border:1px solid var(--border2);border-radius:2px;font-size:0.78rem;}
 .re-n{font-family:'Cormorant Garamond',serif;font-size:0.92rem;color:var(--cream);}
 .re-s{font-size:0.7rem;color:var(--sage-l);}
@@ -2115,7 +2118,7 @@ footer{background:#e8f5fc;text-align:center;padding:4.5rem 1.4rem;position:relat
 </svg></div>
     <div class="form-card">
       <div class="fg"><label class="fl" data-ms="Nama Penuh" data-en="Full Name" data-ar="الاسم الكامل">Nama Penuh</label><input type="text" class="fi" id="rsvpName" placeholder="Nama anda..." data-ph-ms="Nama anda..." data-ph-en="Your name..." data-ph-ar="اسمك..." data-ph-ms="Nama anda..." data-ph-en="Your name..." data-ph-ar="اسمك..."></div>
-      <div class="fg"><label class="fl" data-ms="Bilangan Hadir" data-en="No. of Guests" data-ar="عدد الضيوف">Bilangan Hadir</label><select class="fsel" id="rsvpCount"><option value="" data-ms="-- Pilih --" data-en="-- Select --" data-ar="-- اختر --">-- Pilih --</option><option data-ms="1 orang" data-en="1 person" data-ar="١ شخص">1 orang</option><option data-ms="2 orang" data-en="2 persons" data-ar="٢ أشخاص">2 orang</option><option data-ms="3 orang" data-en="3 persons" data-ar="٣ أشخاص">3 orang</option><option data-ms="4 orang" data-en="4 persons" data-ar="٤ أشخاص">4 orang</option><option data-ms="5 orang" data-en="5 persons" data-ar="٥ أشخاص">5 orang</option><option data-ms="6 orang ke atas" data-en="6 or more" data-ar="٦ فأكثر">6 orang ke atas</option></select></div>
+      <div class="fg"><label class="fl" data-ms="Bilangan Hadir" data-en="No. of Guests" data-ar="عدد الضيوف">Bilangan Hadir</label><div style="display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:rgba(200,119,138,0.05);"><button type="button" onclick="rsvpCountAdj(-1)" style="width:42px;height:42px;background:rgba(200,119,138,0.12);border:none;color:var(--cream);font-size:1.2rem;cursor:pointer;flex-shrink:0;transition:background 0.2s;" onmouseenter="this.style.background='rgba(200,119,138,0.28)'" onmouseleave="this.style.background='rgba(200,119,138,0.12)'">−</button><input type="text" id="rsvpCount" value="1" readonly style="flex:1;text-align:center;background:transparent;border:none;color:var(--cream);font-family:'Jost',sans-serif;font-size:0.85rem;outline:none;padding:0;min-width:0;"></input><button type="button" onclick="rsvpCountAdj(1)" style="width:42px;height:42px;background:rgba(200,119,138,0.12);border:none;color:var(--cream);font-size:1.2rem;cursor:pointer;flex-shrink:0;transition:background 0.2s;" onmouseenter="this.style.background='rgba(200,119,138,0.28)'" onmouseleave="this.style.background='rgba(200,119,138,0.12)'">+</button></div></div>
       <div class="fg"><label class="fl" data-ms="Status Kehadiran" data-en="Attendance" data-ar="حالة الحضور">Status Kehadiran</label><select class="fsel" id="rsvpStatus"><option value="" data-ms="-- Pilih --" data-en="-- Select --" data-ar="-- اختر --">-- Pilih --</option><option value="hadir">✅ Insya-Allah hadir</option></select></div>
       <button class="btn-g" onclick="submitRSVP()" data-ms="Hantar Kehadiran" data-en="Submit RSVP" data-ar="أرسل التأكيد">Hantar Kehadiran</button>
     </div>
@@ -2126,9 +2129,21 @@ footer{background:#e8f5fc;text-align:center;padding:4.5rem 1.4rem;position:relat
       <div id="rsvpCards"></div>
       <button class="btn-outline" onclick="resetRSVP()" style="margin-top:0.5rem;">Daftar lain</button>
     </div>
-    <div style="margin-top:1.2rem;">
-      <div style="font-size:0.54rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--sage-l);margin-bottom:0.6rem;">✦ Senarai Hadir</div>
-      <div class="rsvp-entries" id="rsvpList"></div>
+    <div style="margin-top:1.6rem;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;">
+        <div style="font-size:0.54rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--sage-l);">✦ Senarai Hadir</div>
+        <div id="rsvpTotalBadge" style="display:none;background:linear-gradient(135deg,rgba(200,119,138,0.18),rgba(200,119,138,0.06));border:1px solid var(--border);border-radius:20px;padding:0.25rem 0.75rem;font-size:0.58rem;letter-spacing:0.12em;color:var(--sage-l);font-family:'Jost',sans-serif;">
+          <span id="rsvpTotalPax">0</span> pax dijangka hadir
+        </div>
+      </div>
+      <div id="rsvpSearchWrap" style="display:none;position:relative;margin-bottom:0.6rem;">
+        <div style="position:relative;">
+          <span style="position:absolute;left:0.75rem;top:50%;transform:translateY(-50%);font-size:0.75rem;opacity:0.45;pointer-events:none;">🔍</span>
+          <input type="text" id="rsvpSearch" placeholder="Cari nama tetamu..." oninput="filterRSVP()" style="width:100%;box-sizing:border-box;padding:0.55rem 0.75rem 0.55rem 2.1rem;border:1px solid var(--border);border-radius:4px;background:rgba(200,119,138,0.05);font-family:'Jost',sans-serif;font-size:0.68rem;color:var(--cream);outline:none;transition:border-color 0.25s;" onfocus="this.style.borderColor='var(--gold-d)'" onblur="this.style.borderColor='var(--border)'">
+          <div id="rsvpSearchEmpty" style="display:none;font-size:0.63rem;color:var(--muted);text-align:center;padding:0.6rem 0;font-style:italic;">Tiada nama yang sepadan.</div>
+        </div>
+      </div>
+      <div class="rsvp-entries" id="rsvpList" style="max-height:260px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--gold-d) transparent;"></div>
     </div>
   </div>
 </section>
@@ -2247,9 +2262,28 @@ footer{background:#e8f5fc;text-align:center;padding:4.5rem 1.4rem;position:relat
 <section id="weather" class="sec">
   <canvas class="sec-canvas" id="wxCanvas"></canvas>
   <div class="si reveal sec-content" style="text-align:center;">
-    <span class="gold-chip">Cuaca Hari Majlis</span>
+    <span class="gold-chip">Cuaca Semasa</span>
     <h2 class="sec-h">Ramalan <em>Cuaca</em></h2>
-    <div class="wx-card"><div class="wx-icon">⛅</div><div class="wx-temp">--°C</div><div class="wx-desc">Ramalan akan dikemaskini menjelang tarikh majlis</div><div class="wx-note" data-ms-prefix="📍" data-en-prefix="📍">📍 {{VENUE_CITY}} · {{DATE_DISPLAY}}</div></div>
+    <div class="wx-card" id="wxCard">
+      <div class="wx-icon" id="wxIcon">⏳</div>
+      <div class="wx-temp" id="wxTemp" style="font-size:1.4rem;color:var(--muted);">Memuatkan...</div>
+      <div class="wx-desc" id="wxDesc"></div>
+      <div style="display:flex;justify-content:center;gap:1.4rem;margin-top:0.9rem;display:none;" id="wxExtras">
+        <div style="text-align:center;">
+          <div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.2rem;">Kelembapan</div>
+          <div style="font-size:0.8rem;color:var(--gold-l);" id="wxHumidity">--</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.2rem;">Rasa Seperti</div>
+          <div style="font-size:0.8rem;color:var(--gold-l);" id="wxFeels">--</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.2rem;">Angin</div>
+          <div style="font-size:0.8rem;color:var(--gold-l);" id="wxWind">--</div>
+        </div>
+      </div>
+      <div class="wx-note" id="wxNote">📍 {{VENUE_CITY}}</div>
+    </div>
   </div>
 </section>
 
@@ -2716,6 +2750,7 @@ window.addEventListener('load',()=>{
   buildCalendar();
   renderDoa();
   loadRSVPList();
+  fetchWeather();
 });
 
 // ═══════════════════════════════════
@@ -3155,10 +3190,37 @@ async function submitRSVP(){
   }
 }
 function resetRSVP(){
-  ['rsvpName','rsvpCount','rsvpStatus'].forEach(id=>document.getElementById(id).value='');
+  const nameEl=document.getElementById('rsvpName');
+  const countEl=document.getElementById('rsvpCount');
+  const statusEl=document.getElementById('rsvpStatus');
+  if(nameEl)nameEl.value='';
+  if(countEl)countEl.value='1';
+  if(statusEl)statusEl.value='';
   const s=document.getElementById('rsvpSuccess');
   if(s)s.style.display='none';
   document.getElementById('rsvpForm').style.display='block';
+}
+let _rsvpAllEntries=[];
+function _parsePax(c){const m=String(c||'').match(/\d+/);return m?parseInt(m[0]):1;}
+function rsvpCountAdj(d){
+  const el=document.getElementById('rsvpCount');
+  if(!el)return;
+  const v=parseInt(el.value)||1;
+  el.value=Math.max(1,v+d);
+}
+function renderRSVPList(entries,filter){
+  const list=document.getElementById('rsvpList');
+  const empty=document.getElementById('rsvpSearchEmpty');
+  if(!list)return;
+  const q=(filter||'').toLowerCase().trim();
+  const filtered=q?entries.filter(r=>r.n.toLowerCase().includes(q)):entries;
+  if(empty)empty.style.display=(q&&!filtered.length)?'block':'none';
+  if(!filtered.length&&!q){list.innerHTML='<div style="font-size:0.65rem;color:var(--muted);text-align:center;padding:0.8rem;">Belum ada yang mendaftar lagi.</div>';return;}
+  list.innerHTML=filtered.map(r=>`<div class="re-row"><span class="re-n">${r.n}</span><span class="re-s">${r.c} · ✅ Hadir</span></div>`).join('');
+}
+function filterRSVP(){
+  const q=document.getElementById('rsvpSearch')?document.getElementById('rsvpSearch').value:'';
+  renderRSVPList(_rsvpAllEntries,q);
 }
 function loadRSVPList(){
   const list=document.getElementById('rsvpList');
@@ -3166,10 +3228,27 @@ function loadRSVPList(){
   if(_isTemplate){list.innerHTML='';return;}
   kadRef.child('rsvp').on('value',snap=>{
     const data=snap.val();
-    if(!data){list.innerHTML='<div style="font-size:0.65rem;color:var(--muted);text-align:center;padding:0.8rem;">Belum ada yang mendaftar lagi.</div>';return;}
-    const hadirOnly=Object.values(data).filter(r=>r.s==='hadir').sort((a,b)=>b.t-a.t);
-    if(!hadirOnly.length){list.innerHTML='<div style="font-size:0.65rem;color:var(--muted);text-align:center;padding:0.8rem;">Belum ada yang mendaftar lagi.</div>';return;}
-    list.innerHTML=hadirOnly.map(r=>`<div class="re-row"><span class="re-n">${r.n}</span><span class="re-s">${r.c} · ✅ Hadir</span></div>`).join('');
+    const badge=document.getElementById('rsvpTotalBadge');
+    const totalPax=document.getElementById('rsvpTotalPax');
+    const searchWrap=document.getElementById('rsvpSearchWrap');
+    if(!data){
+      _rsvpAllEntries=[];
+      list.innerHTML='<div style="font-size:0.65rem;color:var(--muted);text-align:center;padding:0.8rem;">Belum ada yang mendaftar lagi.</div>';
+      if(badge)badge.style.display='none';
+      return;
+    }
+    _rsvpAllEntries=Object.values(data).filter(r=>r.s==='hadir').sort((a,b)=>b.t-a.t);
+    if(!_rsvpAllEntries.length){
+      list.innerHTML='<div style="font-size:0.65rem;color:var(--muted);text-align:center;padding:0.8rem;">Belum ada yang mendaftar lagi.</div>';
+      if(badge)badge.style.display='none';
+      return;
+    }
+    const total=_rsvpAllEntries.reduce((sum,r)=>sum+_parsePax(r.c),0);
+    if(badge)badge.style.display='block';
+    if(totalPax)totalPax.textContent=total;
+    if(searchWrap)searchWrap.style.display='block';
+    const q=document.getElementById('rsvpSearch')?document.getElementById('rsvpSearch').value:'';
+    renderRSVPList(_rsvpAllEntries,q);
   });
 }
 async function submitRegistry(){
@@ -3236,6 +3315,55 @@ function renderDoa(){
   });
 }
 function renderDoaList(){}
+
+// ═══════════════════════════════════
+//  LIVE WEATHER (Open-Meteo, no API key)
+// ═══════════════════════════════════
+const WMO_CODES={
+  0:{d:'Cerah',i:'☀️'},1:{d:'Kebanyakan Cerah',i:'🌤️'},2:{d:'Separa Berawan',i:'⛅'},3:{d:'Berawan',i:'☁️'},
+  45:{d:'Kabus',i:'🌫️'},48:{d:'Kabus Beku',i:'🌫️'},
+  51:{d:'Renyai Ringan',i:'🌦️'},53:{d:'Renyai',i:'🌦️'},55:{d:'Renyai Lebat',i:'🌧️'},
+  61:{d:'Hujan Ringan',i:'🌧️'},63:{d:'Hujan',i:'🌧️'},65:{d:'Hujan Lebat',i:'⛈️'},
+  71:{d:'Salji Ringan',i:'🌨️'},73:{d:'Salji',i:'🌨️'},75:{d:'Salji Lebat',i:'❄️'},
+  80:{d:'Hujan Renyai',i:'🌦️'},81:{d:'Hujan Lebat',i:'🌧️'},82:{d:'Hujan Sangat Lebat',i:'⛈️'},
+  95:{d:'Ribut Petir',i:'⛈️'},96:{d:'Ribut Petir & Hujan Batu',i:'⛈️'},99:{d:'Ribut Petir Teruk',i:'🌩️'}
+};
+async function fetchWeather(){
+  const icon=document.getElementById('wxIcon');
+  const temp=document.getElementById('wxTemp');
+  const desc=document.getElementById('wxDesc');
+  const humidity=document.getElementById('wxHumidity');
+  const feels=document.getElementById('wxFeels');
+  const wind=document.getElementById('wxWind');
+  const extras=document.getElementById('wxExtras');
+  const note=document.getElementById('wxNote');
+  try{
+    const city=encodeURIComponent('{{VENUE_CITY}}, Malaysia');
+    const geoRes=await fetch(`https://nominatim.openstreetmap.org/search?q=${city}&format=json&limit=1`,{headers:{'Accept-Language':'ms'}});
+    const geoData=await geoRes.json();
+    let lat=3.147,lon=101.6958;
+    if(geoData&&geoData[0]){lat=parseFloat(geoData[0].lat);lon=parseFloat(geoData[0].lon);}
+    const wxRes=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia%2FKuala_Lumpur&forecast_days=1`);
+    const wx=await wxRes.json();
+    const c=wx.current;
+    const wmo=WMO_CODES[c.weather_code]||{d:'Tidak Diketahui',i:'🌡️'};
+    if(icon)icon.textContent=wmo.i;
+    if(temp){temp.textContent=Math.round(c.temperature_2m)+'°C';temp.style.fontSize='';temp.style.color='';}
+    if(desc)desc.textContent=wmo.d;
+    if(humidity)humidity.textContent=c.relative_humidity_2m+'%';
+    if(feels)feels.textContent=Math.round(c.apparent_temperature)+'°C';
+    if(wind)wind.textContent=Math.round(c.wind_speed_10m)+' km/h';
+    if(extras)extras.style.display='flex';
+    const now=new Date();
+    const timeStr=now.toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});
+    if(note)note.textContent=`📍 {{VENUE_CITY}} · Dikemaskini ${timeStr}`;
+  }catch(e){
+    if(icon)icon.textContent='🌡️';
+    if(temp){temp.textContent='--°C';temp.style.color='var(--muted)';}
+    if(desc)desc.textContent='Tidak dapat memuatkan cuaca';
+    console.warn('Weather fetch failed',e);
+  }
+}
 
 function showModal(){document.getElementById('modal').classList.add('show');}
 function closeModal(){document.getElementById('modal').classList.remove('show');}
