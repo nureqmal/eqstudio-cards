@@ -83,6 +83,14 @@
       "desc": "#750851",
       "popular": true,
       "preview_img": "previews/burgundy_velvet_edited.png"
+    },
+    "Red Velvet": {
+      "name": "Red Velvet",
+      "file": "red_velvet.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#750851"
     }
   },
   "Portrait": {
