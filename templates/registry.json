@@ -8,7 +8,8 @@
       "preview_emoji": "✨",
       "desc": "#FFFFF0, #E2725B",
       "preview_img": "previews/ivory_teracotta.png",
-      "popular": true
+      "popular": true,
+      "style": "Bright Mood"
     },
     "Blush Rose Gold": {
       "name": "Blush Rose Gold",
