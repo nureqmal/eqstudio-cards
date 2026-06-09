@@ -125,7 +125,8 @@
       "preview_emoji": "✨",
       "desc": "#FFFD74, #FFFFF0",
       "popular": true,
-      "preview_img": "previews/potrait_butter_yellow_ivory.png"
+      "preview_img": "previews/potrait_butter_yellow_ivory.png",
+      "style": "Bright Mood"
     },
     "Portrait Blush Pink Lavender": {
       "name": "Blush Pink Lavender",
