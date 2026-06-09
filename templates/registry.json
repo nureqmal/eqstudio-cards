@@ -94,6 +94,14 @@
       "preview_img": "previews/dark_violet.png",
       "new": true,
       "mark_new": true
+    },
+    "Korean Style": {
+      "name": "Korean Style",
+      "file": "korean_style.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "Korean"
     }
   },
   "Portrait": {
