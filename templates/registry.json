@@ -170,7 +170,8 @@
       "has_photo": true,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#7b3f00 "
+      "desc": "#7b3f00 ",
+      "style": "Dark Luxury"
     },
     "Portrait Midnight Sapphire Gold": {
       "name": "Midnight Sapphire Gold",
