@@ -103,7 +103,8 @@
       "desc": "#301934",
       "preview_img": "previews/dark_violet.png",
       "new": true,
-      "mark_new": true
+      "mark_new": true,
+      "style": "Modern GenZ"
     },
     "Korean Style": {
       "name": "Korean Style",
