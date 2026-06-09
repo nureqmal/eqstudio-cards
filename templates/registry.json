@@ -26,7 +26,8 @@
       "has_photo": false,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#8C9DAD"
+      "desc": "#8C9DAD",
+      "style": "Bright Mood"
     },
     "Beige": {
       "name": "Beige",
