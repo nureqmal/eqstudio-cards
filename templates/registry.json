@@ -53,7 +53,8 @@
       "has_photo": false,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#B87333"
+      "desc": "#B87333",
+      "style": "Dark Luxury"
     },
     "Gold Luxury": {
       "name": "Gold Luxury",
