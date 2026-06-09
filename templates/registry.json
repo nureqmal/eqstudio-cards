@@ -143,7 +143,8 @@
       "has_photo": true,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#87CEEB, #FFF700"
+      "desc": "#87CEEB, #FFF700",
+      "style": "Bright Mood"
     },
     "Potrait Mint Cream": {
       "name": "Mint Cream",
