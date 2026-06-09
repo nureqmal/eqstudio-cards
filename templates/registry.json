@@ -112,7 +112,8 @@
       "has_photo": false,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "Korean"
+      "desc": "Korean",
+      "style": "Korean Style"
     }
   },
   "Portrait": {
