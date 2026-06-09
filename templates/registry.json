@@ -179,7 +179,8 @@
       "has_photo": true,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#0C1F3F, #D4AF37"
+      "desc": "#0C1F3F, #D4AF37",
+      "style": "Dark Luxury"
     },
     "Potrait Obsidian Black Gold": {
       "name": "Obsidian Black Gold",
