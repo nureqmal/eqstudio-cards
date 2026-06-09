@@ -92,7 +92,8 @@
       "preview_emoji": "✨",
       "desc": "#301934",
       "preview_img": "previews/dark_violet.png",
-      "new": true
+      "new": true,
+      "mark_new": true
     }
   },
   "Portrait": {
