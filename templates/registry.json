@@ -152,7 +152,8 @@
       "has_photo": true,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#F5FFFA"
+      "desc": "#F5FFFA",
+      "style": "Bright Mood"
     },
     "Potrait Peach Apricot": {
       "name": "Peach Apricot",
