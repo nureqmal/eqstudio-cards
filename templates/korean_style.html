@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>청첩장 | {{GROOM_NAME}} & {{BRIDE_NAME}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+KR:wght@200;300;400&family=DM+Sans:wght@300;400;500&family=Amiri:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;overscroll-behavior:none;}
+body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size:16px;}
+:root{
+  --rose:#c9968a;--rose2:#ddb5ac;--rose3:#f5ede9;--rose4:#edddd9;
+  --ink:#2c2419;--ink2:#5a4a3a;--ink3:#8a7060;
+  --cream:#faf8f5;--cream2:#f5f0ea;--cream3:#ede6dc;
+  --border:#e8e0d8;--border2:rgba(232,224,216,0.6);
+  --muted:#b09888;
+}
+
+/* ══ ENVELOPE ══ */
+#envSection{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;background:var(--cream);transition:opacity 0.9s ease,visibility 0.9s ease;}
+#envSection.hide{opacity:0;visibility:hidden;pointer-events:none;}
+#envCanvas{position:absolute;inset:0;pointer-events:none;}
+.env-wrap{position:relative;z-index:1;text-align:center;}
+.env-top-text{font-family:'Cormorant Garamond',serif;font-size:0.72rem;letter-spacing:0.5em;color:var(--muted);margin-bottom:1.6rem;font-style:italic;}
+.envelope{width:min(280px,78vw);aspect-ratio:1.55/1;position:relative;cursor:pointer;margin:0 auto;transition:transform 0.3s;}
+.envelope:active{transform:scale(0.97);}
+.env-body{position:absolute;inset:0;background:#fff;border-radius:3px;border:1px solid var(--border);}
+.env-flap{position:absolute;top:0;left:0;right:0;height:50%;background:var(--cream2);clip-path:polygon(0 0,50% 88%,100% 0);border-radius:3px 3px 0 0;transform-origin:top center;transition:transform 1.1s cubic-bezier(0.4,0,0.2,1);z-index:5;border-bottom:1px solid var(--border);}
+.envelope.open .env-flap{transform:rotateX(180deg);}
+.env-left{position:absolute;inset:0;background:rgba(201,150,138,0.04);clip-path:polygon(0 0,0 100%,52% 50%);z-index:3;}
+.env-right{position:absolute;inset:0;background:rgba(201,150,138,0.03);clip-path:polygon(100% 0,48% 50%,100% 100%);z-index:3;}
+.env-bottom{position:absolute;inset:0;background:rgba(237,221,217,0.4);clip-path:polygon(0 100%,50% 48%,100% 100%);z-index:3;}
+.env-seal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:var(--rose);border:1px solid rgba(201,150,138,0.4);display:flex;align-items:center;justify-content:center;z-index:6;transition:transform 0.4s ease,opacity 0.4s ease;box-shadow:0 2px 10px rgba(201,150,138,0.3);}
+.envelope.open .env-seal{transform:translate(-50%,-50%) scale(0);opacity:0;}
+.env-seal-txt{font-family:'Cormorant Garamond',serif;font-size:0.6rem;color:#fff;letter-spacing:0.05em;font-style:italic;}
+.env-letter{position:absolute;bottom:0;left:50%;transform:translateX(-50%) translateY(0);width:76%;background:#fff;border:1px solid var(--border);border-radius:2px 2px 0 0;padding:0.7rem 0.8rem 0.6rem;text-align:center;z-index:4;clip-path:inset(100% 0 0 0);transition:transform 1.1s cubic-bezier(0.4,0,0.2,1) 0.35s,clip-path 0s 0.35s;}
+.envelope.open .env-letter{transform:translateX(-50%) translateY(-110%);clip-path:inset(0% 0 0 0);}
+.el-tag{font-size:0.42rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--rose);margin-bottom:0.25rem;}
+.el-name{font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:var(--ink);font-style:italic;}
+.env-hint{margin-top:1.6rem;font-family:'Cormorant Garamond',serif;font-size:0.68rem;letter-spacing:0.3em;color:var(--muted);font-style:italic;animation:hintPulse 2.8s ease infinite;}
+@keyframes hintPulse{0%,100%{opacity:0.3;}50%{opacity:0.8;}}
+.env-bismillah{font-family:'Amiri',serif;font-size:1.3rem;color:var(--rose);margin-top:1.2rem;}
+
+/* ══ APP SHELL ══ */
+#appShell{opacity:0;transition:opacity 1.2s ease;display:flex;flex-direction:column;min-height:100svh;}
+#appShell.show{opacity:1;}
+#bgAudio{display:none;}
+
+/* ══ TOP BAR ══ */
+#topBar{position:sticky;top:0;z-index:200;background:rgba(250,248,245,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0.55rem 1rem;}
+.tb-lang{display:flex;gap:3px;}
+.lb{padding:0.18rem 0.6rem;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--ink3);font-family:'DM Sans',sans-serif;font-size:0.48rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;}
+.lb.active{background:var(--rose);color:#fff;border-color:var(--rose);}
+.tb-controls{display:flex;align-items:center;gap:6px;}
+.tb-btn{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.8rem;transition:all 0.2s;}
+.tb-btn.playing{border-color:var(--rose);background:var(--rose3);}
+
+/* ══ CHAPTER PROGRESS ══ */
+#chapterBar{background:var(--cream);border-bottom:1px solid var(--border);padding:0.5rem 1rem;}
+.cb-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.35rem;}
+.cb-num{font-family:'DM Sans',sans-serif;font-size:0.46rem;letter-spacing:0.22em;color:var(--muted);}
+.cb-name{font-family:'DM Sans',sans-serif;font-size:0.46rem;letter-spacing:0.12em;color:var(--rose);}
+.cb-track{height:2px;background:var(--border);border-radius:2px;overflow:hidden;}
+.cb-fill{height:100%;background:var(--rose);border-radius:2px;transition:width 0.5s ease;}
+.chapter-chips{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding:0.5rem 1rem;background:var(--cream);border-bottom:1px solid var(--border);}
+.chapter-chips::-webkit-scrollbar{display:none;}
+.cc{flex-shrink:0;font-size:0.48rem;padding:0.28rem 0.75rem;border-radius:20px;border:1px solid var(--border);color:var(--ink3);background:transparent;cursor:pointer;transition:all 0.25s;white-space:nowrap;letter-spacing:0.05em;}
+.cc.active{background:var(--rose);color:#fff;border-color:var(--rose);}
+
+/* ══ CONTENT AREA ══ */
+#contentArea{flex:1;overflow-y:auto;padding-bottom:5rem;}
+
+/* ══ CHAPTER PAGES ══ */
+.chapter-page{display:none;animation:pageIn 0.45s ease;}
+.chapter-page.active{display:block;}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══ HERO PAGE ══ */
+.hero-page{padding:2rem 1.2rem 1.5rem;text-align:center;}
+.hp-eyebrow{font-size:0.56rem;letter-spacing:0.4em;color:var(--muted);margin-bottom:0.5rem;animation:fadeUp 0.8s ease 0.1s both;}
+.hp-divider{display:flex;align-items:center;gap:8px;margin:0.6rem 0;}
+.hp-divider::before,.hp-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.hp-divider span{font-size:0.65rem;color:var(--rose2);}
+.hp-names{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,9vw,3.6rem);font-weight:300;line-height:1.1;color:var(--ink);animation:fadeUp 0.8s ease 0.15s both;}
+.hp-amp{display:block;font-size:0.3em;letter-spacing:0.4em;color:var(--rose);margin:0.4rem 0;font-style:italic;}
+.hp-kor{font-family:'Noto Serif KR',serif;font-size:0.52rem;color:var(--muted);letter-spacing:0.1em;margin-top:0.3rem;animation:fadeUp 0.8s ease 0.2s both;font-weight:300;}
+.hp-date-strip{display:flex;align-items:center;justify-content:center;margin:1.2rem 0;animation:fadeUp 0.8s ease 0.25s both;}
+.hds-item{text-align:center;padding:0 1rem;}
+.hds-n{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:300;color:var(--rose);line-height:1;}
+.hds-l{font-size:0.42rem;letter-spacing:0.2em;color:var(--muted);margin-top:0.15rem;}
+.hds-sep{width:1px;height:28px;background:var(--border);}
+.hp-venue-pill{display:inline-flex;align-items:center;gap:5px;background:var(--cream2);border:1px solid var(--border);border-radius:20px;padding:0.32rem 0.85rem;font-size:0.56rem;color:var(--ink3);animation:fadeUp 0.8s ease 0.3s both;}
+.hp-venue-dot{width:4px;height:4px;border-radius:50%;background:var(--rose);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══ BENTO GRID ══ */
+.bento-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:1rem 1rem 0.5rem;}
+.bt{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px 13px;position:relative;overflow:hidden;}
+.bt::before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,var(--rose2),transparent);}
+.bt.wide{grid-column:span 2;}
+.bt.dark{background:var(--ink);border-color:var(--ink);}
+.bt.dark::before{background:linear-gradient(to right,transparent,rgba(255,255,255,0.1),transparent);}
+.bt-chip{font-size:0.42rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.bt-chip.lt{color:rgba(255,255,255,0.38);}
+.bt-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--ink);line-height:1;}
+.bt-unit{font-size:0.6rem;color:var(--muted);margin-top:3px;}
+.bt-unit.lt{color:rgba(255,255,255,0.38);}
+.bt-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;}
+.bt-tag{font-size:0.4rem;padding:2px 7px;border-radius:20px;background:var(--cream2);color:var(--ink3);border:1px solid var(--border);}
+.bt-row{display:flex;align-items:center;justify-content:space-between;}
+.bt-rsvp-txt{font-size:0.72rem;color:rgba(255,255,255,0.85);line-height:1.4;}
+.bt-arrow{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:rgba(255,255,255,0.5);flex-shrink:0;}
+.bt-wx{display:flex;align-items:center;gap:8px;}
+.bt-wx-ico{font-size:1.5rem;}
+.bt-wx-temp{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--ink);}
+
+/* ══ CHAPTER NAV FOOTER (inside page) ══ */
+.chapter-footer{display:flex;gap:8px;padding:1rem 1rem 0.5rem;}
+.cf-btn{flex:1;border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:#fff;cursor:pointer;transition:all 0.2s;}
+.cf-btn:active{background:var(--cream2);}
+.cf-num{font-size:0.42rem;color:var(--muted);letter-spacing:0.15em;margin-bottom:3px;}
+.cf-label{font-size:0.72rem;color:var(--ink2);}
+.cf-btn.next{background:var(--rose3);border-color:var(--rose2);text-align:right;}
+.cf-btn.next .cf-num{color:var(--rose);}
+.cf-btn.next .cf-label{color:var(--rose);}
+
+/* ══ GENERIC SECTION ══ */
+.sec-header{padding:1.4rem 1.2rem 0.8rem;}
+.sh-eyebrow{font-size:0.44rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--muted);margin-bottom:0.35rem;display:flex;align-items:center;gap:6px;}
+.sh-eyebrow::after{content:'';flex:1;height:1px;background:var(--border);}
+.sh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,6vw,2.2rem);font-weight:300;color:var(--ink);}
+.sh-title em{color:var(--rose);font-style:italic;}
+.sec-cards{display:flex;flex-direction:column;gap:8px;padding:0 1rem;}
+
+/* ══ INFO CARDS ══ */
+.info-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.2s;}
+.info-card:active{background:var(--cream2);}
+.ic-ico{width:38px;height:38px;border-radius:10px;background:var(--rose3);border:1px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.ic-label{font-size:0.44rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--rose);margin-bottom:3px;}
+.ic-val{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--ink);}
+.ic-sub{font-size:0.66rem;color:var(--muted);margin-top:1px;}
+.ic-arr{margin-left:auto;font-size:0.7rem;color:var(--muted);flex-shrink:0;}
+.ic-expand{max-height:0;overflow:hidden;transition:max-height 0.5s ease;}
+.ic-expand.open{max-height:300px;}
+.ic-expand-body{padding:10px 0 4px;}
+
+/* Calendar */
+.cal-wrap{background:var(--cream2);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.cal-head{background:var(--rose3);padding:8px;text-align:center;}
+.cal-month{font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:var(--rose);font-style:italic;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);padding:4px;}
+.cdn{font-size:0.42rem;text-align:center;padding:3px 0;color:var(--muted);}
+.cdd{font-size:0.7rem;text-align:center;padding:3px 1px;color:var(--ink3);border-radius:4px;}
+.cdd.hl{background:var(--rose);color:#fff;}
+.cdd.em{opacity:0;}
+
+/* Clock */
+.clk-wrap{display:flex;flex-direction:column;align-items:center;padding:4px 0;}
+.clk-time{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--rose);font-style:italic;margin-top:6px;}
+
+/* ══ TIMELINE ══ */
+.tl-list{padding:0 1rem;margin-top:0.5rem;}
+.tl-row{display:flex;gap:12px;margin-bottom:14px;position:relative;}
+.tl-row::before{content:'';position:absolute;left:17px;top:34px;bottom:-10px;width:1px;background:linear-gradient(to bottom,var(--rose2),transparent);}
+.tl-row:last-child::before{display:none;}
+.tl-dot{width:34px;height:34px;flex-shrink:0;border-radius:10px;background:var(--rose3);border:1px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-size:0.88rem;z-index:1;}
+.tl-body{padding-top:2px;}
+.tl-time{font-size:0.44rem;letter-spacing:0.2em;color:var(--rose);margin-bottom:2px;}
+.tl-ev{font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--ink);}
+
+/* ══ PENGANTIN ══ */
+.duo-wrap{padding:0 1rem;display:flex;flex-direction:column;gap:0;}
+.duo-card{text-align:center;padding:1.4rem 1rem;}
+.dc-side{font-size:0.44rem;letter-spacing:0.38em;text-transform:uppercase;color:var(--rose2);margin-bottom:0.4rem;}
+.dc-name{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:300;color:var(--ink);margin-bottom:0.3rem;line-height:1.15;}
+.dc-kor{font-family:'Noto Serif KR',serif;font-size:0.54rem;color:var(--muted);font-weight:300;margin-bottom:0.4rem;letter-spacing:0.08em;}
+.dc-conn{font-size:0.54rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin:0.3rem 0;opacity:0.6;}
+.dc-parents{font-size:0.85rem;color:var(--ink3);line-height:1.9;}
+.duo-sep{display:flex;align-items:center;gap:10px;padding:0.2rem 1.5rem;}
+.duo-sep::before,.duo-sep::after{content:'';flex:1;height:1px;background:var(--border);}
+.duo-sep-amp{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--rose);font-style:italic;}
+
+/* ══ DRESSCODE ══ */
+.swatches{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;padding:1rem 1rem 0.5rem;}
+.sw{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.sw-ring{width:48px;height:48px;border-radius:50%;padding:3px;background:var(--cream2);border:1px solid var(--border);}
+.sw-inner{width:100%;height:100%;border-radius:50%;}
+.sw-name{font-size:0.44rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;}
+.dc-note{margin:0.5rem 1rem;font-size:0.65rem;color:var(--muted);font-style:italic;padding:0.7rem 1rem;border:1px solid var(--border);border-radius:8px;background:#fff;}
+
+/* ══ MAP ══ */
+.map-visual{margin:0 1rem;height:130px;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--cream2);position:relative;overflow:hidden;}
+#mapCanvas{position:absolute;inset:0;}
+.map-pin{font-size:1.8rem;position:relative;z-index:1;animation:pinFloat 2.5s ease infinite;}
+@keyframes pinFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.map-ripple{position:absolute;bottom:28%;left:50%;transform:translateX(-50%);width:18px;height:6px;border-radius:50%;background:rgba(201,150,138,0.3);animation:mapRipple 2.5s ease infinite;z-index:1;}
+@keyframes mapRipple{0%{width:18px;opacity:0.5;}100%{width:55px;opacity:0;}}
+.map-info{padding:0.9rem 1rem 0.5rem;}
+.map-name{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--ink);}
+.map-addr{font-size:0.68rem;color:var(--muted);margin-top:3px;line-height:1.5;}
+.map-btns{display:flex;gap:8px;margin-top:0.8rem;padding:0 1rem 0.5rem;}
+.map-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;padding:0.65rem;border-radius:50px;font-size:0.62rem;text-decoration:none;border:none;cursor:pointer;transition:opacity 0.2s;letter-spacing:0.05em;}
+.map-btn:active{opacity:0.75;}
+.mb-waze{background:#25D366;color:#fff;}
+.mb-gmap{background:var(--cream2);color:var(--ink2);border:1px solid var(--border);}
+
+/* ══ LOVE STORY ══ */
+.love-list{padding:0 1rem;}
+.love-row{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border2);}
+.love-row:last-child{border-bottom:none;}
+.love-yr{min-width:40px;height:40px;border-radius:10px;background:var(--rose3);border:1px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:0.48rem;color:var(--rose);text-align:center;flex-shrink:0;font-weight:400;line-height:1.2;}
+.love-body{padding-top:2px;}
+.love-title{font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--ink);margin-bottom:3px;}
+.love-desc{font-size:0.7rem;color:var(--muted);line-height:1.6;}
+
+/* ══ MESEJ ══ */
+.mesej-body{padding:1.5rem 1.2rem;text-align:center;}
+.mesej-qm{font-family:'Cormorant Garamond',serif;font-size:4.5rem;color:var(--rose2);opacity:0.2;line-height:0.5;margin-bottom:1rem;}
+.mesej-text{font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-style:italic;line-height:2;color:var(--ink2);margin-bottom:1.5rem;}
+.mesej-from{font-size:0.46rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--muted);}
+.mesej-name{font-family:'Cormorant Garamond',serif;font-size:0.95rem;color:var(--rose);margin-top:0.4rem;font-style:italic;}
+
+/* ══ FORMS ══ */
+.form-wrap{padding:0 1rem;}
+.form-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.4rem 1.2rem;position:relative;overflow:hidden;}
+.form-card::before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,var(--rose2),transparent);}
+.fg{margin-bottom:0.85rem;}
+.fl{font-size:0.44rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--rose);margin-bottom:0.38rem;display:block;}
+.fi,.fsel,.fta{width:100%;padding:0.65rem 0.85rem;background:var(--cream2);border:1px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--ink);outline:none;-webkit-appearance:none;transition:border-color 0.25s;}
+.fi:focus,.fsel:focus,.fta:focus{border-color:var(--rose2);}
+.fi::placeholder,.fta::placeholder{color:var(--muted);}
+.fsel option{background:#fff;color:var(--ink);}
+.fta{resize:none;min-height:72px;}
+.btn-main{width:100%;padding:0.8rem;background:var(--rose);border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#fff;cursor:pointer;margin-top:0.4rem;transition:opacity 0.2s,transform 0.15s;box-shadow:0 4px 14px rgba(201,150,138,0.3);}
+.btn-main:active{transform:scale(0.98);opacity:0.9;}
+.btn-sec{display:block;width:100%;padding:0.7rem;margin-top:0.6rem;background:transparent;border:1px solid var(--border);border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);cursor:pointer;transition:all 0.2s;}
+.btn-sec:active{background:var(--cream2);}
+
+/* Counter */
+.counter-wrap{display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--cream2);}
+.counter-btn{width:42px;height:42px;background:var(--rose3);border:none;color:var(--rose);font-size:1.1rem;cursor:pointer;flex-shrink:0;}
+.counter-val{flex:1;text-align:center;background:transparent;border:none;color:var(--ink);font-family:'Cormorant Garamond',serif;font-size:1.1rem;outline:none;padding:0;min-width:0;}
+
+/* RSVP Success */
+#rsvpSuccess{display:none;flex-direction:column;align-items:center;gap:0.8rem;padding:2rem 1.5rem;text-align:center;}
+.rsvp-tick{width:52px;height:52px;border-radius:50%;background:var(--rose3);border:1px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-size:1.5rem;animation:tickPop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;}
+@keyframes tickPop{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+.rsvp-ok-t{font-family:'Cormorant Garamond',serif;font-size:0.95rem;letter-spacing:0.2em;color:var(--rose);font-style:italic;}
+.rsvp-ok-s{font-size:0.7rem;color:var(--muted);line-height:1.7;}
+
+/* RSVP List */
+.rsvp-list-wrap{margin-top:1rem;}
+.rl-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:0.7rem;}
+.rl-title{font-size:0.44rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--rose);}
+#rsvpTotalBadge{display:none;background:var(--rose3);border:1px solid var(--rose2);border-radius:20px;padding:0.2rem 0.65rem;font-size:0.5rem;color:var(--rose);}
+#rsvpSearchWrap{display:none;margin-bottom:0.6rem;position:relative;}
+#rsvpSearch{width:100%;padding:0.5rem 0.75rem 0.5rem 1.9rem;border:1px solid var(--border);border-radius:6px;background:var(--cream2);font-family:'DM Sans',sans-serif;font-size:0.64rem;color:var(--ink);outline:none;}
+#rsvpSearch::placeholder{color:var(--muted);}
+.rs-ico{position:absolute;left:0.65rem;top:50%;transform:translateY(-50%);font-size:0.68rem;opacity:0.35;pointer-events:none;}
+#rsvpList{display:flex;flex-direction:column;gap:4px;max-height:240px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--rose2) transparent;}
+.re-row{display:flex;justify-content:space-between;align-items:center;padding:0.55rem 0.8rem;background:var(--cream2);border:1px solid var(--border);border-radius:6px;}
+.re-n{font-size:0.84rem;color:var(--ink);}
+.re-s{font-size:0.62rem;color:var(--rose);}
+
+/* Registry */
+.qr-box{width:130px;height:130px;border:1px dashed var(--border);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 0.8rem;background:#fff;gap:4px;}
+
+/* Doa wall */
+.doa-wall{margin-top:0.8rem;display:flex;flex-direction:column;gap:6px;max-height:340px;overflow-y:auto;}
+.doa-card{background:#fff;border:1px solid var(--border);border-radius:8px;border-left:2px solid var(--rose2);padding:0.75rem 0.85rem;animation:cardIn 0.4s ease;}
+@keyframes cardIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:translateX(0);}}
+.doa-n{font-size:0.52rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--rose);margin-bottom:3px;}
+.doa-m{font-size:0.75rem;color:var(--ink2);line-height:1.6;}
+
+/* Save date */
+.cal-btns{display:flex;flex-direction:column;gap:7px;padding:0 1rem 0.5rem;}
+.cal-btn-a{display:flex;align-items:center;justify-content:center;gap:6px;padding:0.75rem;border:1px solid var(--border);border-radius:50px;background:#fff;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.08em;color:var(--ink2);text-decoration:none;transition:all 0.2s;}
+.cal-btn-a:active{background:var(--cream2);}
+
+/* Weather */
+.wx-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.6rem 1.2rem;margin:0 1rem;text-align:center;position:relative;overflow:hidden;}
+.wx-card::before{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,var(--rose2),transparent);}
+.wx-ico{font-size:2.2rem;margin-bottom:4px;}
+.wx-temp{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--rose);}
+.wx-desc{font-size:0.73rem;color:var(--muted);margin-top:3px;}
+.wx-extras{display:none;justify-content:center;gap:1.4rem;margin-top:0.85rem;}
+.wx-stat{text-align:center;}
+.wx-stat-l{font-size:0.42rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
+.wx-stat-v{font-size:0.78rem;color:var(--rose);}
+.wx-note{font-size:0.52rem;color:var(--muted);margin-top:0.85rem;padding-top:0.85rem;border-top:1px solid var(--border);}
+
+/* Game */
+.game-hud{display:flex;justify-content:space-between;padding:0.5rem 0.8rem;margin-bottom:0.6rem;background:var(--cream2);border:1px solid var(--border);border-radius:8px;font-size:0.62rem;color:var(--muted);}
+.game-hud span{color:var(--rose);font-family:'Cormorant Garamond',serif;}
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+.mc{aspect-ratio:3/4;cursor:pointer;perspective:700px;}
+.mc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);border-radius:8px;}
+.mc.flipped .mc-inner,.mc.matched .mc-inner{transform:rotateY(180deg);}
+.mc-f,.mc-b{position:absolute;inset:0;backface-visibility:hidden;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.mc-f{background:var(--cream2);border:1px solid var(--border);}
+.mc-f-ico{font-size:0.85rem;color:var(--rose2);opacity:0.5;}
+.mc-b{background:var(--rose3);border:1px solid var(--rose2);transform:rotateY(180deg);font-size:clamp(1rem,3.5vw,1.3rem);}
+.mc-lbl{font-size:0.36rem;letter-spacing:0.06em;color:var(--rose);text-transform:uppercase;}
+.mc.matched .mc-b{border-color:var(--rose);animation:matchPop 0.45s ease;}
+@keyframes matchPop{0%{transform:rotateY(180deg) scale(1);}40%{transform:rotateY(180deg) scale(1.08);}100%{transform:rotateY(180deg) scale(1);}}
+.game-result{text-align:center;margin-top:0.85rem;min-height:1.3rem;font-family:'Cormorant Garamond',serif;font-size:0.9rem;font-style:italic;color:var(--rose);}
+
+/* Contact */
+.ct-list{display:flex;flex-direction:column;gap:7px;}
+.ct-card{display:flex;align-items:center;gap:10px;padding:0.95rem 1.1rem;background:#fff;border:1px solid var(--border);border-radius:12px;text-decoration:none;color:var(--ink);transition:all 0.2s;}
+.ct-card:active{background:var(--cream2);}
+.ct-ico{width:38px;height:38px;flex-shrink:0;border-radius:10px;background:var(--rose3);border:1px solid var(--rose2);display:flex;align-items:center;justify-content:center;font-size:0.95rem;}
+.ct-role{font-size:0.44rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--rose);margin-bottom:2px;}
+.ct-name{font-family:'Cormorant Garamond',serif;font-size:0.92rem;color:var(--ink);}
+.ct-num{font-size:0.66rem;color:var(--muted);}
+.ct-arr{margin-left:auto;font-size:0.65rem;color:var(--muted);}
+
+/* Footer inside chapter */
+.page-footer{text-align:center;padding:1.5rem 1.2rem;border-top:1px solid var(--border);margin-top:0.5rem;}
+.pf-names{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--rose);font-style:italic;}
+.pf-kor{font-family:'Noto Serif KR',serif;font-size:0.52rem;color:var(--muted);margin-top:0.3rem;}
+.pf-credit{font-size:0.44rem;color:var(--muted);margin-top:1rem;letter-spacing:0.1em;}
+
+/* Countdown */
+#cdDone{display:none;flex-direction:column;align-items:center;gap:0;padding:0.5rem 0 1rem;}
+.cd-ring{position:relative;width:150px;height:150px;margin:0 auto 1rem;}
+.cd-ring::before{content:'';position:absolute;inset:0;border-radius:50%;border:1px solid var(--rose2);animation:cdPulse 3s ease-in-out infinite;}
+@keyframes cdPulse{0%,100%{opacity:0.4;}50%{opacity:0.9;}}
+.cd-centre{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
+.cd-live-ico{font-size:1.3rem;}
+.cd-live-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--rose);font-style:italic;}
+.cd-live-badge{display:inline-flex;align-items:center;gap:5px;background:var(--rose3);border:1px solid var(--rose2);border-radius:20px;padding:0.28rem 0.85rem;margin-top:0.5rem;}
+.cd-live-dot{width:5px;height:5px;border-radius:50%;background:var(--rose);animation:liveDot 1.2s ease-in-out infinite;}
+@keyframes liveDot{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.cd-live-lbl{font-size:0.52rem;letter-spacing:0.22em;color:var(--rose);}
+.cd-petals{position:relative;height:36px;overflow:hidden;margin-top:0.4rem;}
+.cd-petal{position:absolute;font-size:0.85rem;animation:cdPetalFloat linear infinite;opacity:0;}
+@keyframes cdPetalFloat{0%{transform:translateY(36px) rotate(0deg);opacity:0;}15%{opacity:0.7;}85%{opacity:0.5;}100%{transform:translateY(-8px) rotate(360deg);opacity:0;}}
+.cd-grid{display:flex;justify-content:center;gap:7px;margin-top:1.5rem;}
+.cd-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:0.85rem 0;width:64px;position:relative;overflow:hidden;text-align:center;}
+.cd-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--rose2),transparent);}
+.cd-n{font-family:'Cormorant Garamond',serif;font-size:1.85rem;font-weight:300;color:var(--rose);line-height:1;transition:transform 0.15s;}
+.cd-n.tick{transform:scale(1.1);}
+.cd-l{font-size:0.4rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+
+/* Confetti */
+#confettiCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:998;}
+
+/* Audio viz */
+#audioViz{position:fixed;bottom:5.2rem;left:1rem;z-index:280;display:none;align-items:flex-end;gap:2px;height:22px;padding:3px 7px;background:rgba(250,248,245,0.92);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:20px;}
+.vb{width:2px;border-radius:2px;background:var(--rose);transform-origin:bottom;}
+@keyframes vbIdle{0%,100%{transform:scaleY(0.2);}50%{transform:scaleY(0.4);}}
+@keyframes vbDance{0%{transform:scaleY(0.15);}25%{transform:scaleY(1);}50%{transform:scaleY(0.45);}75%{transform:scaleY(0.8);}100%{transform:scaleY(0.15);}}
+.vb{animation:vbIdle 1.4s ease-in-out infinite;}
+#audioViz.playing .vb:nth-child(1){animation:vbDance 0.6s ease-in-out infinite;}
+#audioViz.playing .vb:nth-child(2){animation:vbDance 0.5s ease-in-out infinite 0.08s;}
+#audioViz.playing .vb:nth-child(3){animation:vbDance 0.7s ease-in-out infinite 0.04s;}
+#audioViz.playing .vb:nth-child(4){animation:vbDance 0.45s ease-in-out infinite 0.12s;}
+#audioViz.playing .vb:nth-child(5){animation:vbDance 0.65s ease-in-out infinite 0.06s;}
+#audioViz.playing .vb:nth-child(6){animation:vbDance 0.55s ease-in-out infinite 0.1s;}
+#audioViz.playing .vb:nth-child(7){animation:vbDance 0.5s ease-in-out infinite 0.02s;}
+#audioViz.playing .vb:nth-child(8){animation:vbDance 0.7s ease-in-out infinite 0.09s;}
+
+/* Share btn */
+#shareBtn{position:fixed;bottom:5.2rem;right:1rem;width:38px;height:38px;border-radius:50%;background:rgba(250,248,245,0.92);border:1px solid var(--border);display:none;align-items:center;justify-content:center;font-size:0.85rem;cursor:pointer;z-index:280;backdrop-filter:blur(8px);}
+
+/* Bottom tab bar */
+#tabBar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(250,248,245,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--border);display:none;padding:0.3rem 0 env(safe-area-inset-bottom,0);}
+.tab-inner{display:flex;align-items:center;}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0.4rem 0;cursor:pointer;transition:all 0.2s;border-radius:10px;margin:0 2px;}
+.tab-btn i{font-size:1.1rem;color:var(--muted);}
+.tab-btn span{font-size:0.4rem;letter-spacing:0.06em;color:var(--muted);text-transform:uppercase;}
+.tab-btn.active i{color:var(--rose);}
+.tab-btn.active span{color:var(--rose);}
+.tab-btn.active{background:var(--rose3);}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(44,36,25,0.5);display:flex;align-items:flex-end;justify-content:center;z-index:500;opacity:0;visibility:hidden;transition:all 0.35s ease;}
+.modal-bg.show{opacity:1;visibility:visible;}
+.modal-box{background:#fff;border:1px solid var(--border);border-radius:18px 18px 0 0;padding:2.2rem 1.8rem 2.8rem;width:100%;max-width:480px;text-align:center;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);}
+.modal-bg.show .modal-box{transform:translateY(0);}
+.modal-handle{width:28px;height:2px;background:var(--border);border-radius:2px;margin:0 auto 1.8rem;}
+.modal-close{padding:0.6rem 2.2rem;background:var(--rose);border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.62rem;letter-spacing:0.15em;color:#fff;cursor:pointer;margin-top:1.2rem;}
+
+/* Ambient canvas */
+#petalCanvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;opacity:0;transition:opacity 1s ease;}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* Safari notice */
+#safariNotice{display:none;position:fixed;bottom:4.8rem;right:1rem;z-index:290;background:rgba(250,248,245,0.95);border:1px solid var(--border);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.58rem;color:var(--ink);white-space:nowrap;pointer-events:none;}
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+</head>
+<body>
+<canvas id="confettiCanvas"></canvas>
+<canvas id="petalCanvas"></canvas>
+<audio id="bgAudio" loop preload="auto"><source src="{{MUSIC_URL}}" type="audio/mpeg"></audio>
+
+<div id="audioViz"><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div></div>
+<div id="safariNotice">🎵 Safari: tap ▶ untuk muzik</div>
+<button id="shareBtn" onclick="shareKad()">🔗</button>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal"><div class="modal-box"><div class="modal-handle"></div><div style="font-size:1.8rem;margin-bottom:0.7rem;">🌸</div><div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--rose);margin-bottom:0.5rem;font-style:italic;" data-ms="Jemputan Khas" data-en="Special Invitation" data-kor="특별 초대">Jemputan Khas</div><div style="font-size:0.73rem;color:var(--muted);line-height:1.8;" data-ms="Kehadiran anda amat kami hargai dan nantikan." data-en="Your presence means the world to us." data-kor="소중한 참석에 진심으로 감사드립니다.">Kehadiran anda amat kami hargai dan nantikan.</div><button class="modal-close" onclick="closeModal()" data-ms="Tutup" data-en="Close" data-kor="닫기">Tutup</button></div></div>
+
+<!-- ENVELOPE -->
+<div id="envSection">
+  <canvas id="envCanvas"></canvas>
+  <div class="env-wrap">
+    <div class="env-top-text" data-ms="청첩장 · Kad Jemputan" data-en="Wedding Invitation" data-kor="청첩장">청첩장 · Kad Jemputan</div>
+    <div class="envelope" id="envelope" onclick="openEnvelope()">
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="env-left"></div><div class="env-right"></div><div class="env-bottom"></div>
+      <div class="env-seal" id="envSeal"><span class="env-seal-txt" id="sealInitials">G&B</span></div>
+      <div class="env-letter"><div class="el-tag" data-ms="Jemputan Perkahwinan" data-en="Wedding Invitation" data-kor="청첩장">Jemputan Perkahwinan</div><div class="el-name">{{GROOM_NAME}} &amp; {{BRIDE_NAME}}</div></div>
+    </div>
+    <div class="env-hint" data-ms="Ketuk untuk buka ✦" data-en="Tap to open ✦" data-kor="열어보세요 ✦">Ketuk untuk buka ✦</div>
+    <div class="env-bismillah">بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="appShell">
+  <!-- TOP BAR -->
+  <div id="topBar">
+    <div class="tb-lang">
+      <button class="lb active" onclick="setLang('ms')">BM</button>
+      <button class="lb" onclick="setLang('en')">EN</button>
+      <button class="lb" onclick="setLang('kor')">한국어</button>
+    </div>
+    <div class="tb-controls">
+      <button class="tb-btn" id="audioBtn" onclick="toggleAudio()">🎵</button>
+      <button class="tb-btn" onclick="shareKad()">🔗</button>
+    </div>
+  </div>
+
+  <!-- CHAPTER BAR -->
+  <div id="chapterBar">
+    <div class="cb-top">
+      <span class="cb-num" id="cbNum">BAB 01 / 08</span>
+      <span class="cb-name" id="cbName">Utama</span>
+    </div>
+    <div class="cb-track"><div class="cb-fill" id="cbFill" style="width:12.5%"></div></div>
+  </div>
+  <div class="chapter-chips" id="chapterChips">
+    <button class="cc active" onclick="goChapter(0)" data-ms="Utama" data-en="Home" data-kor="홈">Utama</button>
+    <button class="cc" onclick="goChapter(1)" data-ms="Pengantin" data-en="Couple" data-kor="신랑신부">Pengantin</button>
+    <button class="cc" onclick="goChapter(2)" data-ms="Majlis" data-en="Details" data-kor="행사정보">Majlis</button>
+    <button class="cc" onclick="goChapter(3)" data-ms="Aturcara" data-en="Programme" data-kor="일정">Aturcara</button>
+    <button class="cc" onclick="goChapter(4)" data-ms="Kisah" data-en="Story" data-kor="러브스토리">Kisah</button>
+    <button class="cc" onclick="goChapter(5)" data-ms="RSVP" data-en="RSVP" data-kor="참석확인">RSVP</button>
+    <button class="cc" onclick="goChapter(6)" data-ms="Doa" data-en="Wishes" data-kor="축하메시지">Doa</button>
+    <button class="cc" onclick="goChapter(7)" data-ms="Lagi" data-en="More" data-kor="더보기">Lagi</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="contentArea">
+
+    <!-- CHAPTER 0: HOME -->
+    <div class="chapter-page active" id="ch0">
+      <div class="hero-page">
+        <div class="hp-eyebrow" data-ms="청첩장 · Kad Jemputan" data-en="Wedding Invitation" data-kor="청첩장">청첩장 · Kad Jemputan</div>
+        <div class="hp-divider"><span>✿</span></div>
+        <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-bottom:1rem;" data-ms="Dengan penuh kesyukuran, kami menjemput tuan/puan ke majlis perkahwinan" data-en="With great joy, we invite you to our wedding celebration" data-kor="저희 두 사람의 결혼을 축하해 주세요">Dengan penuh kesyukuran, kami menjemput tuan/puan ke majlis perkahwinan</p>
+        <h1 class="hp-names"><span>{{GROOM_NAME}}</span><span class="hp-amp">— &amp; —</span><span>{{BRIDE_NAME}}</span></h1>
+        <div class="hp-kor" data-ms="{{GROOM_NAME}} 그리고 {{BRIDE_NAME}}" data-en="{{GROOM_NAME}} &amp; {{BRIDE_NAME}}" data-kor="{{GROOM_NAME}} 그리고 {{BRIDE_NAME}}">{{GROOM_NAME}} 그리고 {{BRIDE_NAME}}</div>
+        <div class="hp-date-strip">
+          <div class="hds-item"><div class="hds-n">{{DATE_DD}}</div><div class="hds-l" data-ms="Hari" data-en="Day" data-kor="일">Hari</div></div>
+          <div class="hds-sep"></div>
+          <div class="hds-item"><div class="hds-n">{{DATE_MM}}</div><div class="hds-l" data-ms="Bulan" data-en="Month" data-kor="월">Bulan</div></div>
+          <div class="hds-sep"></div>
+          <div class="hds-item"><div class="hds-n">{{DATE_YYYY}}</div><div class="hds-l" data-ms="Tahun" data-en="Year" data-kor="년">Tahun</div></div>
+        </div>
+        <div class="hp-venue-pill"><div class="hp-venue-dot"></div>{{VENUE_NAME}} · {{VENUE_CITY}}</div>
+        <div style="font-size:0.52rem;color:var(--muted);margin-top:0.6rem;letter-spacing:0.06em;font-style:italic;" id="dateHijriWrap">{{DATE_HIJRI}}</div>
+      </div>
+
+      <!-- BENTO GRID -->
+      <div class="bento-grid reveal">
+        <div class="bt"><div class="bt-chip" data-ms="Kiraan masa" data-en="Countdown" data-kor="카운트다운">Kiraan masa</div><div class="bt-val" id="homeCountDays">--</div><div class="bt-unit" data-ms="hari lagi" data-en="days to go" data-kor="일 남았어요">hari lagi</div></div>
+        <div class="bt"><div class="bt-chip" data-ms="Cuaca semasa" data-en="Live weather" data-kor="현재 날씨">Cuaca semasa</div><div class="bt-wx"><div class="bt-wx-ico" id="homeWxIco">⏳</div><div><div class="bt-wx-temp" id="homeWxTemp">--</div><div class="bt-unit" id="homeWxDesc"></div></div></div></div>
+        <div class="bt"><div class="bt-chip" data-ms="Pakaian" data-en="Attire" data-kor="드레스코드">Pakaian</div><div class="bt-tags"><div class="bt-tag">{{COLOR1_NAME}}</div><div class="bt-tag">{{COLOR2_NAME}}</div><div class="bt-tag">{{COLOR3_NAME}}</div></div><div class="bt-unit" style="margin-top:5px;">{{DRESSCODE_NOTE}}</div></div>
+        <div class="bt"><div class="bt-chip" data-ms="Masa majlis" data-en="Event time" data-kor="행사 시간">Masa majlis</div><div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--ink);margin-top:2px;">{{TIME_START}}</div><div class="bt-unit">— {{TIME_END}}</div></div>
+        <div class="bt wide dark" onclick="goChapter(5)" style="cursor:pointer;">
+          <div class="bt-chip lt" data-ms="Pengesahan kehadiran" data-en="Confirm attendance" data-kor="참석 확인">Pengesahan kehadiran</div>
+          <div class="bt-row"><div class="bt-rsvp-txt" data-ms="Sahkan kehadiran anda sekarang" data-en="Confirm your attendance now" data-kor="지금 참석 여부를 알려주세요">Sahkan kehadiran anda sekarang</div><div class="bt-arrow">›</div></div>
+        </div>
+      </div>
+
+      <div class="chapter-footer reveal">
+        <div class="cf-btn next" onclick="goChapter(1)">
+          <div class="cf-num" data-ms="BAB SETERUSNYA" data-en="NEXT CHAPTER" data-kor="다음 장">BAB SETERUSNYA</div>
+          <div class="cf-label" data-ms="Pengantin →" data-en="Couple →" data-kor="신랑신부 →">Pengantin →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAPTER 1: PENGANTIN -->
+    <div class="chapter-page" id="ch1">
+      <div class="sec-header reveal">
+        <div class="sh-eyebrow" data-ms="Majlis Perkahwinan" data-en="Wedding Ceremony" data-kor="결혼식">Majlis Perkahwinan</div>
+        <div class="sh-title" data-ms="Pengantin <em>Kami</em>" data-en="Our <em>Couple</em>" data-kor="신랑 신부 <em>소개</em>">Pengantin <em>Kami</em></div>
+      </div>
+      <div class="duo-wrap reveal">
+        <div class="duo-card">
+          <div class="dc-side" data-ms="— Pengantin Lelaki —" data-en="— Groom —" data-kor="— 신랑 —">— Pengantin Lelaki —</div>
+          <div class="dc-name">{{GROOM_NAME}}</div>
+          <div class="dc-kor" data-ms="{{GROOM_NAME}}" data-en="{{GROOM_NAME}}" data-kor="{{GROOM_NAME}}">{{GROOM_NAME}}</div>
+          <div class="dc-conn" data-ms="putera kepada" data-en="son of" data-kor="자녀">putera kepada</div>
+          <div class="dc-parents">{{GROOM_FATHER}}<br><span style="opacity:0.35;font-size:0.7rem;">&amp;</span><br>{{GROOM_MOTHER}}</div>
+        </div>
+        <div class="duo-sep"><span class="duo-sep-amp">&amp;</span></div>
+        <div class="duo-card">
+          <div class="dc-side" data-ms="— Pengantin Perempuan —" data-en="— Bride —" data-kor="— 신부 —">— Pengantin Perempuan —</div>
+          <div class="dc-name">{{BRIDE_NAME}}</div>
+          <div class="dc-kor" data-ms="{{BRIDE_NAME}}" data-en="{{BRIDE_NAME}}" data-kor="{{BRIDE_NAME}}">{{BRIDE_NAME}}</div>
+          <div class="dc-conn" data-ms="puteri kepada" data-en="daughter of" data-kor="자녀">puteri kepada</div>
+          <div class="dc-parents">{{BRIDE_FATHER}}<br><span style="opacity:0.35;font-size:0.7rem;">&amp;</span><br>{{BRIDE_MOTHER}}</div>
+        </div>
+      </div>
+      <div class="chapter-footer reveal">
+        <div class="cf-btn" onclick="goChapter(0)"><div class="cf-num">BAB SEBELUM</div><div class="cf-label">← Utama</div></div>
+        <div class="cf-btn next" onclick="goChapter(2)"><div class="cf-num" data-ms="BAB SETERUSNYA" data-en="NEXT" data-kor="다음">BAB SETERUSNYA</div><div class="cf-label" data-ms="Majlis →" data-en="Details →" data-kor="행사정보 →">Majlis →</div></div>
+      </div>
+    </div>
+
+    <!-- CHAPTER 2: MAJLIS -->
+    <div class="chapter-page" id="ch2">
+      <div class="sec-header reveal">
+        <div class="sh-eyebrow" data-ms="Maklumat Majlis" data-en="Event Details" data-kor="행사 정보">Maklumat Majlis</div>
+        <div class="sh-title" data-ms="Tarikh & <em>Masa</em>" data-en="Date & <em>Time</em>" data-kor="날짜 & <em>시간</em>">Tarikh & <em>Masa</em></div>
+      </div>
+      <div class="sec-cards reveal">
+        <div class="info-card" onclick="toggleExpand('detTarikh','arrTarikh')">
+          <div class="ic-ico">📅</div>
+          <div><div class="ic-label" data-ms="Tarikh" data-en="Date" data-kor="날짜">Tarikh</div><div class="ic-val">{{DATE_DISPLAY}}</div><div class="ic-sub">{{DATE_DAY}} · {{DATE_HIJRI}}</div></div>
+          <div class="ic-arr" id="arrTarikh">▼</div>
+        </div>
+        <div class="ic-expand" id="detTarikh"><div class="ic-expand-body"><div class="cal-wrap"><div class="cal-head"><div class="cal-month" id="calMonth"></div></div><div class="cal-grid" id="calGrid"></div></div></div></div>
+
+        <div class="info-card" onclick="toggleExpand('detMasa','arrMasa')">
+          <div class="ic-ico">🕐</div>
+          <div><div class="ic-label" data-ms="Masa" data-en="Time" data-kor="시간">Masa</div><div class="ic-val">{{TIME_START}} — {{TIME_END}}</div><div class="ic-sub" data-ms="Waktu Malaysia" data-en="Malaysian Time" data-kor="말레이시아 시간">Waktu Malaysia</div></div>
+          <div class="ic-arr" id="arrMasa">▼</div>
+        </div>
+        <div class="ic-expand" id="detMasa"><div class="ic-expand-body"><div class="clk-wrap"><svg width="90" height="90" viewBox="0 0 105 105"><circle cx="52.5" cy="52.5" r="44" fill="none" stroke="#e8e0d8" stroke-width="0.8"/><circle cx="52.5" cy="52.5" r="36" fill="#faf8f5" stroke="#e8e0d8" stroke-width="0.6"/><line id="svgHour" x1="52.5" y1="52.5" x2="52.5" y2="37" stroke="#c9968a" stroke-width="2" stroke-linecap="round"/><line id="svgMin" x1="52.5" y1="52.5" x2="52.5" y2="26" stroke="#2c2419" stroke-width="1.2" stroke-linecap="round"/><circle cx="52.5" cy="52.5" r="2.5" fill="#c9968a"/></svg><div class="clk-time">{{TIME_START_SHORT}} — {{TIME_END_SHORT}}</div></div></div></div>
+
+        <div class="info-card" onclick="toggleExpand('detVenue','arrVenue')">
+          <div class="ic-ico">📍</div>
+          <div><div class="ic-label" data-ms="Tempat" data-en="Venue" data-kor="장소">Tempat</div><div class="ic-val">{{VENUE_NAME}}</div><div class="ic-sub">{{VENUE_CITY}}</div></div>
+          <div class="ic-arr" id="arrVenue">▼</div>
+        </div>
+        <div class="ic-expand" id="detVenue"><div class="ic-expand-body"><p style="font-size:0.7rem;color:var(--muted);line-height:1.6;">{{VENUE_ADDRESS}}</p></div></div>
+      </div>
+
+      <!-- Dress Code -->
+      <div class="sec-header reveal" style="padding-top:1.8rem;">
+        <div class="sh-eyebrow" data-ms="Kod Pakaian" data-en="Dress Code" data-kor="드레스 코드">Kod Pakaian</div>
+        <div class="sh-title" data-ms="Warna <em>Tema</em>" data-en="Theme <em>Colours</em>" data-kor="테마 <em>색상</em>">Warna <em>Tema</em></div>
+      </div>
+      <div class="swatches reveal">
+        <div class="sw"><div class="sw-ring"><div class="sw-inner" style="background:{{COLOR1_HEX}};"></div></div><div class="sw-name">{{COLOR1_NAME}}</div></div>
+        <div class="sw"><div class="sw-ring"><div class="sw-inner" style="background:{{COLOR2_HEX}};"></div></div><div class="sw-name">{{COLOR2_NAME}}</div></div>
+        <div class="sw"><div class="sw-ring"><div class="sw-inner" style="background:{{COLOR3_HEX}};"></div></div><div class="sw-name">{{COLOR3_NAME}}</div></div>
+        <div class="sw"><div class="sw-ring"><div class="sw-inner" style="background:{{COLOR4_HEX}};"></div></div><div class="sw-name">{{COLOR4_NAME}}</div></div>
+        <div class="sw"><div class="sw-ring"><div class="sw-inner" style="background:{{COLOR5_HEX}};"></div></div><div class="sw-name">{{COLOR5_NAME}}</div></div>
+      </div>
+      <div class="dc-note reveal" data-ms="* Tema: {{DRESSCODE_THEME}} — {{DRESSCODE_NOTE}}" data-en="* Theme: {{DRESSCODE_THEME}} — {{DRESSCODE_NOTE}}" data-kor="* {{DRESSCODE_THEME}} — {{DRESSCODE_NOTE}}">* Tema: {{DRESSCODE_THEME}} — {{DRESSCODE_NOTE}}</div>
+
+      <!-- Tuan Rumah -->
+      <div class="sec-cards reveal" style="margin-top:1rem;">
+        <div class="info-card" style="cursor:default;">
+          <div class="ic-ico">🏠</div>
+          <div><div class="ic-label" data-ms="Tuan Rumah" data-en="Host" data-kor="주최자">Tuan Rumah</div><div class="ic-val">{{HOST_FAMILY}}</div><div class="ic-sub" data-ms="Bersama keluarga" data-en="Together with family" data-kor="가족과 함께">Bersama keluarga</div></div>
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="sec-header reveal" style="padding-top:1.8rem;">
+        <div class="sh-eyebrow" data-ms="Lokasi Majlis" data-en="Venue" data-kor="행사 장소">Lokasi Majlis</div>
+        <div class="sh-title" data-ms="Tempat <em>Majlis</em>" data-en="The <em>Venue</em>" data-kor="행사 <em>장소</em>">Tempat <em>Majlis</em></div>
+      </div>
+      <div class="map-visual reveal"><canvas id="mapCanvas"></canvas><div class="map-pin">📍</div><div class="map-ripple"></div></div>
+      <div class="map-info reveal"><div class="map-name">{{VENUE_FULLNAME}}</div><div class="map-addr">{{VENUE_ADDRESS}}</div></div>
+      <div class="map-btns reveal">
+        <a class="map-btn mb-waze" href="https://waze.com/ul?q={{VENUE_WAZE_QUERY}}&navigate=yes" target="_blank">🗺️ Waze</a>
+        <a class="map-btn mb-gmap" href="https://maps.google.com/?q={{VENUE_GMAPS_QUERY}}" target="_blank">📍 Google Maps</a>
+        <a class="map-btn mb-gmap" href="https://maps.google.com/?q={{VENUE_NAME_URL}}" target="_blank" style="display:none;">{{VENUE_NAME_URL}}</a>
+      </div>
+
+      <div class="chapter-footer reveal">
+        <div class="cf-btn" onclick="goChapter(1)"><div class="cf-num">BAB SEBELUM</div><div class="cf-label" data-ms="← Pengantin" data-en="← Couple" data-kor="← 신랑신부">← Pengantin</div></div>
+        <div class="cf-btn next" onclick="goChapter(3)"><div class="cf-num" data-ms="BAB SETERUSNYA" data-en="NEXT" data-kor="다음">BAB SETERUSNYA</div><div class="cf-label" data-ms="Aturcara →" data-en="Programme →" data-kor="일정 →">Aturcara →</div></div>
+      </div>
+    </div>
+
+    <!-- CHAPTER 3: ATURCARA + COUNTDOWN -->
+    <div class="chapter-page" id="ch3">
+      <div class="sec-header reveal">
+        <div class="sh-eyebrow" data-ms="Aturcara & Kiraan" data-en="Programme & Countdown" data-kor="일정 & 카운트다운">Aturcara & Kiraan</div>
+        <div class="sh-title" data-ms="Jadual <em>Acara</em>" data-en="Event <em>Schedule</em>" data-kor="행사 <em>일정표</em>">Jadual <em>Acara</em></div>
+      </div>
+      <div class="tl-list reveal">
+        <div class="tl-row"><div class="tl-dot">🌸</div><div class="tl-body"><div class="tl-time">{{TIME_ARRIVAL}}</div><div class="tl-ev" data-ms="Ketibaan Tetamu" data-en="Guest Arrival" data-kor="하객 도착">Ketibaan Tetamu</div></div></div>
+        <div class="tl-row"><div class="tl-dot">🤲</div><div class="tl-body"><div class="tl-time">{{TIME_AKAD}}</div><div class="tl-ev" data-ms="Akad Nikah" data-en="Solemnisation" data-kor="혼인 서약">Akad Nikah</div></div></div>
+        <div class="tl-row"><div class="tl-dot">👑</div><div class="tl-body"><div class="tl-time">{{TIME_BERSANDING}}</div><div class="tl-ev" data-ms="Persandingan" data-en="Wedding Dais" data-kor="결혼식 행사">Persandingan</div></div></div>
+        <div class="tl-row"><div class="tl-dot">🍽️</div><div class="tl-body"><div class="tl-time">{{TIME_MAKAN}}</div><div class="tl-ev" data-ms="Jamuan Makan" data-en="Wedding Feast" data-kor="피로연">Jamuan Makan</div></div></div>
+        <div class="tl-row"><div class="tl-dot">🌙</div><div class="tl-body"><div class="tl-time">{{TIME_BERSURAI}}</div><div class="tl-ev" data-ms="Majlis Bersurai" data-en="End of Programme" data-kor="행사 종료">Majlis Bersurai</div></div></div>
+      </div>
+
+      <div class="sec-header reveal" style="padding-top:1.8rem;">
+        <div class="sh-eyebrow" data-ms="Kiraan Masa" data-en="Countdown" data-kor="카운트다운">Kiraan Masa</div>
+        <div class="sh-title" data-ms="Menuju <em>Hari Bahagia</em>" data-en="Until the <em>Big Day</em>" data-kor="행복한 날까지 <em>카운트다운</em>">Menuju <em>Hari Bahagia</em></div>
+      </div>
+      <div style="text-align:center;padding:0 1rem;" class="reveal">
+        <div class="cd-grid">
+          <div class="cd-box"><div class="cd-n" id="cdD">00</div><div class="cd-l" data-ms="Hari" data-en="Days" data-kor="일">Hari</div></div>
+          <div class="cd-box"><div class="cd-n" id="cdH">00</div><div class="cd-l" data-ms="Jam" data-en="Hours" data-kor="시간">Jam</div></div>
+          <div class="cd-box"><div class="cd-n" id="cdM">00</div><div class="cd-l" data-ms="Minit" data-en="Minutes" data-kor="분">Minit</div></div>
+          <div class="cd-box"><div class="cd-n" id="cdS">00</div><div class="cd-l" data-ms="Saat" data-en="Seconds" data-kor="초">Saat</div></div>
+        </div>
+        <div id="cdDone">
+          <div class="cd-ring"><div class="cd-centre"><div class="cd-live-ico">🌸</div><div class="cd-live-title" data-ms="Hari Ini!" data-en="Today!" data-kor="오늘!">Hari Ini!</div></div></div>
+          <div class="cd-live-badge"><div class="cd-live-dot"></div><div class="cd-live-lbl" data-ms="Majlis Sedang Berlangsung" data-en="Celebration is Live" data-kor="지금 진행 중">Majlis Sedang Berlangsung</div></div>
+          <div class="cd-petals" id="cdPetals"></div>
+        </div>
+
+        <!-- Save Date -->
+        <div style="margin-top:1.2rem;font-size:0.44rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem;" data-ms="Simpan Tarikh" data-en="Save the Date" data-kor="날짜 저장">Simpan Tarikh</div>
+      </div>
+      <div class="cal-btns reveal">
+        <a class="cal-btn-a" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text={{GROOM_NAME}}+%26+{{BRIDE_NAME}}&dates={{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}0000%2F{{DATE_YYYYMMDD}}T{{TIME_END_HHMM}}0000&location={{VENUE_NAME}}" target="_blank">📅 Google Calendar</a>
+        <a class="cal-btn-a" href="https://outlook.live.com/calendar/0/deeplink/compose?subject={{GROOM_NAME}}+%26+{{BRIDE_NAME}}&startdt={{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}00&location={{VENUE_NAME}}" target="_blank">📅 Outlook Calendar</a>
+      </div>
+
+      <div class="chapter-footer reveal">
+        <div class="cf-btn" onclick="goChapter(2)"><div class="cf-num">BAB SEBELUM</div><div class="cf-label" data-ms="← Majlis" data-en="← Details" data-kor="← 행사정보">← Majlis</div></div>
+        <div class="cf-btn next" onclick="goChapter(4)"><div class="cf-num" data-ms="BAB SETERUSNYA" data-en="NEXT" data-kor="다음">BAB SETERUSNYA</div><div class="cf-label" data-ms="Kisah →" data-en="Story →" data-kor="러브스토리 →">Kisah →</div></div>
+      </div>
+    </div>
+
+    <!-- CHAPTER 4: KISAH + MESEJ -->
+    <div class="chapter-page" id="ch4">
+      <div class="sec-header reveal">
+        <div class="sh-eyebrow" data-ms="Kisah Cinta" data-en="Our Story" data-kor="우리의 이야기">Kisah Cinta</div>
+        <div class="sh-title" data-ms="Perjalanan <em>Kami</em>" data-en="Our <em>Journey</em>" data-kor="우리의 <em>여정</em>">Perjalanan <em>Kami</em></div>
+      </div>
+      <div class="love-list reveal">
+        <div class="love-row"><div class="love-yr">{{LOVE_YEAR_1}}</div><div class="love-body"><div class="love-title" data-ms="{{LOVE_STORY_1}}" data-en="{{LOVE_STORY_1}}" data-kor="{{LOVE_STORY_1}}">{{LOVE_STORY_1}}</div><div class="love-desc" data-ms="{{LOVE_STORY_1}}" data-en="{{LOVE_STORY_1}}" data-kor="{{LOVE_STORY_1}}">{{LOVE_STORY_1}}</div></div></div>
+        <div class="love-row"><div class="love-yr">{{LOVE_YEAR_2}}</div><div class="love-body"><div class="love-title" data-ms="{{LOVE_STORY_2}}" data-en="{{LOVE_STORY_2}}" data-kor="{{LOVE_STORY_2}}">{{LOVE_STORY_2}}</div><div class="love-desc" data-ms="{{LOVE_STORY_2}}" data-en="{{LOVE_STORY_2}}" data-kor="{{LOVE_STORY_2}}">{{LOVE_STORY_2}}</div></div></div>
+        <div class="love-row"><div class="love-yr">{{LOVE_YEAR_3}}</div><div class="love-body"><div class="love-title" data-ms="{{LOVE_STORY_3}}" data-en="{{LOVE_STORY_3}}" data-kor="{{LOVE_STORY_3}}">{{LOVE_STORY_3}}</div><div class="love-desc" data-ms="{{LOVE_STORY_3}}" data-en="{{LOVE_STORY_3}}" data-kor="{{LOVE_STORY_3}}">{{LOVE_STORY_3}}</div></div></div>
+        <div class="love-row"><div class="love-yr">{{LOVE_YEAR_4}}</div><div class="love-body"><div class="love-title" data-ms="Hari Perkahwinan 💍" data-en="Wedding Day 💍" data-kor="결혼식 날 💍">Hari Perkahwinan 💍</div><div class="love-desc" data-ms="Alhamdulillah, saat yang dinantikan telah tiba. Semoga kebahagiaan ini berkekalan hingga ke syurga." data-en="Alhamdulillah, the moment we've been waiting for. May this happiness last till Jannah." data-kor="알함두릴라, 기다리던 순간이 찾아왔어요. 이 행복이 영원하길 바랍니다.">Alhamdulillah, saat yang dinantikan telah tiba. Semoga kebahagiaan ini berkekalan hingga ke syurga.</div></div></div>
+      </div>
+
+      <div class="sec-header reveal" style="padding-top:1.8rem;">
+        <div class="sh-eyebrow" data-ms="Perutusan Khas" data-en="Special Message" data-kor="특별 메시지">Perutusan Khas</div>
+        <div class="sh-title" data-ms="Kata <em>Hati</em>" data-en="From Our <em>Hearts</em>" data-kor="마음의 <em>말씀</em>">Kata <em>Hati</em></div>
+      </div>
+      <div class="mesej-body reveal">
+        <div class="mesej-qm">"</div>
+        <p class="mesej-text" data-ms="{{HOST_MESSAGE_BM}}" data-en="{{HOST_MESSAGE_EN}}" data-kor="{{HOST_MESSAGE_BM}}">{{HOST_MESSAGE_BM}}</p>
+        <div class="mesej-from" data-ms="Daripada" data-en="From" data-kor="보내는 사람">Daripada</div>
+        <div class="mesej-name">{{HOST_FAMILY_FULL}}</div>
+      </div>
+
+      <div class="chapter-footer reveal">
+        <div class="cf-btn" onclick="goChapter(3)"><div class="cf-num">BAB SEBELUM</div><div class="cf-label" data-ms="← Aturcara" data-en="← Programme" data-kor="← 일정">← Aturcara</div></div>
+        <div class="cf-btn next" onclick="goChapter(5)"><div class="cf-num" data-ms="BAB SETERUSNYA" data-en="NEXT" data-kor="다음">BAB SETERUSNYA</div><div class="cf-label" data-ms="RSVP →" data-en="RSVP →" data-kor="참석확인 →">RSVP →</div></div>
+      </div>
+    </div>
+
+    <!-- CHAPTER 5: RSVP + REGISTRY -->
+    <div class="chapter-page" id="ch5">
+      <div class="sec-header reveal">
+        <div class="sh-eyebrow" data-ms="Pengesahan Kehadiran" data-en="RSVP" data-kor="참석 확인">Pengesahan Kehadiran</div>
+        <div class="sh-title" data-ms="Sahkan <em>Kehadiran</em>" data-en="Confirm <em>Attendance</em>" data-kor="참석 여부를 <em>알려주세요</em>">Sahkan <em>Kehadiran</em></div>
+      </div>
+      <div class="form-wrap reveal">
+        <div class="form-card" id="rsvpForm">
+          <div class="fg"><label class="fl" data-ms="Nama Penuh" data-en="Full Name" data-kor="성함">Nama Penuh</label><input type="text" class="fi" id="rsvpName" placeholder="Nama anda..." data-ph-ms="Nama anda..." data-ph-en="Your name..." data-ph-kor="성함을 입력해주세요"></div>
+          <div class="fg"><label class="fl" data-ms="Bilangan Hadir" data-en="No. of Guests" data-kor="참석 인원">Bilangan Hadir</label>
+            <div class="counter-wrap"><button type="button" class="counter-btn" onclick="rsvpCountAdj(-1)">−</button><input type="text" class="counter-val" id="rsvpCount" value="1" readonly><button type="button" class="counter-btn" onclick="rsvpCountAdj(1)">+</button></div>
+          </div>
+          <div class="fg"><label class="fl" data-ms="Status Kehadiran" data-en="Attendance" data-kor="참석 여부">Status Kehadiran</label>
+            <select class="fsel" id="rsvpStatus"><option value="" data-ms="-- Pilih --" data-en="-- Select --" data-kor="-- 선택 --">-- Pilih --</option><option value="hadir" data-ms="✅ Insya-Allah hadir" data-en="✅ Will attend" data-kor="✅ 참석합니다">✅ Insya-Allah hadir</option></select>
+          </div>
+          <button class="btn-main" onclick="submitRSVP()" data-ms="Hantar Kehadiran" data-en="Submit RSVP" data-kor="참석 확인 전송">Hantar Kehadiran</button>
+        </div>
+        <div id="rsvpSuccess" style="display:none;">
+          <div class="rsvp-tick">🌸</div>
+          <div class="rsvp-ok-t" data-ms="Jazakallahu Khairan" data-en="Thank You!" data-kor="감사합니다">Jazakallahu Khairan</div>
+          <div class="rsvp-ok-s" data-ms="Kehadiran anda telah direkodkan." data-en="Attendance recorded." data-kor="참석 확인이 완료되었습니다.">Kehadiran anda telah direkodkan.</div>
+          <div id="rsvpCards" style="width:100%;margin-top:0.5rem;"></div>
+          <button class="btn-sec" onclick="resetRSVP()" data-ms="Daftar lain" data-en="Register another" data-kor="다른 분 등록">Daftar lain</button>
+        </div>
+
+        <div class="rsvp-list-wrap">
+          <div class="rl-header">
+            <div class="rl-title">✦ Senarai Hadir</div>
+            <div id="rsvpTotalBadge"><span id="rsvpTotalPax">0</span> pax dijangka hadir</div>
+          </div>
+          <div id="rsvpSearchWrap">
+            <span class="rs-ico">🔍</span>
+            <input type="text" id="rsvpSearch" placeholder="Cari nama..." oninput="filterRSVP()" data-ph-ms="Cari nama..." data-ph-en="Search name..." data-ph-kor="이름 검색...">
+          </div>
+          <div id="rsvpList"></div>
+          <div id="rsvpSearchEmpty" style="display:none;font-size:0.62rem;color:var(--muted);text-align:center;padding:0.6rem;font-style:italic;">Tiada nama yang sepadan.</div>
+        </div>
+      </div>
+
+      <!-- Registry -->
+      <div class="sec-header reveal" style="padding-top:1.8rem;">
+        <div class="sh-eyebrow" data-ms="Salam Kaut" data-en="Gift Registry" data-kor="축의금">Salam Kaut</div>
+        <div class="sh-title" data-ms="Hadiah <em>Kahwin</em>" data-en="Wedding <em>Gift</em>" data-kor="웨딩 <em>선물</em>">Hadiah <em>Kahwin</em></div>
+      </div>
+      <div class="form-wrap reveal">
+        <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center;margin-bottom:8px;">
+          <div class="qr-box"><img src="{{QR_CODE_URL}}" style="width:105px;height:105px;object-fit:contain;" onerror="this.style.display='none'"><div style="font-size:1.3rem;opacity:0.3;">📱</div></div>
+          <div style="font-size:0.66rem;color:var(--muted);margin-bottom:3px;" data-ms="No. Akaun" data-en="Account No." data-kor="계좌번호">No. Akaun</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--ink);margin-bottom:2px;">Lihat QR Code</div>
+          <div style="font-size:0.62rem;color:var(--muted);"> · </div>
+        </div>
+        <div class="form-card" id="regForm">
+          <div class="fg"><label class="fl" data-ms="Nama Anda" data-en="Your Name" data-kor="성함">Nama Anda</label><input type="text" class="fi" id="regName" placeholder="Nama..." data-ph-ms="Nama..." data-ph-en="Name..." data-ph-kor="성함..."></div>
+          <div class="fg"><label class="fl" data-ms="Jumlah (Pilihan)" data-en="Amount (Optional)" data-kor="금액 (선택사항)">Jumlah (Pilihan)</label><input type="number" class="fi" id="regAmount" placeholder="RM 0.00" min="0"></div>
+          <button class="btn-main" onclick="submitRegistry()" data-ms="Hantar Salam Kaut" data-en="Send Gift" data-kor="축의금 전송">Hantar Salam Kaut</button>
+        </div>
+        <div id="regSuccess" style="display:none;flex-direction:column;align-items:center;gap:0.8rem;padding:1.5rem;text-align:center;"><div style="font-size:1.8rem;">🌸</div><div id="regSuccessMsg" style="font-size:0.73rem;color:var(--ink2);line-height:1.7;"></div><div style="display:flex;gap:6px;width:100%;"><button class="btn-sec" onclick="screenshotReg()" style="flex:1;" data-ms="Kongsi" data-en="Share" data-kor="공유">Kongsi</button><button class="btn-sec" onclick="resetReg()" style="flex:1;" data-ms="Balik" data-en="Back" data-kor="돌아가기">Balik</button></div></div>
+      </div>
+
+      <div class="chapter-footer reveal">
+        <div class="cf-btn" onclick="goChapter(4)"><div class="cf-num">BAB SEBELUM</div><div class="cf-label" data-ms="← Kisah" data-en="← Story" data-kor="← 러브스토리">← Kisah</div></div>
+        <div class="cf-btn next" onclick="goChapter(6)"><div class="cf-num" data-ms="BAB SETERUSNYA" data-en="NEXT" data-kor="다음">BAB SETERUSNYA</div><div class="cf-label" data-ms="Doa →" data-en="Wishes →" data-kor="축하메시지 →">Doa →</div></div>
+      </div>
+    </div>
+
+    <!-- CHAPTER 6: DOA WALL -->
+    <div class="chapter-page" id="ch6">
+      <div class="sec-header reveal">
+        <div class="sh-eyebrow" data-ms="Ucapan & Doa" data-en="Wishes & Prayers" data-kor="축하 메시지">Ucapan & Doa</div>
+        <div class="sh-title" data-ms="Titipkan <em>Doa Anda</em>" data-en="Leave Your <em>Wishes</em>" data-kor="따뜻한 <em>메시지를</em> 남겨주세요">Titipkan <em>Doa Anda</em></div>
+      </div>
+      <div class="form-wrap reveal">
+        <div class="form-card">
+          <div class="fg"><label class="fl" data-ms="Nama" data-en="Name" data-kor="이름">Nama</label><input type="text" class="fi" id="doaName" placeholder="Nama anda..." data-ph-ms="Nama anda..." data-ph-en="Your name..." data-ph-kor="이름을 입력해주세요"></div>
+          <div class="fg"><label class="fl" data-ms="Ucapan / Doa" data-en="Message / Wishes" data-kor="메시지">Ucapan / Doa</label><textarea class="fta" id="doaMsg" placeholder="Tulis doa atau ucapan di sini..." data-ph-ms="Tulis doa atau ucapan di sini..." data-ph-en="Write your wishes here..." data-ph-kor="메시지를 입력해주세요..."></textarea></div>
+          <button class="btn-main" onclick="submitDoa()" data-ms="Hantar Doa 🌸" data-en="Send Wishes 🌸" data-kor="메시지 전송 🌸">Hantar Doa 🌸</button>
+        </div>
+        <div class="doa-wall" id="doaWall"></div>
+      </div>
+      <div class="chapter-footer reveal">
+        <div class="cf-btn" onclick="goChapter(5)"><div class="cf-num">BAB SEBELUM</div><div class="cf-label" data-ms="← RSVP" data-en="← RSVP" data-kor="← 참석확인">← RSVP</div></div>
+        <div class="cf-btn next" onclick="goChapter(7)"><div class="cf-num" data-ms="BAB SETERUSNYA" data-en="NEXT" data-kor="다음">BAB SETERUSNYA</div><div class="cf-label" data-ms="Lagi →" data-en="More →" data-kor="더보기 →">Lagi →</div></div>
+      </div>
+    </div>
+
+    <!-- CHAPTER 7: LAGI (Weather + Game + Contact) -->
+    <div class="chapter-page" id="ch7">
+      <div class="sec-header reveal">
+        <div class="sh-eyebrow" data-ms="Cuaca Semasa" data-en="Live Weather" data-kor="현재 날씨">Cuaca Semasa</div>
+        <div class="sh-title" data-ms="Ramalan <em>Cuaca</em>" data-en="Weather <em>Forecast</em>" data-kor="날씨 <em>예보</em>">Ramalan <em>Cuaca</em></div>
+      </div>
+      <div class="wx-card reveal" id="wxCard"><div class="wx-ico" id="wxIcon">⏳</div><div class="wx-temp" id="wxTemp" style="color:var(--muted);">Memuatkan...</div><div class="wx-desc" id="wxDesc"></div><div class="wx-extras" id="wxExtras"><div class="wx-stat"><div class="wx-stat-l" data-ms="Kelembapan" data-en="Humidity" data-kor="습도">Kelembapan</div><div class="wx-stat-v" id="wxHumidity">--</div></div><div class="wx-stat"><div class="wx-stat-l" data-ms="Rasa Seperti" data-en="Feels Like" data-kor="체감온도">Rasa Seperti</div><div class="wx-stat-v" id="wxFeels">--</div></div><div class="wx-stat"><div class="wx-stat-l" data-ms="Angin" data-en="Wind" data-kor="바람">Angin</div><div class="wx-stat-v" id="wxWind">--</div></div></div><div class="wx-note" id="wxNote">📍 {{VENUE_CITY}}</div></div>
+
+      <div class="sec-header reveal" style="padding-top:1.8rem;">
+        <div class="sh-eyebrow" data-ms="Permainan" data-en="Mini Game" data-kor="미니 게임">Permainan</div>
+        <div class="sh-title" data-ms="Cari <em>Padanan</em>" data-en="Find the <em>Match</em>" data-kor="짝 <em>맞추기</em>">Cari <em>Padanan</em></div>
+      </div>
+      <div style="padding:0 1rem;" class="reveal">
+        <div class="game-hud"><span data-ms="Langkah:" data-en="Moves:" data-kor="이동:">Langkah:</span> <span id="moveCount">0</span> &nbsp; <span data-ms="Padan:" data-en="Matched:" data-kor="맞춤:">Padan:</span> <span id="matchCount">0</span>/6</div>
+        <div class="mem-grid" id="memGrid"></div>
+        <div class="game-result" id="gameResult"></div>
+        <button class="btn-sec" onclick="initGame()" data-ms="Main Semula 🌸" data-en="Play Again 🌸" data-kor="다시 하기 🌸" style="margin-top:0.5rem;">Main Semula 🌸</button>
+      </div>
+
+      <div class="sec-header reveal" style="padding-top:1.8rem;">
+        <div class="sh-eyebrow" data-ms="Hubungi Kami" data-en="Contact Us" data-kor="연락처">Hubungi Kami</div>
+        <div class="sh-title" data-ms="Ada <em>Pertanyaan?</em>" data-en="Any <em>Questions?</em>" data-kor="문의 <em>사항?</em>">Ada <em>Pertanyaan?</em></div>
+      </div>
+      <div class="sec-cards reveal">
+        <a class="ct-card" href="https://wa.me/{{CONTACT1_PHONE_WA}}"><div class="ct-ico">📞</div><div><div class="ct-role" data-ms="Urusetia Majlis" data-en="Event Coordinator" data-kor="행사 담당자">Urusetia Majlis</div><div class="ct-name">{{CONTACT1_NAME}}</div><div class="ct-num">{{CONTACT1_PHONE_DISPLAY}}</div></div><span class="ct-arr">›</span></a>
+        <a class="ct-card" href="https://wa.me/{{CONTACT2_PHONE_WA}}"><div class="ct-ico">📞</div><div><div class="ct-role" data-ms="Urusetia Majlis" data-en="Event Coordinator" data-kor="행사 담당자">Urusetia Majlis</div><div class="ct-name">{{CONTACT2_NAME}}</div><div class="ct-num">{{CONTACT2_PHONE_DISPLAY}}</div></div><span class="ct-arr">›</span></a>
+        <a class="ct-card" href="https://wa.me/{{BRIDE_NAME_URL}}"><div class="ct-ico">👰</div><div><div class="ct-role" data-ms="Pengantin Perempuan" data-en="Bride" data-kor="신부">Pengantin Perempuan</div><div class="ct-name">{{BRIDE_NAME}}</div></div><span class="ct-arr">›</span></a>
+        <a class="ct-card" href="https://wa.me/{{GROOM_NAME_URL}}"><div class="ct-ico">🤵</div><div><div class="ct-role" data-ms="Pengantin Lelaki" data-en="Groom" data-kor="신랑">Pengantin Lelaki</div><div class="ct-name">{{GROOM_NAME}}</div></div><span class="ct-arr">›</span></a>
+      </div>
+
+      <div class="page-footer reveal">
+        <div style="font-size:0.65rem;color:var(--rose2);margin-bottom:0.8rem;">✿ ✿ ✿</div>
+        <div class="pf-names">{{GROOM_NAME}} &amp; {{BRIDE_NAME}}</div>
+        <div class="pf-kor" data-ms="함께해 주셔서 감사합니다" data-en="Thank you for celebrating with us" data-kor="함께해 주셔서 감사합니다">함께해 주셔서 감사합니다</div>
+        <div style="font-size:0.7rem;color:var(--muted);margin:0.8rem 0;font-style:italic;font-family:'Cormorant Garamond',serif;" data-ms="{{HOST_MESSAGE_BM}}" data-en="{{HOST_MESSAGE_EN}}" data-kor="{{HOST_MESSAGE_BM}}">{{HOST_MESSAGE_BM}}</div>
+        <div class="pf-credit" data-ms="{{HOST_FAMILY_FULL}}" data-en="{{HOST_FAMILY_FULL}}" data-kor="{{HOST_FAMILY_FULL}}">{{HOST_FAMILY_FULL}}</div>
+      </div>
+      <div class="chapter-footer reveal">
+        <div class="cf-btn" onclick="goChapter(6)"><div class="cf-num">BAB SEBELUM</div><div class="cf-label" data-ms="← Doa" data-en="← Wishes" data-kor="← 축하메시지">← Doa</div></div>
+        <div class="cf-btn next" onclick="goChapter(0)"><div class="cf-num" data-ms="KEMBALI KE MULA" data-en="BACK TO START" data-kor="처음으로">KEMBALI KE MULA</div><div class="cf-label" data-ms="↑ Utama" data-en="↑ Home" data-kor="↑ 홈">↑ Utama</div></div>
+      </div>
+    </div>
+
+  </div><!-- end contentArea -->
+
+  <!-- TAB BAR -->
+  <div id="tabBar">
+    <div class="tab-inner">
+      <div class="tab-btn active" onclick="goChapter(0);setTab(0)" id="tab0"><i>🏠</i><span data-ms="Utama" data-en="Home" data-kor="홈">Utama</span></div>
+      <div class="tab-btn" onclick="goChapter(2);setTab(1)" id="tab1"><i>📅</i><span data-ms="Majlis" data-en="Details" data-kor="행사">Majlis</span></div>
+      <div class="tab-btn" onclick="goChapter(5);setTab(2)" id="tab2"><i>✅</i><span>RSVP</span></div>
+      <div class="tab-btn" onclick="goChapter(6);setTab(3)" id="tab3"><i>🌸</i><span data-ms="Doa" data-en="Wishes" data-kor="축하">Doa</span></div>
+      <div class="tab-btn" onclick="goChapter(7);setTab(4)" id="tab4"><i>✦</i><span data-ms="Lagi" data-en="More" data-kor="더보기">Lagi</span></div>
+    </div>
+  </div>
+
+</div><!-- end appShell -->
+
+<script>
+// ══ CANVAS: Envelope floating petals ══
+class EnvCanvas{
+  constructor(){this.c=document.getElementById('envCanvas');if(!this.c)return;this.ctx=this.c.getContext('2d');this.p=[];this.resize();window.addEventListener('resize',()=>this.resize());for(let i=0;i<14;i++)this.p.push(this.mk());}
+  resize(){if(!this.c)return;this.W=this.c.width=window.innerWidth;this.H=this.c.height=window.innerHeight;}
+  mk(){return{x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,vy:0.45+Math.random()*0.55,vx:(Math.random()-.5)*0.4,rot:Math.random()*360,vr:(Math.random()-.5)*0.5,size:7+Math.random()*11,op:0.07+Math.random()*0.1,char:['✿','❀','✦'][Math.floor(Math.random()*3)]};}
+  draw(){if(!this.c)return;this.ctx.clearRect(0,0,this.W,this.H);this.p.forEach(p=>{p.y+=p.vy;p.x+=p.vx;p.rot+=p.vr;if(p.y>this.H+20){Object.assign(p,this.mk());p.y=-20;}this.ctx.save();this.ctx.globalAlpha=p.op;this.ctx.fillStyle='#c9968a';this.ctx.font=p.size+'px serif';this.ctx.translate(p.x,p.y);this.ctx.rotate(p.rot*Math.PI/180);this.ctx.fillText(p.char,0,0);this.ctx.restore();});}
+}
+
+// ══ CANVAS: Map grid ══
+class MapCanvas{
+  constructor(){this.c=document.getElementById('mapCanvas');if(!this.c)return;this.ctx=this.c.getContext('2d');this.resize();window.addEventListener('resize',()=>this.resize());}
+  resize(){if(!this.c)return;this.W=this.c.width=this.c.offsetWidth;this.H=this.c.height=this.c.offsetHeight;}
+  draw(){if(!this.c)return;if(this.W!==this.c.offsetWidth)this.resize();this.ctx.clearRect(0,0,this.W,this.H);this.ctx.strokeStyle='rgba(201,150,138,0.1)';this.ctx.lineWidth=0.5;for(let x=0;x<this.W;x+=28){this.ctx.beginPath();this.ctx.moveTo(x,0);this.ctx.lineTo(x,this.H);this.ctx.stroke();}for(let y=0;y<this.H;y+=28){this.ctx.beginPath();this.ctx.moveTo(0,y);this.ctx.lineTo(this.W,y);this.ctx.stroke();}}
+}
+
+// ══ CANVAS: Ambient petals ══
+let _ambientActive=false;
+function initAmbient(){
+  const canvas=document.getElementById('petalCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');let W,H,particles=[],lastSpawn=0;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  window.addEventListener('resize',resize);resize();
+  function makeP(){return{x:Math.random()*W,y:-20,vy:0.4+Math.random()*.55,vx:(Math.random()-.5)*.45,rot:Math.random()*360,vr:(Math.random()-.5)*.75,size:6+Math.random()*7,op:0.12+Math.random()*.15,char:['✿','✦','·','❀'][Math.floor(Math.random()*4)]};}
+  function draw(ts){
+    if(!_ambientActive){requestAnimationFrame(draw);return;}
+    ctx.clearRect(0,0,W,H);
+    if(ts-lastSpawn>2000&&particles.length<10){particles.push(makeP());lastSpawn=ts;}
+    particles=particles.filter(p=>p.y<H+25);
+    particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;ctx.save();ctx.globalAlpha=p.op;ctx.font=p.size+'px serif';ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle='rgba(201,150,138,1)';ctx.fillText(p.char,0,0);ctx.restore();});
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+}
+
+let envC,mapC;
+window.addEventListener('load',()=>{
+  envC=new EnvCanvas();
+  initMonogram();
+  initAmbient();
+  buildCalendar();
+  fetchWeather();
+  (function envLoop(){if(envC)envC.draw();requestAnimationFrame(envLoop);})();
+});
+
+// ══ ENVELOPE ══
+function openEnvelope(){
+  const env=document.getElementById('envelope');if(env.classList.contains('open'))return;
+  env.classList.add('open');
+  setTimeout(()=>{
+    document.getElementById('envSection').classList.add('hide');
+    const shell=document.getElementById('appShell');shell.classList.add('show');
+    document.getElementById('tabBar').style.display='flex';
+    document.getElementById('shareBtn').style.display='flex';
+    document.getElementById('audioViz').style.display='flex';
+    startAudio();startCountdown();initReveal();initGame();
+    mapC=new MapCanvas();
+    (function mapLoop(){if(mapC)mapC.draw();requestAnimationFrame(mapLoop);})();
+    _ambientActive=true;document.getElementById('petalCanvas').style.opacity='0.3';
+    launchConfetti();
+    const t='{{TIME_START_HHMM}}';
+    if(t&&t.length===4&&!t.includes('{'))buildClock(parseInt(t.slice(0,2)),parseInt(t.slice(2,4)));
+    else buildClock(11,0);
+    setTimeout(()=>document.querySelector('#ch0 .reveal')&&initReveal(),200);
+    setTimeout(()=>openModal(),1800);
+    renderDoa();loadRSVPList();
+  },1050);
+}
+
+// ══ AUDIO ══
+let isPlaying=false;
+const audio=document.getElementById('bgAudio');
+function _iosUnlock(){try{const ac=new(window.AudioContext||window.webkitAudioContext)();const b=ac.createBuffer(1,1,22050);const s=ac.createBufferSource();s.buffer=b;s.connect(ac.destination);s.start(0);ac.resume().catch(()=>{});}catch(e){}try{audio.load();}catch(e){}}
+document.addEventListener('touchstart',_iosUnlock,{once:true,passive:true});
+document.addEventListener('click',_iosUnlock,{once:true,passive:true});
+function startAudio(){
+  const btn=document.getElementById('audioBtn');audio.volume=0;
+  const p=audio.play();if(p!==undefined){
+    p.then(()=>{isPlaying=true;let v=0;const f=setInterval(()=>{v=Math.min(v+0.03,0.75);audio.volume=v;if(v>=0.75)clearInterval(f);},200);btn.textContent='🔊';btn.classList.add('playing');document.getElementById('audioViz').classList.add('playing');
+    const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isSafari){const n=document.getElementById('safariNotice');if(n){n.style.display='block';setTimeout(()=>n.style.display='none',4000);}}
+    }).catch(()=>{btn.textContent='▶️';});
+  }
+}
+function toggleAudio(){
+  const btn=document.getElementById('audioBtn');const viz=document.getElementById('audioViz');
+  if(isPlaying){audio.pause();isPlaying=false;btn.textContent='🎵';btn.classList.remove('playing');viz.classList.remove('playing');}
+  else{_iosUnlock();const p=audio.play();if(p!==undefined)p.then(()=>{isPlaying=true;btn.textContent='🔊';btn.classList.add('playing');viz.classList.add('playing');}).catch(()=>{});}
+}
+
+// ══ CHAPTER NAVIGATION ══
+let currentChapter=0;
+const chapterNames={
+  ms:['Utama','Pengantin','Majlis','Aturcara','Kisah','RSVP','Doa','Lagi'],
+  en:['Home','Couple','Details','Programme','Story','RSVP','Wishes','More'],
+  kor:['홈','신랑신부','행사정보','일정','러브스토리','참석확인','축하메시지','더보기']
+};
+function goChapter(n){
+  document.querySelectorAll('.chapter-page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('ch'+n).classList.add('active');
+  document.querySelectorAll('.cc').forEach((c,i)=>c.classList.toggle('active',i===n));
+  currentChapter=n;
+  const total=8;const pct=((n+1)/total*100).toFixed(1)+'%';
+  document.getElementById('cbFill').style.width=pct;
+  const lang=window._lang||'ms';
+  document.getElementById('cbNum').textContent='BAB 0'+(n+1)+' / 0'+total;
+  document.getElementById('cbName').textContent=chapterNames[lang][n]||chapterNames.ms[n];
+  // Scroll chip into view
+  const chip=document.querySelectorAll('.cc')[n];if(chip)chip.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  // Scroll content to top
+  document.getElementById('contentArea').scrollTo({top:0,behavior:'smooth'});
+  // Re-trigger reveal for new chapter
+  setTimeout(()=>{
+    document.querySelectorAll('#ch'+n+' .reveal').forEach(el=>{el.classList.remove('visible');setTimeout(()=>el.classList.add('visible'),50);});
+  },100);
+}
+function setTab(n){document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));}
+
+// ══ LANG ══
+function setLang(l){
+  window._lang=l;
+  document.querySelectorAll('[data-ms]').forEach(el=>{const t=el.getAttribute('data-'+l)||el.getAttribute('data-ms');if(t)el.innerHTML=t;});
+  document.querySelectorAll('[data-ph-ms]').forEach(el=>{const p=el.getAttribute('data-ph-'+l)||el.getAttribute('data-ph-ms');if(p)el.setAttribute('placeholder',p);});
+  document.querySelectorAll('option[data-ms]').forEach(el=>{const t=el.getAttribute('data-'+l)||el.getAttribute('data-ms');if(t)el.textContent=t;});
+  document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('active',b.getAttribute('onclick').includes("'"+l+"'")));
+  document.getElementById('cbName').textContent=chapterNames[l]?chapterNames[l][currentChapter]:chapterNames.ms[currentChapter];
+  document.body.style.wordBreak=l==='kor'?'keep-all':'';
+}
+
+// ══ REVEAL ══
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.06});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+// ══ MONOGRAM ══
+function initMonogram(){
+  const g='{{GROOM_NAME}}',b='{{BRIDE_NAME}}';
+  const gi=g&&!g.includes('{{')?g.trim()[0].toUpperCase():'G';
+  const bi=b&&!b.includes('{{')?b.trim()[0].toUpperCase():'B';
+  const el=document.getElementById('sealInitials');if(el)el.textContent=gi+'&'+bi;
+}
+
+// ══ MODAL ══
+function openModal(){document.getElementById('modal').classList.add('show');}
+function showModal(){openModal();}
+function closeModal(){document.getElementById('modal').classList.remove('show');}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+// ══ DETAIL EXPAND ══
+function toggleExpand(id,arrId){
+  const el=document.getElementById(id);const arr=document.getElementById(arrId);
+  const isOpen=el.classList.contains('open');
+  ['detTarikh','detMasa','detVenue'].forEach(k=>{document.getElementById(k).classList.remove('open');});
+  ['arrTarikh','arrMasa','arrVenue'].forEach(k=>{const a=document.getElementById(k);if(a)a.textContent='▼';});
+  if(!isOpen){el.classList.add('open');if(arr)arr.textContent='▲';}
+}
+
+// ══ CALENDAR ══
+
+// Hide hijri if empty
+window.addEventListener('load',()=>{
+  const h=document.getElementById('dateHijriWrap');
+  if(h&&!h.textContent.trim())h.style.display='none';
+});
+function getMonthText(mm){const m=["","Januari","Februari","Mac","April","Mei","Jun","Julai","Ogos","September","Oktober","November","Disember"];return m[parseInt(mm)]||mm;}
+window.addEventListener('load',()=>{const el=document.getElementById('mmText');if(el)el.textContent=getMonthText('{{DATE_MM}}');});
+function buildCalendar(){
+  const g=document.getElementById('calGrid');if(!g)return;
+  const raw='{{DATE_YYYYMMDD}}';let y,mo,d;
+  if(raw&&raw.length===8&&!raw.includes('{{')){y=parseInt(raw.slice(0,4));mo=parseInt(raw.slice(4,6))-1;d=parseInt(raw.slice(6,8));}
+  else{const n=new Date();y=n.getFullYear();mo=n.getMonth();d=n.getDate();}
+  const months=['Januari','Februari','Mac','April','Mei','Jun','Julai','Ogos','September','Oktober','November','Disember'];
+  const hd=document.getElementById('calMonth');if(hd)hd.textContent=months[mo]+' '+y;
+  const first=new Date(y,mo,1).getDay();const days=new Date(y,mo+1,0).getDate();
+  let h=['Ah','Is','Se','Ra','Kh','Ju','Sa'].map(x=>`<div class="cdn">${x}</div>`).join('');
+  for(let i=0;i<first;i++)h+=`<div class="cdd em"></div>`;
+  for(let i=1;i<=days;i++)h+=`<div class="cdd${i===d?' hl':''}">${i}</div>`;
+  g.innerHTML=h;
+}
+
+// ══ CLOCK ══
+function buildClock(h,m){
+  const cx=52.5,cy=52.5;
+  const hA=((h%12)*30+m*.5-90)*Math.PI/180;
+  const mA=(m*6-90)*Math.PI/180;
+  const hEl=document.getElementById('svgHour');const mEl=document.getElementById('svgMin');
+  if(hEl){hEl.setAttribute('x2',cx+18*Math.cos(hA));hEl.setAttribute('y2',cy+18*Math.sin(hA));}
+  if(mEl){mEl.setAttribute('x2',cx+27*Math.cos(mA));mEl.setAttribute('y2',cy+27*Math.sin(mA));}
+}
+
+// ══ COUNTDOWN ══
+function startCountdown(){
+  const target=new Date('{{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}:00');
+  let prev={};
+  function upd(){
+    const diff=target-new Date();
+    const homeD=document.getElementById('homeCountDays');
+    if(diff<=0){
+      document.querySelector('#ch3 .cd-grid').style.display='none';
+      const done=document.getElementById('cdDone');if(done)done.style.display='flex';
+      if(homeD)homeD.textContent='0';spawnCdPetals();return;
+    }
+    const days=Math.floor(diff/86400000);
+    if(homeD)homeD.textContent=days;
+    const v={cdD:String(days).padStart(2,'0'),cdH:String(Math.floor((diff%86400000)/3600000)).padStart(2,'0'),cdM:String(Math.floor((diff%3600000)/60000)).padStart(2,'0'),cdS:String(Math.floor((diff%60000)/1000)).padStart(2,'0')};
+    Object.entries(v).forEach(([id,val])=>{const el=document.getElementById(id);if(el&&val!==prev[id]){el.classList.add('tick');el.textContent=val;setTimeout(()=>el.classList.remove('tick'),200);prev[id]=val;}});
+  }
+  upd();setInterval(upd,1000);
+}
+function spawnCdPetals(){
+  const wrap=document.getElementById('cdPetals');if(!wrap)return;
+  const emojis=['🌸','✿','❀','✦','🌼'];wrap.innerHTML='';
+  for(let i=0;i<10;i++){const el=document.createElement('span');el.className='cd-petal';el.textContent=emojis[i%emojis.length];el.style.left=(5+i*9)+'%';el.style.animationDuration=(2.5+Math.random()*2)+'s';el.style.animationDelay=(Math.random()*2)+'s';wrap.appendChild(el);}
+}
+
+// ══ CONFETTI ══
+function launchConfetti(){
+  const canvas=document.getElementById('confettiCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const cols=['rgba(201,150,138,0.8)','rgba(221,181,172,0.8)','rgba(237,221,217,0.9)','rgba(184,149,106,0.75)','rgba(138,158,140,0.7)'];
+  const pieces=[];
+  for(let i=0;i<90;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*4;pieces.push({x:window.innerWidth/2,y:window.innerHeight*.4,vx:Math.cos(a)*s*(0.5+Math.random()),vy:Math.sin(a)*s*(0.5+Math.random())-4.5,col:cols[Math.floor(Math.random()*cols.length)],rot:Math.random()*360,rspd:(Math.random()-.5)*6,shape:Math.random()<.55?'circle':'rect',r:2+Math.random()*3,w:3+Math.random()*5,h:2+Math.random()*4,life:1});}
+  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);let alive=false;
+    pieces.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.13;p.vx*=.99;p.rot+=p.rspd;p.life-=0.009;p.life=Math.max(0,p.life);if(p.life>0)alive=true;ctx.save();ctx.globalAlpha=p.life;ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);ctx.fillStyle=p.col;if(p.shape==='circle'){ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill();}else ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();});
+    if(alive)requestAnimationFrame(draw);else canvas.style.opacity='0';
+  }
+  draw();
+}
+
+// ══ SHARE ══
+function shareKad(){
+  const g='{{GROOM_NAME}}';const b='{{BRIDE_NAME}}';
+  const names=(g&&!g.includes('{{'))?(b&&!b.includes('{{')?g+' & '+b:g):'Pengantin';
+  if(navigator.share){navigator.share({title:'Jemputan Perkahwinan '+names,url:window.location.href}).catch(()=>{});}
+  else{navigator.clipboard&&navigator.clipboard.writeText(window.location.href).then(()=>{const btn=document.getElementById('shareBtn');const o=btn.textContent;btn.textContent='✓';setTimeout(()=>btn.textContent=o,2000);});}
+}
+function showShare(){shareKad();}
+
+// ══ FIREBASE ══
+const firebaseConfig={apiKey:"AIzaSyBiubRnhd-PPamnc0rxJ_NDmmxsa7W2Lsw",authDomain:"eqstudio-6225d.firebaseapp.com",databaseURL:"https://eqstudio-6225d-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"eqstudio-6225d",storageBucket:"eqstudio-6225d.firebasestorage.app",messagingSenderId:"702399155563",appId:"1:702399155563:web:2e397996948663fa27102e"};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.database();
+const KAD_ID='es-korean-hybrid';
+const kadRef=db.ref('kads/'+KAD_ID);
+const _isTemplate=false;
+
+// ══ RSVP ══
+async function submitRSVP(){
+  const n=document.getElementById('rsvpName').value.trim();
+  const count=document.getElementById('rsvpCount').value;
+  const s=document.getElementById('rsvpStatus').value;
+  const l=window._lang||'ms';
+  if(!n||!count||!s){alert(l==='en'?'Please fill in all fields.':l==='kor'?'모든 항목을 입력해주세요.':'Sila lengkapkan semua maklumat.');return;}
+  if(s==='hadir'){try{await kadRef.child('rsvp').push({n,c:count,s,t:Date.now()});}catch(e){console.warn(e);}}
+  document.getElementById('rsvpForm').style.display='none';
+  const succ=document.getElementById('rsvpSuccess');succ.style.display='flex';
+  const rc=document.getElementById('rsvpCards');if(rc)rc.innerHTML=`<div style="background:var(--cream2);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;font-size:0.7rem;color:var(--ink2);margin-top:0.3rem;">${n} · ${count} orang hadir · ✅</div>`;
+}
+function resetRSVP(){
+  document.getElementById('rsvpName').value='';document.getElementById('rsvpCount').value='1';document.getElementById('rsvpStatus').value='';
+  document.getElementById('rsvpSuccess').style.display='none';document.getElementById('rsvpForm').style.display='block';
+}
+function rsvpCountAdj(d){const el=document.getElementById('rsvpCount');if(el)el.value=Math.max(1,(parseInt(el.value)||1)+d);}
+
+let _rsvpAll=[];
+function _parsePax(c){const m=String(c||'').match(/\d+/);return m?parseInt(m[0]):1;}
+function renderRSVPList(entries,filter){
+  const list=document.getElementById('rsvpList');const empty=document.getElementById('rsvpSearchEmpty');if(!list)return;
+  const q=(filter||'').toLowerCase().trim();const filtered=q?entries.filter(r=>r.n.toLowerCase().includes(q)):entries;
+  if(empty)empty.style.display=(q&&!filtered.length)?'block':'none';
+  if(!filtered.length&&!q){list.innerHTML='<div style="font-size:0.63rem;color:var(--muted);text-align:center;padding:0.75rem;font-style:italic;">Belum ada yang mendaftar lagi.</div>';return;}
+  list.innerHTML=filtered.map(r=>`<div class="re-row"><span class="re-n">${r.n}</span><span class="re-s">${r.c} · ✅</span></div>`).join('');
+}
+function filterRSVP(){renderRSVPList(_rsvpAll,document.getElementById('rsvpSearch').value);}
+function loadRSVPList(){
+  const list=document.getElementById('rsvpList');if(!list)return;
+  if(_isTemplate){list.innerHTML='';return;}
+  kadRef.child('rsvp').on('value',snap=>{
+    const data=snap.val();
+    const badge=document.getElementById('rsvpTotalBadge');const totalPax=document.getElementById('rsvpTotalPax');const sw=document.getElementById('rsvpSearchWrap');
+    if(!data){_rsvpAll=[];list.innerHTML='<div style="font-size:0.63rem;color:var(--muted);text-align:center;padding:0.75rem;font-style:italic;">Belum ada yang mendaftar lagi.</div>';if(badge)badge.style.display='none';return;}
+    _rsvpAll=Object.values(data).filter(r=>r.s==='hadir').sort((a,b)=>b.t-a.t);
+    if(!_rsvpAll.length){list.innerHTML='<div style="font-size:0.63rem;color:var(--muted);text-align:center;padding:0.75rem;font-style:italic;">Belum ada yang mendaftar lagi.</div>';if(badge)badge.style.display='none';return;}
+    const total=_rsvpAll.reduce((s,r)=>s+_parsePax(r.c),0);
+    if(badge)badge.style.display='block';if(totalPax)totalPax.textContent=total;
+    if(sw&&_rsvpAll.length>2)sw.style.display='block';
+    renderRSVPList(_rsvpAll,document.getElementById('rsvpSearch')?document.getElementById('rsvpSearch').value:'');
+  });
+}
+
+// ══ REGISTRY ══
+async function submitRegistry(){
+  const n=document.getElementById('regName').value.trim();const a=document.getElementById('regAmount').value.trim();
+  const l=window._lang||'ms';
+  if(!n){alert(l==='en'?'Please enter your name.':l==='kor'?'이름을 입력해주세요.':'Sila masukkan nama anda.');return;}
+  const amount=a?'RM '+parseFloat(a).toFixed(2):'(jumlah tidak dinyatakan)';
+  try{await kadRef.child('registry').push({n,a:a||'',t:Date.now()});}catch(e){console.warn(e);}
+  document.getElementById('regForm').style.display='none';
+  const succ=document.getElementById('regSuccess');succ.style.display='flex';
+  const msg=document.getElementById('regSuccessMsg');if(msg)msg.textContent=`Terima kasih ${n} bagi hadiah ${amount}! Semoga murah rezeki selalu 🌸`;
+}
+function resetReg(){document.getElementById('regName').value='';document.getElementById('regAmount').value='';document.getElementById('regSuccess').style.display='none';document.getElementById('regForm').style.display='block';}
+async function screenshotReg(){const msg=document.getElementById('regSuccessMsg');if(!msg)return;if(navigator.share){try{await navigator.share({text:msg.textContent,title:'Salam Kaut'});}catch(e){}}else{navigator.clipboard&&navigator.clipboard.writeText(msg.textContent).then(()=>alert('Disalin! 📋'));}}
+
+// ══ DOA ══
+async function submitDoa(){
+  const n=document.getElementById('doaName').value.trim();const m=document.getElementById('doaMsg').value.trim();
+  const l=window._lang||'ms';
+  if(!n||!m){alert(l==='en'?'Please fill in name and message.':l==='kor'?'이름과 메시지를 입력해주세요.':'Sila isi nama dan ucapan.');return;}
+  try{await kadRef.child('doa').push({n,m,t:Date.now()});}catch(e){console.warn(e);}
+  document.getElementById('doaName').value='';document.getElementById('doaMsg').value='';
+  const btn=document.querySelector('#ch6 .btn-main');if(btn){const o=btn.textContent;btn.textContent='Dihantar! ✿';btn.style.opacity='0.7';setTimeout(()=>{btn.textContent=o;btn.style.opacity='1';},2000);}
+}
+function renderDoa(){
+  const w=document.getElementById('doaWall');if(!w)return;
+  if(_isTemplate){w.innerHTML='';return;}
+  kadRef.child('doa').orderByChild('t').limitToLast(50).on('value',snap=>{
+    const data=snap.val();
+    if(!data){w.innerHTML='<div style="font-size:0.63rem;color:var(--muted);text-align:center;padding:1rem;font-style:italic;">Jadilah yang pertama menghantar ucapan! ✿</div>';return;}
+    w.innerHTML=Object.values(data).sort((a,b)=>b.t-a.t).map(d=>`<div class="doa-card"><div class="doa-n">${d.n}</div><div class="doa-m">${d.m}</div></div>`).join('');
+  });
+}
+
+// ══ WEATHER ══
+const WMO={0:{d:'Cerah',i:'☀️'},1:{d:'Kebanyakan Cerah',i:'🌤️'},2:{d:'Separa Berawan',i:'⛅'},3:{d:'Berawan',i:'☁️'},45:{d:'Kabus',i:'🌫️'},51:{d:'Renyai Ringan',i:'🌦️'},61:{d:'Hujan Ringan',i:'🌧️'},63:{d:'Hujan',i:'🌧️'},65:{d:'Hujan Lebat',i:'⛈️'},80:{d:'Hujan Renyai',i:'🌦️'},95:{d:'Ribut Petir',i:'⛈️'}};
+async function fetchWeather(){
+  const ico=document.getElementById('wxIcon');const tmp=document.getElementById('wxTemp');const dsc=document.getElementById('wxDesc');
+  const hum=document.getElementById('wxHumidity');const fel=document.getElementById('wxFeels');const wnd=document.getElementById('wxWind');
+  const ext=document.getElementById('wxExtras');const note=document.getElementById('wxNote');
+  const hIco=document.getElementById('homeWxIco');const hTmp=document.getElementById('homeWxTemp');const hDsc=document.getElementById('homeWxDesc');
+  try{
+    const city=encodeURIComponent('{{VENUE_CITY}}, Malaysia');
+    const geo=await(await fetch(`https://nominatim.openstreetmap.org/search?q=${city}&format=json&limit=1`,{headers:{'Accept-Language':'ms'}})).json();
+    let lat=3.147,lon=101.6958;if(geo&&geo[0]){lat=parseFloat(geo[0].lat);lon=parseFloat(geo[0].lon);}
+    const wx=await(await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia%2FKuala_Lumpur&forecast_days=1`)).json();
+    const c=wx.current;const w=WMO[c.weather_code]||{d:'--',i:'🌡️'};
+    if(ico)ico.textContent=w.i;if(tmp){tmp.textContent=Math.round(c.temperature_2m)+'°C';tmp.style.color='';}if(dsc)dsc.textContent=w.d;
+    if(hum)hum.textContent=c.relative_humidity_2m+'%';if(fel)fel.textContent=Math.round(c.apparent_temperature)+'°C';if(wnd)wnd.textContent=Math.round(c.wind_speed_10m)+' km/h';
+    if(ext)ext.style.display='flex';
+    if(note)note.textContent='📍 {{VENUE_CITY}} · '+new Date().toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});
+    if(hIco)hIco.textContent=w.i;if(hTmp)hTmp.textContent=Math.round(c.temperature_2m)+'°C';if(hDsc)hDsc.textContent=w.d;
+  }catch(e){if(ico)ico.textContent='🌡️';if(tmp){tmp.textContent='--°C';tmp.style.color='var(--muted)';}}
+}
+
+// ══ GAME ══
+const PAIRS=[{e:'🌸',l:'Bunga'},{e:'💍',l:'Cincin'},{e:'🕌',l:'Masjid'},{e:'🌙',l:'Bulan'},{e:'🌿',l:'Daun'},{e:'💎',l:'Berlian'}];
+let flipped=[],matched=0,moves=0,canFlip=true,cards=[];
+function initGame(){
+  flipped=[];matched=0;moves=0;canFlip=true;
+  document.getElementById('moveCount').textContent='0';document.getElementById('matchCount').textContent='0';document.getElementById('gameResult').textContent='';
+  cards=[...PAIRS,...PAIRS].map((c,i)=>({...c,id:i})).sort(()=>Math.random()-.5);
+  document.getElementById('memGrid').innerHTML=cards.map((c,i)=>`<div class="mc" id="mc${i}" onclick="flipCard(${i})"><div class="mc-inner"><div class="mc-f"><div class="mc-f-ico">✿</div></div><div class="mc-b">${c.e}<div class="mc-lbl">${c.l}</div></div></div></div>`).join('');
+}
+function flipCard(i){
+  if(!canFlip)return;const el=document.getElementById('mc'+i);
+  if(el.classList.contains('flipped')||el.classList.contains('matched'))return;
+  el.classList.add('flipped');flipped.push(i);
+  if(flipped.length===2){moves++;document.getElementById('moveCount').textContent=moves;canFlip=false;setTimeout(checkMatch,700);}
+}
+function checkMatch(){
+  const[a,b]=flipped;const ea=document.getElementById('mc'+a),eb=document.getElementById('mc'+b);
+  if(cards[a].e===cards[b].e){ea.classList.add('matched');eb.classList.add('matched');matched++;document.getElementById('matchCount').textContent=matched;if(matched===PAIRS.length)document.getElementById('gameResult').textContent=moves<=12?`🌸 Cemerlang! ${moves} langkah!`:`✿ Tahniah! ${moves} langkah!`;}
+  else{setTimeout(()=>{ea.classList.remove('flipped');eb.classList.remove('flipped');},280);}
+  flipped=[];canFlip=true;
+}
+</script>
+</body>
+</html>
