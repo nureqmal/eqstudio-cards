@@ -71,7 +71,8 @@
       "has_photo": false,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#1B2452"
+      "desc": "#1B2452",
+      "style": "Dark Luxury"
     },
     "Emerald Royal": {
       "name": "Emerald Royal",
