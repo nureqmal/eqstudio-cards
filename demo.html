@@ -241,7 +241,7 @@ function applyDummy(html) {
     '    if(w){' +
     '      var card=document.createElement("div");' +
     '      card.className="doa-card";' +
-    '      card.innerHTML="<div class=\"doa-n\">"+n+"</div><div class=\"doa-m\">"+m+"</div>";' +
+    '      card.innerHTML="<div class=\\"doa-n\\">"+n+"</div><div class=\\"doa-m\\">"+m+"</div>";' +
     '      card.style.animation="cardIn 0.4s ease";' +
     '      w.insertBefore(card,w.firstChild);' +
     '    }' +
@@ -268,7 +268,7 @@ function applyDummy(html) {
     '      else window._rsvpAllEntries=[entry];' +
     '      var list=document.getElementById("rsvpList");' +
     '      if(list){' +
-    '        var ph=list.querySelector(\'[style*="padding"]\');if(ph)ph.remove();' +
+    '        var ph=list.firstChild;if(ph&&ph.style&&ph.style.textAlign==="center")list.removeChild(ph);' +
     '        var row=document.createElement("div");' +
     '        row.className="re-row";' +
     '        row.innerHTML="<span class=\\"re-n\\">"+n+"</span><span class=\\"re-s\\">"+countLabel+" · ✅ Hadir</span>";' +
