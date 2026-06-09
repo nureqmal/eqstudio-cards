@@ -188,7 +188,8 @@
       "has_photo": true,
       "has_portrait_photo": false,
       "preview_emoji": "✨",
-      "desc": "#1C1B16"
+      "desc": "#1C1B16",
+      "style": "Dark Luxury"
     },
     "Portrait Emerald Imperial Gold": {
       "name": "Emerald Imperial Gold",
