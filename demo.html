@@ -255,7 +255,8 @@ function applyDummy(html) {
     '    var s=document.getElementById("rsvpStatus").value;' +
     '    if(!n||!count||!s){alert("Sila lengkapkan semua maklumat.");return;}' +
     '    var countLabel=count+" orang";' +
-    '    document.getElementById("rsvpForm").style.display="none";' +
+    '    var rsvpFormEl=document.getElementById("rsvpForm")||document.querySelector(".form-card");' +
+    '    if(rsvpFormEl)rsvpFormEl.style.display="none";' +
     '    var succ=document.getElementById("rsvpSuccess");' +
     '    if(succ){' +
     '      succ.style.display="flex";' +
