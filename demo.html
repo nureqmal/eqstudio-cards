@@ -2,1003 +2,384 @@
 <html lang="ms">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>EQstudio — Kad Digital Perkahwinan</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo — EQstudio</title>
 <style>
-:root {
-  --cream:    #FAF7F4;
-  --cream2:   #F5EDE8;
-  --rose:     #E8D5CE;
-  --rose-mid: #C9A99E;
-  --rose-drk: #A07068;
-  --sage:     #8A9E8C;
-  --sage-lt:  #D6E4D8;
-  --ink:      #2C2C2A;
-  --ink2:     #5C5A57;
-  --ink3:     #9A9895;
-  --white:    #FFFFFF;
-  --ff-display: 'Cormorant Garamond', Georgia, serif;
-  --ff-body:    'DM Sans', sans-serif;
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#060b0a;}
+#demo-iframe{position:fixed;inset:0;width:100%;height:100%;border:none;display:none;}
+#demo-loading{
+  position:fixed;inset:0;z-index:200;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;background:#060b0a;
+  color:rgba(240,237,230,.4);font-family:sans-serif;font-size:12px;
+  letter-spacing:.2em;text-transform:uppercase;
 }
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
-body { background: var(--cream); color: var(--ink); font-family: var(--ff-body); font-weight: 300; overflow-x: hidden; line-height: 1.6; }
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--cream); }
-::-webkit-scrollbar-thumb { background: var(--rose-mid); border-radius: 2px; }
-
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 40px;
-  background: rgba(250,247,244,0.88);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(201,169,158,0.15);
-  transition: padding .3s ease;
+.spinner{
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid rgba(201,164,74,.2);border-top-color:#c9a44a;
+  animation:spin .8s linear infinite;
 }
-nav.scrolled { padding: 14px 40px; }
-.nav-logo {
-  font-family: var(--ff-display);
-  font-size: 22px; font-weight: 500; letter-spacing: 0.04em;
-  color: var(--ink); text-decoration: none;
+@keyframes spin{to{transform:rotate(360deg)}}
+#demo-error{
+  position:fixed;inset:0;z-index:200;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;text-align:center;padding:40px;background:#060b0a;color:rgba(240,237,230,.5);
 }
-.nav-links { display: flex; gap: 32px; align-items: center; }
-.nav-links a {
-  font-size: 13px; font-weight: 400; color: var(--ink2);
-  text-decoration: none; letter-spacing: 0.02em;
-  transition: color .2s;
+#demo-error h2{color:#c9a44a;font-size:22px;font-family:serif;font-style:italic;}
+#demo-overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(6,11,10,.85);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;padding:24px;
+  opacity:0;animation:overlayIn .4s ease .3s forwards;
 }
-.nav-links a:hover { color: var(--ink); }
-.nav-cta {
-  background: var(--ink) !important;
-  color: var(--cream) !important;
-  padding: 9px 22px !important;
-  border-radius: 2px;
-  font-weight: 500 !important;
-  font-size: 13px !important;
-  transition: background .2s, transform .15s !important;
+@keyframes overlayIn{to{opacity:1}}
+.demo-card{
+  background:linear-gradient(160deg,#0f1a17,#091210);
+  border:1px solid rgba(201,164,74,.25);border-radius:4px;
+  padding:36px 32px 28px;max-width:340px;width:100%;text-align:center;
+  transform:translateY(20px);opacity:0;
+  animation:cardIn .4s ease .4s forwards;
 }
-.nav-cta:hover { background: var(--rose-drk) !important; transform: translateY(-1px); }
-
-/* ── HERO ── */
-.hero {
-  min-height: 100svh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  padding: 120px 40px 80px;
-  gap: 60px;
-  max-width: 1200px;
-  margin: 0 auto;
+@keyframes cardIn{to{opacity:1;transform:translateY(0)}}
+.demo-badge{
+  display:inline-block;font-family:sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.35em;text-transform:uppercase;color:#060b0a;
+  background:linear-gradient(135deg,#c9a44a,#e2c06a);
+  padding:5px 14px;border-radius:2px;margin-bottom:20px;
 }
-.hero-text { }
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--rose-drk);
-  margin-bottom: 28px;
+.demo-card h2{font-family:Georgia,serif;font-size:22px;font-style:italic;color:#f0ede6;margin-bottom:10px;line-height:1.3;}
+.demo-card p{font-family:sans-serif;font-size:12px;color:rgba(240,237,230,.45);line-height:1.8;margin-bottom:24px;}
+.demo-card p strong{color:rgba(201,164,74,.7);}
+.demo-btn-primary{
+  display:block;width:100%;padding:14px;margin-bottom:10px;
+  background:linear-gradient(135deg,#c9a44a,#e2c06a,#c9a44a);
+  color:#060b0a;font-family:sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:.25em;text-transform:uppercase;
+  border:none;border-radius:2px;cursor:pointer;text-decoration:none;transition:opacity .2s;
 }
-.hero-eyebrow::before {
-  content: '';
-  display: block; width: 24px; height: 1px;
-  background: var(--rose-drk);
+.demo-btn-primary:hover{opacity:.85}
+.demo-btn-ghost{
+  display:block;width:100%;padding:13px;background:transparent;
+  color:rgba(240,237,230,.5);font-family:sans-serif;font-size:10px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.1);border-radius:2px;cursor:pointer;transition:all .2s;
 }
-.hero h1 {
-  font-family: var(--ff-display);
-  font-size: clamp(42px, 5vw, 64px);
-  font-weight: 400; line-height: 1.12;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  margin-bottom: 24px;
-}
-.hero h1 em { font-style: italic; color: var(--rose-drk); }
-.hero-sub {
-  font-size: 16px; font-weight: 300; color: var(--ink2);
-  line-height: 1.7; max-width: 440px;
-  margin-bottom: 40px;
-}
-.hero-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-.btn-primary {
-  background: var(--ink); color: var(--cream);
-  padding: 14px 32px; border-radius: 2px;
-  font-family: var(--ff-body); font-size: 14px; font-weight: 500;
-  text-decoration: none; letter-spacing: 0.02em;
-  transition: background .2s, transform .15s;
-  display: inline-block;
-}
-.btn-primary:hover { background: var(--rose-drk); transform: translateY(-2px); }
-.btn-ghost {
-  color: var(--ink2); font-size: 14px; font-weight: 400;
-  text-decoration: none; letter-spacing: 0.02em;
-  display: inline-flex; align-items: center; gap: 6px;
-  transition: color .2s, gap .2s;
-}
-.btn-ghost:hover { color: var(--ink); gap: 10px; }
-.btn-ghost::after { content: '→'; }
-
-/* ── FLOATING KAD PREVIEW ── */
-.hero-visual {
-  position: relative;
-  display: flex; align-items: center; justify-content: center;
-  height: 520px;
-}
-.kad-float {
-  position: absolute;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 32px 80px rgba(44,44,42,0.12), 0 8px 24px rgba(44,44,42,0.06);
-}
-.kad-float-back {
-  width: 240px; height: 360px;
-  background: linear-gradient(160deg, #2C2C2A 0%, #1a1a18 100%);
-  top: 60px; right: 40px;
-  transform: rotate(4deg);
-  animation: floatBack 6s ease-in-out infinite;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 12px;
-}
-.kad-float-front {
-  width: 240px; height: 360px;
-  background: linear-gradient(160deg, #FAF7F4 0%, #F0E8E3 100%);
-  top: 40px; left: 40px;
-  transform: rotate(-3deg);
-  animation: floatFront 6s ease-in-out infinite;
-  border: 1px solid var(--rose);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 10px;
-}
-@keyframes floatBack {
-  0%, 100% { transform: rotate(4deg) translateY(0px); }
-  50% { transform: rotate(4deg) translateY(-12px); }
-}
-@keyframes floatFront {
-  0%, 100% { transform: rotate(-3deg) translateY(0px); }
-  50% { transform: rotate(-3deg) translateY(-8px); }
-}
-.kad-dark-content { text-align: center; padding: 24px; color: rgba(250,247,244,0.9); }
-.kad-dark-content .kad-name { font-family: var(--ff-display); font-size: 22px; font-style: italic; font-weight: 300; line-height: 1.3; }
-.kad-dark-content .kad-amp { font-family: var(--ff-display); font-size: 28px; color: var(--rose-mid); margin: 4px 0; }
-.kad-dark-content .kad-date { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,247,244,0.5); margin-top: 12px; }
-.kad-dark-content .kad-deco { font-size: 10px; letter-spacing: 0.2em; color: var(--rose-mid); margin-bottom: 8px; }
-.kad-light-content { text-align: center; padding: 24px; color: var(--ink); }
-.kad-light-content .kad-name { font-family: var(--ff-display); font-size: 20px; font-style: italic; font-weight: 300; color: var(--ink); line-height: 1.3; }
-.kad-light-content .kad-amp { font-family: var(--ff-display); font-size: 26px; color: var(--rose-drk); margin: 4px 0; }
-.kad-light-content .kad-date { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3); margin-top: 12px; }
-.kad-light-content .kad-deco { font-size: 13px; color: var(--rose-mid); margin-bottom: 6px; }
-.kad-badge {
-  position: absolute; bottom: 80px; right: 20px;
-  background: var(--white); border: 1px solid var(--rose);
-  border-radius: 40px; padding: 10px 18px;
-  display: flex; align-items: center; gap: 8px;
-  box-shadow: 0 8px 24px rgba(44,44,42,0.08);
-  animation: floatBadge 5s ease-in-out infinite;
-}
-@keyframes floatBadge {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-}
-.kad-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); }
-.kad-badge-text { font-size: 12px; font-weight: 500; color: var(--ink); }
-
-/* ── SECTION BASE ── */
-section { padding: 100px 40px; }
-.container { max-width: 1100px; margin: 0 auto; }
-.section-label {
-  font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
-  color: var(--rose-drk);
-  margin-bottom: 16px;
-  display: flex; align-items: center; gap: 10px;
-}
-.section-label::after { content: ''; display: block; width: 32px; height: 1px; background: var(--rose-mid); }
-.section-heading {
-  font-family: var(--ff-display);
-  font-size: clamp(32px, 4vw, 52px);
-  font-weight: 400; line-height: 1.15;
-  color: var(--ink);
-  margin-bottom: 20px;
-}
-.section-heading em { font-style: italic; color: var(--rose-drk); }
-.section-sub { font-size: 16px; font-weight: 300; color: var(--ink2); line-height: 1.7; max-width: 560px; }
-
-/* ── CARA TEMPAH ── */
-.cara-section { background: var(--cream2); }
-.cara-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 1px; background: var(--rose);
-  border: 1px solid var(--rose);
-  border-radius: 4px; overflow: hidden;
-  margin-top: 60px;
-}
-.cara-step {
-  background: var(--cream2);
-  padding: 40px 32px;
-  transition: background .25s;
-}
-.cara-step:hover { background: var(--cream); }
-.cara-num {
-  font-family: var(--ff-display);
-  font-size: 48px; font-weight: 300; font-style: italic;
-  color: var(--rose);
-  line-height: 1; margin-bottom: 20px;
-}
-.cara-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
-.cara-desc { font-size: 14px; font-weight: 300; color: var(--ink2); line-height: 1.65; }
-
-/* ── TEMPLATE SECTION ── */
-.template-section { background: var(--cream); }
-.template-filter-wrap { margin-top: 40px; margin-bottom: 40px; display: flex; gap: 8px; flex-wrap: wrap; }
-.filter-btn {
-  font-family: var(--ff-body); font-size: 13px; font-weight: 400;
-  color: var(--ink2); background: var(--white);
-  border: 1px solid var(--rose); border-radius: 20px;
-  padding: 7px 18px; cursor: pointer;
-  transition: all .2s;
-}
-.filter-btn:hover { border-color: var(--rose-drk); color: var(--ink); }
-.filter-btn.active { background: var(--ink); color: var(--cream); border-color: var(--ink); }
-.template-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-.template-card {
-  border-radius: 8px; overflow: hidden;
-  border: 1px solid var(--rose);
-  transition: transform .3s ease, box-shadow .3s ease;
-  cursor: pointer; background: var(--white);
-}
-.template-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 24px 60px rgba(44,44,42,0.1);
-}
-.template-card.hidden { display: none; }
-.template-thumb {
-  height: 300px;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-  background: var(--cream2);
-}
-.template-thumb-emoji { font-size: 40px; margin-bottom: 12px; }
-.template-thumb-name {
-  font-family: var(--ff-display); font-size: 18px; font-style: italic;
-  font-weight: 300; line-height: 1.4; text-align: center;
-  color: var(--ink2);
-}
-.template-thumb-inner { text-align: center; padding: 32px; }
-.template-info { padding: 18px 20px; }
-.template-name { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
-.template-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.template-tag {
-  display: inline-block; font-size: 11px; font-weight: 400;
-  color: var(--rose-drk); background: var(--cream2);
-  padding: 3px 10px; border-radius: 20px;
-}
-.template-preview-link {
-  font-size: 12px; font-weight: 500; color: var(--ink3);
-  text-decoration: none; letter-spacing: 0.02em;
-  transition: color .2s;
-}
-.template-preview-link:hover { color: var(--rose-drk); }
-.template-loading {
-  grid-column: 1/-1; text-align: center;
-  padding: 80px 0; color: var(--ink3); font-size: 14px;
-}
-.template-loading-spinner {
-  width: 24px; height: 24px; border-radius: 50%;
-  border: 2px solid var(--rose); border-top-color: var(--rose-drk);
-  animation: spin .7s linear infinite;
-  margin: 0 auto 16px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.template-empty {
-  grid-column: 1/-1; text-align: center;
-  padding: 60px 0; color: var(--ink3); font-size: 14px;
-}
-.template-coming { margin-top: 40px; text-align: center; }
-.template-coming p { font-size: 14px; color: var(--ink3); }
-.template-coming a { color: var(--rose-drk); text-decoration: none; font-weight: 500; }
-
-/* ── PAKEJ ── */
-.pakej-section { background: var(--cream2); }
-.pakej-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  gap: 20px; margin-top: 56px;
-}
-.pakej-card {
-  background: var(--white);
-  border: 1px solid var(--rose);
-  border-radius: 8px;
-  padding: 32px 28px;
-  position: relative;
-  transition: transform .25s, box-shadow .25s;
-}
-.pakej-card:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(44,44,42,0.08); }
-.pakej-card.popular {
-  border: 2px solid var(--rose-drk);
-}
-.pakej-popular-badge {
-  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
-  background: var(--rose-drk); color: var(--cream);
-  font-size: 11px; font-weight: 500; letter-spacing: 0.06em;
-  padding: 4px 14px; border-radius: 20px; white-space: nowrap;
-}
-.pakej-name { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink3); margin-bottom: 12px; }
-.pakej-price {
-  font-family: var(--ff-display);
-  font-size: 44px; font-weight: 400;
-  color: var(--ink); line-height: 1;
-}
-.pakej-price span { font-size: 18px; vertical-align: top; margin-top: 6px; display: inline-block; }
-.pakej-original { font-size: 13px; color: var(--ink3); text-decoration: line-through; margin-top: 4px; margin-bottom: 6px; }
-.pakej-promo-note { font-size: 11px; color: var(--rose-drk); font-weight: 500; margin-bottom: 20px; }
-.pakej-for { font-size: 13px; color: var(--ink2); line-height: 1.55; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--rose); }
-.pakej-features { list-style: none; margin-bottom: 28px; }
-.pakej-features li { font-size: 13px; color: var(--ink2); padding: 5px 0; display: flex; align-items: center; gap: 8px; }
-.pakej-features li::before { content: '✓'; color: var(--sage); font-weight: 500; flex-shrink: 0; }
-.pakej-features li.na { color: var(--ink3); }
-.pakej-features li.na::before { content: '—'; color: var(--ink3); }
-.btn-pakej {
-  display: block; width: 100%; text-align: center;
-  padding: 12px; border-radius: 2px;
-  font-family: var(--ff-body); font-size: 13px; font-weight: 500;
-  text-decoration: none; letter-spacing: 0.04em;
-  transition: all .2s;
-}
-.btn-pakej-outline {
-  border: 1px solid var(--ink); color: var(--ink);
-}
-.btn-pakej-outline:hover { background: var(--ink); color: var(--cream); }
-.btn-pakej-fill {
-  background: var(--ink); color: var(--cream);
-  border: 1px solid var(--ink);
-}
-.btn-pakej-fill:hover { background: var(--rose-drk); border-color: var(--rose-drk); }
-
-/* ── KENAPA KAMI ── */
-.kenapa-section { background: var(--cream); }
-.kenapa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 60px; }
-.kenapa-visual {
-  background: var(--cream2);
-  border: 1px solid var(--rose);
-  border-radius: 8px;
-  padding: 40px;
-}
-.proses-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--rose); }
-.proses-item:last-child { border-bottom: none; }
-.proses-icon {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--rose); display: flex; align-items: center; justify-content: center;
-  font-size: 14px; flex-shrink: 0;
-}
-.proses-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
-.proses-desc { font-size: 13px; color: var(--ink2); line-height: 1.6; }
-.kenapa-points { display: flex; flex-direction: column; gap: 28px; }
-.kenapa-point { }
-.kenapa-point-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
-.kenapa-point-desc { font-size: 14px; font-weight: 300; color: var(--ink2); line-height: 1.65; }
-
-/* ── TESTIMONI PLACEHOLDER ── */
-.testi-section { background: var(--cream2); }
-.testi-coming {
-  margin-top: 56px;
-  background: var(--white);
-  border: 1px solid var(--rose);
-  border-radius: 8px;
-  padding: 56px 40px;
-  text-align: center;
-}
-.testi-coming-icon { font-size: 32px; margin-bottom: 16px; }
-.testi-coming-title { font-family: var(--ff-display); font-size: 28px; font-style: italic; color: var(--ink); margin-bottom: 12px; }
-.testi-coming-desc { font-size: 14px; color: var(--ink2); line-height: 1.7; max-width: 480px; margin: 0 auto 28px; }
-.testi-coming-cta {
-  display: inline-block;
-  background: var(--sage-lt); color: var(--sage);
-  border: 1px solid var(--sage);
-  padding: 10px 24px; border-radius: 2px;
-  font-size: 13px; font-weight: 500; text-decoration: none;
-  transition: all .2s;
-}
-.testi-coming-cta:hover { background: var(--sage); color: var(--white); }
-
-/* ── FAQ ── */
-.faq-section { background: var(--cream); }
-.faq-list { margin-top: 56px; max-width: 720px; }
-.faq-item {
-  border-bottom: 1px solid var(--rose);
-}
-.faq-q {
-  width: 100%; background: none; border: none; cursor: pointer;
-  text-align: left; padding: 22px 0;
-  font-family: var(--ff-body); font-size: 15px; font-weight: 500; color: var(--ink);
-  display: flex; justify-content: space-between; align-items: center; gap: 16px;
-}
-.faq-q:hover { color: var(--rose-drk); }
-.faq-icon { font-size: 18px; color: var(--rose-mid); transition: transform .3s; flex-shrink: 0; }
-.faq-a {
-  font-size: 14px; font-weight: 300; color: var(--ink2); line-height: 1.75;
-  max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s;
-}
-.faq-item.open .faq-a { max-height: 200px; padding-bottom: 20px; }
-.faq-item.open .faq-icon { transform: rotate(45deg); }
-
-/* ── CTA FOOTER ── */
-.cta-section {
-  background: var(--ink);
-  padding: 120px 40px;
-  text-align: center;
-}
-.cta-section .section-label { justify-content: center; color: var(--rose-mid); }
-.cta-section .section-label::after { background: var(--rose-mid); }
-.cta-section .section-heading { color: var(--cream); margin: 0 auto 20px; max-width: 600px; }
-.cta-section .section-heading em { color: var(--rose-mid); }
-.cta-section .section-sub { color: rgba(250,247,244,0.6); margin: 0 auto 48px; }
-.cta-notes {
-  display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
-  margin-top: 28px;
-}
-.cta-note { font-size: 12px; color: rgba(250,247,244,0.4); display: flex; align-items: center; gap: 6px; }
-.cta-note::before { content: '✓'; color: var(--sage); }
-
-/* ── FOOTER ── */
-footer {
-  background: var(--ink);
-  border-top: 1px solid rgba(250,247,244,0.08);
-  padding: 40px;
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
-}
-.footer-logo { font-family: var(--ff-display); font-size: 18px; color: rgba(250,247,244,0.7); text-decoration: none; }
-.footer-links { display: flex; gap: 24px; }
-.footer-links a { font-size: 13px; color: rgba(250,247,244,0.4); text-decoration: none; transition: color .2s; }
-.footer-links a:hover { color: rgba(250,247,244,0.8); }
-.footer-copy { font-size: 12px; color: rgba(250,247,244,0.25); }
-
-/* ── STICKY BAR (mobile) ── */
-.sticky-bar {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
-  background: var(--ink);
-  padding: 14px 20px;
-  display: none; align-items: center; justify-content: space-between; gap: 12px;
-  border-top: 1px solid rgba(250,247,244,0.1);
-}
-.sticky-bar-text { font-size: 13px; color: rgba(250,247,244,0.7); }
-.sticky-bar-text strong { color: var(--cream); }
-.sticky-bar a {
-  background: var(--rose-drk); color: var(--cream);
-  padding: 10px 20px; border-radius: 2px;
-  font-size: 13px; font-weight: 500; text-decoration: none; white-space: nowrap;
-  transition: background .2s;
-}
-.sticky-bar a:hover { background: var(--rose-mid); }
-
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  nav { padding: 16px 24px; }
-  .nav-links { display: none; }
-  .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 48px; min-height: auto; }
-  .hero-visual { height: 380px; }
-  .kad-float-back { width: 190px; height: 290px; }
-  .kad-float-front { width: 190px; height: 290px; }
-  section { padding: 72px 24px; }
-  .cara-grid { grid-template-columns: 1fr 1fr; }
-  .template-grid { grid-template-columns: 1fr 1fr; }
-  .pakej-grid { grid-template-columns: 1fr 1fr; }
-  .kenapa-grid { grid-template-columns: 1fr; }
-  .sticky-bar { display: flex; }
-  footer { flex-direction: column; text-align: center; padding: 32px 24px 80px; }
-  .cta-section { padding: 80px 24px 100px; }
-}
-@media (max-width: 580px) {
-  .hero h1 { font-size: 36px; }
-  .cara-grid { grid-template-columns: 1fr; }
-  .template-grid { grid-template-columns: 1fr; }
-  .pakej-grid { grid-template-columns: 1fr; }
-  .section-heading { font-size: 30px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .kad-float-back, .kad-float-front, .kad-badge { animation: none; }
-}
-
-/* ── FADE-IN ON SCROLL ── */
-.fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-.fade-in.visible { opacity: 1; transform: translateY(0); }
+.demo-btn-ghost:hover{border-color:rgba(255,255,255,.25);color:rgba(240,237,230,.8);}
+.demo-divider{width:32px;height:1px;background:rgba(201,164,74,.2);margin:20px auto 16px;}
+.demo-note{font-family:sans-serif;font-size:10px;color:rgba(240,237,230,.2);letter-spacing:.05em;}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#" class="nav-logo">EQstudio</a>
-  <div class="nav-links">
-    <a href="#template">Template</a>
-    <a href="#pakej">Harga</a>
-    <a href="#cara">Cara Tempah</a>
-    <a href="#faq">FAQ</a>
-    <a href="borang.html" class="nav-cta">Tempah Sekarang</a>
-  </div>
-</nav>
+<div id="demo-loading"><div class="spinner"></div><span>Memuatkan Demo...</span></div>
 
-<!-- HERO -->
-<section style="padding: 0;">
-  <div class="hero">
-    <div class="hero-text">
-      <div class="hero-eyebrow">Kad Digital Perkahwinan</div>
-      <h1>Kad kahwin digital.<br><em>Siap esok.<br>Dikongsi selama-lamanya.</em></h1>
-      <p class="hero-sub">Hantar maklumat hari ini — kami siapkan dalam 48 jam. Link terus ke WhatsApp kamu, sedia dikongsi kepada semua tetamu. Tanpa app, tanpa kerumitan.</p>
-      <div class="hero-actions">
-        <a href="borang.html" class="btn-primary">Tempah Sekarang — dari RM39</a>
-        <a href="#template" class="btn-ghost">Lihat template</a>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="kad-float kad-float-back">
-        <div class="kad-dark-content">
-          <div class="kad-deco">✦ ✦ ✦</div>
-          <div class="kad-name">Razif<br>&<br>Delisha</div>
-          <div class="kad-amp"></div>
-          <div class="kad-date">15 · 03 · 2026</div>
-        </div>
-      </div>
-      <div class="kad-float kad-float-front">
-        <div class="kad-light-content">
-          <div class="kad-deco">🌸</div>
-          <div class="kad-name">Izzat<br>&<br>Hana</div>
-          <div class="kad-amp"></div>
-          <div class="kad-date">10 · 08 · 2026</div>
-        </div>
-      </div>
-      <div class="kad-badge">
-        <div class="kad-badge-dot"></div>
-        <div class="kad-badge-text">Siap dalam 48 jam</div>
-      </div>
-    </div>
-  </div>
-</section>
+<div id="demo-error">
+  <h2>Template tidak dijumpai</h2>
+  <p style="font-size:13px;margin-top:4px">Demo tidak tersedia.</p>
+  <a href="https://eqstudio.nreqmal.workers.dev/#templates" style="color:#c9a44a;margin-top:12px;font-size:13px;display:inline-block">&#8592; Kembali ke Katalog</a>
+</div>
 
-<!-- CARA TEMPAH -->
-<section class="cara-section" id="cara">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Proses</div>
-      <h2 class="section-heading">Dari pilihan hingga<br><em>link di tangan kamu</em></h2>
-      <p class="section-sub">Empat langkah mudah. Tiada prosedur panjang, tiada kerumitan teknikal.</p>
-    </div>
-    <div class="cara-grid fade-in">
-      <div class="cara-step">
-        <div class="cara-num">1</div>
-        <div class="cara-title">Pilih template</div>
-        <div class="cara-desc">Terokai koleksi kami dan pilih gaya yang paling kena dengan suasana majlis kamu.</div>
-      </div>
-      <div class="cara-step">
-        <div class="cara-num">2</div>
-        <div class="cara-title">Isi borang</div>
-        <div class="cara-desc">Nama, tarikh majlis, lokasi dan pakej pilihan. Selesai dalam 2 minit.</div>
-      </div>
-      <div class="cara-step">
-        <div class="cara-num">3</div>
-        <div class="cara-title">Kami WhatsApp</div>
-        <div class="cara-desc">Dalam 2 jam kami hubungi untuk sahkan details, hantar link bayaran dan mula kerja.</div>
-      </div>
-      <div class="cara-step">
-        <div class="cara-num">4</div>
-        <div class="cara-title">Terima link</div>
-        <div class="cara-desc">48 jam — kad digital kamu siap. Semak, luluskan, dan terus kongsi kepada tetamu.</div>
-      </div>
-    </div>
-  </div>
-</section>
+<iframe id="demo-iframe" sandbox="allow-scripts allow-popups allow-forms" scrolling="yes"></iframe>
 
-<!-- TEMPLATE -->
-<section class="template-section" id="template">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Koleksi</div>
-      <h2 class="section-heading">Template yang <em>mencuri hati</em></h2>
-      <p class="section-sub">Setiap template dibina dengan teliti — bukan sekadar cantik, tapi berfungsi dengan baik di semua peranti.</p>
-    </div>
-    <div class="template-filter-wrap fade-in" id="filterWrap">
-      <button class="filter-btn active" data-filter="Semua">Semua</button>
-    </div>
-    <div class="template-grid fade-in" id="templateGrid">
-      <div class="template-loading">
-        <div class="template-loading-spinner"></div>
-        Memuatkan koleksi template...
-      </div>
-    </div>
-    <div class="template-coming fade-in">
-      <p>Lebih banyak template sedang dibina. <a href="https://wa.me/601154151433">Hubungi kami</a> jika ada gaya tertentu yang kamu impikan.</p>
-    </div>
+<div id="demo-overlay">
+  <div class="demo-card">
+    <span class="demo-badge">&#10022; Preview Demo</span>
+    <h2>Ini adalah demo<br>template sahaja</h2>
+    <p>Nama, tarikh &amp; maklumat adalah <strong>rekaan semata-mata</strong>.<br>Kad sebenar akan diisi dengan maklumat majlis anda.</p>
+    <button class="demo-btn-ghost" id="btnTengok">Tengok Demo &#8594;</button>
+    <div class="demo-divider"></div>
+    <a href="https://eqstudio.nreqmal.workers.dev/borang.html" class="demo-btn-primary">Tempah Kad Saya</a>
+    <p class="demo-note">Siap dalam 48 jam &middot; dari RM29</p>
   </div>
-</section>
-
-<!-- PAKEJ -->
-<section class="pakej-section" id="pakej">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Harga</div>
-      <h2 class="section-heading">Pilih yang sesuai<br><em>dengan impian kamu</em></h2>
-      <p class="section-sub">Harga tetap, tanpa bayaran tahunan. Link aktif seumur hidup.</p>
-    </div>
-    <div class="pakej-grid fade-in">
-      <div class="pakej-card">
-        <div class="pakej-name">Esential</div>
-        <div class="pakej-price"><span>RM</span>39</div>
-        <div class="pakej-original">RM55</div>
-        <div class="pakej-promo-note">Harga pelancaran</div>
-        <div class="pakej-for">Sesuai untuk yang nak kad ringkas, kemas dan berkesan — semua yang perlu ada.</div>
-        <ul class="pakej-features">
-          <li>Kad digital interaktif</li>
-          <li>Countdown masa nyata</li>
-          <li>RSVP via WhatsApp</li>
-          <li>Navigasi Waze & Maps</li>
-          <li>Pilih lagu sendiri</li>
-          <li>Link seumur hidup</li>
-          <li class="na">Gambar pengantin</li>
-          <li class="na">Video pendek</li>
-        </ul>
-        <a href="borang.html" class="btn-pakej btn-pakej-outline">Pilih Esential</a>
-      </div>
-      <div class="pakej-card popular">
-        <div class="pakej-popular-badge">Paling Popular</div>
-        <div class="pakej-name">Potrait</div>
-        <div class="pakej-price"><span>RM</span>59</div>
-        <div class="pakej-original">RM85</div>
-        <div class="pakej-promo-note">Harga pelancaran</div>
-        <div class="pakej-for">Sesuai untuk yang nak tetamu nampak wajah pengantin terus dari link — sentuhan peribadi yang ramai suka.</div>
-        <ul class="pakej-features">
-          <li>Kad digital interaktif</li>
-          <li>Countdown masa nyata</li>
-          <li>RSVP via WhatsApp</li>
-          <li>Navigasi Waze & Maps</li>
-          <li>Pilih lagu sendiri</li>
-          <li>Link seumur hidup</li>
-          <li>Gambar pengantin</li>
-          <li class="na">Video pendek</li>
-        </ul>
-        <a href="borang.html" class="btn-pakej btn-pakej-fill">Pilih Potrait</a>
-      </div>
-      <div class="pakej-card">
-        <div class="pakej-name">Cinematic</div>
-        <div class="pakej-price"><span>RM</span>79</div>
-        <div class="pakej-original">RM109</div>
-        <div class="pakej-promo-note">Harga pelancaran</div>
-        <div class="pakej-for">Sesuai untuk pasangan yang ada video highlight atau clip kahwin dan nak kongsi bersama jemputan.</div>
-        <ul class="pakej-features">
-          <li>Kad digital interaktif</li>
-          <li>Countdown masa nyata</li>
-          <li>RSVP via WhatsApp</li>
-          <li>Navigasi Waze & Maps</li>
-          <li>Pilih lagu sendiri</li>
-          <li>Link seumur hidup</li>
-          <li>Gambar pengantin</li>
-          <li>1 video pendek</li>
-        </ul>
-        <a href="borang.html" class="btn-pakej btn-pakej-outline">Pilih Cinematic</a>
-      </div>
-      <div class="pakej-card">
-        <div class="pakej-name">Prestige</div>
-        <div class="pakej-price"><span>RM</span>119</div>
-        <div class="pakej-original">RM149</div>
-        <div class="pakej-promo-note">Harga pelancaran</div>
-        <div class="pakej-for">Sesuai untuk majlis yang nak bagi pengalaman penuh kepada tetamu — dari video, gallery hingga RSVP dalam satu link.</div>
-        <ul class="pakej-features">
-          <li>Kad digital interaktif</li>
-          <li>Countdown masa nyata</li>
-          <li>RSVP via WhatsApp</li>
-          <li>Navigasi Waze & Maps</li>
-          <li>Pilih lagu sendiri</li>
-          <li>Link seumur hidup</li>
-          <li>Gambar pengantin</li>
-          <li>1 video pendek</li>
-          <li>Gallery gambar</li>
-        </ul>
-        <a href="borang.html" class="btn-pakej btn-pakej-outline">Pilih Prestige</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- KENAPA KAMI -->
-<section class="kenapa-section">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Cara kami bekerja</div>
-      <h2 class="section-heading">Bukan sekadar<br><em>hantar & lupakan</em></h2>
-    </div>
-    <div class="kenapa-grid fade-in">
-      <div class="kenapa-visual">
-        <div class="proses-item">
-          <div class="proses-icon">✎</div>
-          <div>
-            <div class="proses-title">Dibina dari awal untuk kamu</div>
-            <div class="proses-desc">Setiap kad dikustomisasi mengikut maklumat kamu — bukan template kosong yang di-copy paste tanpa usul periksa.</div>
-          </div>
-        </div>
-        <div class="proses-item">
-          <div class="proses-icon">✓</div>
-          <div>
-            <div class="proses-title">Semak sebelum siap</div>
-            <div class="proses-desc">Kami hantar draft untuk kelulusan kamu. Kalau ada yang tak kena — ejaan, tarikh, lokasi — kami betulkan tanpa caj tambahan.</div>
-          </div>
-        </div>
-        <div class="proses-item">
-          <div class="proses-icon">∞</div>
-          <div>
-            <div class="proses-title">Link aktif seumur hidup</div>
-            <div class="proses-desc">Tiada hosting fee tahunan. Link kad kahwin kamu kekal aktif selama-lamanya — simpan sebagai kenangan digital.</div>
-          </div>
-        </div>
-      </div>
-      <div class="kenapa-points">
-        <div class="kenapa-point">
-          <div class="kenapa-point-title">Majlis kamu bermula dari saat tetamu bukak link tu</div>
-          <div class="kenapa-point-desc">Bukan sekadar kad — ia pengalaman pertama tetamu sebelum tiba di majlis kamu. Interaktif, cantik, dan tak perlu didownload.</div>
-        </div>
-        <div class="kenapa-point">
-          <div class="kenapa-point-title">Mudah dikongsi di mana-mana</div>
-          <div class="kenapa-point-desc">Satu link. Kongsi melalui WhatsApp, Telegram, Instagram atau caption TikTok. Tetamu hanya perlu klik — tiada app, tiada download.</div>
-        </div>
-        <div class="kenapa-point">
-          <div class="kenapa-point-title">Kalau ada apa-apa, kami ada</div>
-          <div class="kenapa-point-desc">Hantar maklumat pagi, kami WhatsApp dalam 2 jam. Nak minta tolong apa-apa selepas terima kad? Terus mesej kami.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONI -->
-<section class="testi-section" id="testimoni">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Kata pelanggan</div>
-      <h2 class="section-heading">Apa yang mereka <em>rasakan</em></h2>
-    </div>
-    <div class="testi-coming fade-in">
-      <div class="testi-coming-icon">🌸</div>
-      <div class="testi-coming-title">Bahagian ini masih kosong — buat masa ini.</div>
-      <div class="testi-coming-desc">Kami baru bermula dan sedang membina portfolio kami dengan penuh kesungguhan. Jika kamu jadi antara pelanggan terawal, kami amat menghargai maklum balas kamu setelah kad siap.</div>
-      <a href="https://wa.me/601154151433" class="testi-coming-cta">Jadi pelanggan pertama kami →</a>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="faq-section" id="faq">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Soal Jawab</div>
-      <h2 class="section-heading">Soalan yang <em>sering ditanya</em></h2>
-    </div>
-    <div class="faq-list fade-in">
-      <div class="faq-item">
-        <button class="faq-q">Berapa lama masa untuk siap? <span class="faq-icon">+</span></button>
-        <div class="faq-a">Dalam 48 jam selepas bayaran dan maklumat lengkap diterima. Kamu akan terima link terus ke WhatsApp untuk disemak sebelum diluluskan.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Boleh buat semakan selepas siap? <span class="faq-icon">+</span></button>
-        <div class="faq-a">Boleh. Kami berikan satu semakan percuma. Jika ada kesilapan ejaan atau maklumat yang perlu ditukar, kami betulkan tanpa caj tambahan.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Macam mana nak kongsi kad? <span class="faq-icon">+</span></button>
-        <div class="faq-a">Kamu dapat satu link URL. Kongsi terus melalui WhatsApp, Telegram, Instagram atau apa-apa platform. Tetamu hanya perlu klik link — tiada app perlu didownload.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Berapa lama link aktif? <span class="faq-icon">+</span></button>
-        <div class="faq-a">Link aktif seumur hidup — tiada kos hosting tahunan atau bayaran tambahan untuk mengekalkan kad kamu.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Adakah kad ini mobile-friendly? <span class="faq-icon">+</span></button>
-        <div class="faq-a">Ya, 100%. Semua template dioptimumkan untuk telefon pintar. Ia juga berfungsi sempurna di desktop dan tablet.</div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-q">Kalau majlis kamu kurang dari 2 minggu? <span class="faq-icon">+</span></button>
-        <div class="faq-a">Hubungi kami terus melalui WhatsApp sebelum isi borang supaya kami boleh urus keutamaan. Kami faham tarikh majlis tidak boleh ditangguh.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section">
-  <div class="container">
-    <div class="fade-in">
-      <div class="section-label">Mulakan sekarang</div>
-      <h2 class="section-heading">Isi borang dalam <em>2 minit</em></h2>
-      <p class="section-sub">Nama kamu, tarikh majlis, template pilihan — itu sahaja yang kami perlukan. Kami akan WhatsApp dalam 2 jam.</p>
-      <a href="borang.html" class="btn-primary" style="font-size:15px; padding: 16px 40px;">Tempah Sekarang — dari RM39</a>
-      <div class="cta-notes">
-        <div class="cta-note">Tiada bayaran diperlukan sekarang</div>
-        <div class="cta-note">Semakan percuma</div>
-        <div class="cta-note">Link seumur hidup</div>
-        <div class="cta-note">Siap dalam 48 jam</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <a href="#" class="footer-logo">EQstudio</a>
-  <div class="footer-links">
-    <a href="https://instagram.com/eqstudio">Instagram</a>
-    <a href="https://tiktok.com/@eqstudio">TikTok</a>
-    <a href="https://wa.me/601154151433">WhatsApp</a>
-  </div>
-  <div class="footer-copy">© 2026 EQstudio. Hak Cipta Terpelihara.</div>
-</footer>
-
-<!-- STICKY BAR (mobile) -->
-<div class="sticky-bar" id="stickyBar">
-  <div class="sticky-bar-text">Kad kahwin digital <strong>dari RM39</strong></div>
-  <a href="borang.html">Tempah Sekarang</a>
 </div>
 
 <script>
-// ── CONFIG ──
-const REGISTRY_URL = 'https://raw.githubusercontent.com/nureqmal/eqstudio-cards/main/registry.json';
-const DEMO_BASE    = 'https://eqstudio.nreqmal.workers.dev/demo.html?t=';
+// Dialog CSS -- inject ke dalam template iframe
+var DIALOG_INJECT_CSS = [
+  '<style>',
+  '.demo-dialog{max-width:240px;width:88%;background:rgba(6,11,10,0.93);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px 16px;margin-bottom:14px;backdrop-filter:blur(14px);box-shadow:0 8px 32px rgba(0,0,0,0.5);position:relative;z-index:50;}',
+  '.dg-header{display:flex;flex-direction:column;gap:2px;margin-bottom:10px;}',
+  '.dg-tag{font-family:sans-serif;font-size:8px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;opacity:0.7;}',
+  '.dg-title{font-family:Georgia,serif;font-size:15px;font-style:italic;color:#f0ede6;line-height:1.2;}',
+  '.dg-body{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}',
+  '.dg-item{display:flex;align-items:flex-start;gap:7px;font-family:sans-serif;font-size:11px;color:rgba(240,237,230,0.65);line-height:1.5;}',
+  '.dg-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px;}',
+  '.dg-try{font-family:sans-serif;font-size:11px;color:rgba(240,237,230,0.85);background:rgba(255,255,255,0.05);border-radius:4px;padding:7px 10px;margin-bottom:10px;text-align:center;}',
+  '.dg-cta{text-align:right;}',
+  '.dg-btn{display:inline-block;font-family:sans-serif;font-size:9px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;padding:5px 10px;border:1px solid;border-radius:3px;transition:opacity 0.2s;}',
+  '.dg-btn:hover{opacity:0.75;}',
+  '</style>'
+].join('');
 
-// ── NAV SCROLL ──
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-  navbar.classList.toggle('scrolled', window.scrollY > 40);
-});
+const DIALOGS_MAP = {
+  "hero": "<div class=\"demo-dialog\" style=\"margin-left:auto;margin-right:0;border-right:3px solid #c9a44a;\"><div class=\"dg-header\" style=\"color:#c9a44a\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Halaman Utama</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\u270f\ufe0f Nama pengantin lelaki & perempuan</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\u270f\ufe0f Ayat jemputan tuan rumah</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\u270f\ufe0f Nama keluarga tuan rumah</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#c9a44a22;border-color:#c9a44a55;color:#c9a44a\">Tempah Kad Saya \u2192</a></div></div>",
+  "info": "<div class=\"demo-dialog\" style=\"margin-right:auto;margin-left:0;border-left:3px solid #b87a8a;\"><div class=\"dg-header\" style=\"color:#b87a8a\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Maklumat Pengantin</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#b87a8a\"></span><span>\u270f\ufe0f Nama penuh & nama bapa kedua pengantin</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#b87a8a\"></span><span>\u270f\ufe0f Nama ibu kedua pengantin</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#b87a8a\"></span><span>\u270f\ufe0f Pihak tuan rumah majlis</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#b87a8a22;border-color:#b87a8a55;color:#b87a8a\">Tempah Kad Saya \u2192</a></div></div>",
+  "details": "<div class=\"demo-dialog\" style=\"margin-left:auto;margin-right:0;border-right:3px solid #8a9a5b;\"><div class=\"dg-header\" style=\"color:#8a9a5b\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Butiran Majlis</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#8a9a5b\"></span><span>\u270f\ufe0f Tarikh & tarikh Hijri</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#8a9a5b\"></span><span>\u270f\ufe0f Masa mula & tamat</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#8a9a5b\"></span><span>\u270f\ufe0f Aturcara (akad, bersanding, jamuan)</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#8a9a5b22;border-color:#8a9a5b55;color:#8a9a5b\">Tempah Kad Saya \u2192</a></div></div>",
+  "countdown": "<div class=\"demo-dialog\" style=\"margin:0 auto;border-bottom:3px solid #c9a44a;\"><div class=\"dg-header\" style=\"color:#c9a44a\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Kiraan Masa</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\u23f3 Auto-kira dari tarikh majlis anda</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\u23f3 Tunjuk hari, jam, minit & saat</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\ud83c\udf89 Bertukar kepada mesej khas bila hari tiba</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#c9a44a22;border-color:#c9a44a55;color:#c9a44a\">Tempah Kad Saya \u2192</a></div></div>",
+  "dresscode": "<div class=\"demo-dialog\" style=\"margin-right:auto;margin-left:0;border-left:3px solid #8a9a5b;\"><div class=\"dg-header\" style=\"color:#8a9a5b\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Kod Pakaian</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#8a9a5b\"></span><span>\u270f\ufe0f Tema warna pilihan anda</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#8a9a5b\"></span><span>\ud83c\udfa8 5 warna swatch boleh dikustomkan</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#8a9a5b\"></span><span>\u270f\ufe0f Nota khas untuk tetamu</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#8a9a5b22;border-color:#8a9a5b55;color:#8a9a5b\">Tempah Kad Saya \u2192</a></div></div>",
+  "location": "<div class=\"demo-dialog\" style=\"margin-left:auto;margin-right:0;border-right:3px solid #7baae0;\"><div class=\"dg-header\" style=\"color:#7baae0\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Lokasi Majlis</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#7baae0\"></span><span>\u270f\ufe0f Nama dewan & alamat penuh</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#7baae0\"></span><span>\ud83d\udccd Link Waze & Google Maps auto-generate</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#7baae0\"></span><span>\u270f\ufe0f Atau masukkan link custom sendiri</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#7baae022;border-color:#7baae055;color:#7baae0\">Tempah Kad Saya \u2192</a></div></div>",
+  "lovestory": "<div class=\"demo-dialog\" style=\"margin-right:auto;margin-left:0;border-left:3px solid #b87a8a;\"><div class=\"dg-header\" style=\"color:#b87a8a\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Kisah Cinta</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#b87a8a\"></span><span>\u270f\ufe0f 3 fasa kisah pertemuan hingga bertunang</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#b87a8a\"></span><span>\u270f\ufe0f Tahun & cerita dalam bahasa anda sendiri</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#b87a8a\"></span><span>\ud83d\udc8d Auto-tambah tahun perkahwinan</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#b87a8a22;border-color:#b87a8a55;color:#b87a8a\">Tempah Kad Saya \u2192</a></div></div>",
+  "mesej": "<div class=\"demo-dialog\" style=\"margin-left:auto;margin-right:0;border-right:3px solid #c9a44a;\"><div class=\"dg-header\" style=\"color:#c9a44a\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Mesej Tuan Rumah</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\u270f\ufe0f Ucapan dalam Bahasa Melayu & Inggeris</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\ud83c\udf10 Sokongan 3 bahasa: BM, EN & Arab</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\ud83d\udc46 Tetamu boleh tukar bahasa sendiri</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#c9a44a22;border-color:#c9a44a55;color:#c9a44a\">Tempah Kad Saya \u2192</a></div></div>",
+  "rsvp": "<div class=\"demo-dialog\" style=\"margin-right:auto;margin-left:0;border-left:3px solid #4ade80;\"><div class=\"dg-header\" style=\"color:#4ade80\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">RSVP Kehadiran</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#4ade80\"></span><span>\ud83d\udc46 Cuba isi nama & bilangan pax!</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#4ade80\"></span><span>\u2705 Pilih status hadir / tidak hadir</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#4ade80\"></span><span>\ud83d\udcca Data RSVP tersimpan untuk pengantin semak</span></div></div><div class=\"dg-try\">\ud83d\udc46 Cuba isi borang RSVP di bawah!</div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#4ade8022;border-color:#4ade8055;color:#4ade80\">Tempah Kad Saya \u2192</a></div></div>",
+  "registry": "<div class=\"demo-dialog\" style=\"margin-left:auto;margin-right:0;border-right:3px solid #c9a44a;\"><div class=\"dg-header\" style=\"color:#c9a44a\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Salam Kaut Digital</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\ud83d\udcf1 QR DuitNow / bank pilihan anda</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\ud83d\udc46 Cuba scan QR di bawah!</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\ud83d\udccb Nama tetamu tersimpan automatik</span></div></div><div class=\"dg-try\">\ud83d\udc46 Cuba scan QR di bawah!</div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#c9a44a22;border-color:#c9a44a55;color:#c9a44a\">Tempah Kad Saya \u2192</a></div></div>",
+  "doa": "<div class=\"demo-dialog\" style=\"margin-right:auto;margin-left:0;border-left:3px solid #b87a8a;\"><div class=\"dg-header\" style=\"color:#b87a8a\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Ucapan & Doa</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#b87a8a\"></span><span>\ud83d\udc46 Cuba hantar ucapan sekarang!</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#b87a8a\"></span><span>\ud83d\udcac Paparan live \u2014 semua tetamu boleh baca</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#b87a8a\"></span><span>\ud83d\udc8c Boleh simpan sebagai kenangan</span></div></div><div class=\"dg-try\">\ud83d\udc46 Cuba hantar ucapan anda sendiri!</div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#b87a8a22;border-color:#b87a8a55;color:#b87a8a\">Tempah Kad Saya \u2192</a></div></div>",
+  "audioBtn": "<div class=\"demo-dialog\" style=\"margin-right:auto;margin-left:0;border-left:3px solid #c9a44a;\"><div class=\"dg-header\" style=\"color:#c9a44a\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Muzik Latar</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\ud83c\udfb5 Lagu pilihan anda sendiri (Dropbox MP3)</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\u270f\ufe0f Nama lagu boleh dikustomkan</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#c9a44a\"></span><span>\ud83d\udd07 Tetamu boleh on/off sendiri</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#c9a44a22;border-color:#c9a44a55;color:#c9a44a\">Tempah Kad Saya \u2192</a></div></div>",
+  "contact": "<div class=\"demo-dialog\" style=\"margin-left:auto;margin-right:0;border-right:3px solid #4ade80;\"><div class=\"dg-header\" style=\"color:#4ade80\"><span class=\"dg-tag\">\u2726 CUSTOMIZE</span><span class=\"dg-title\">Hubungi</span></div><div class=\"dg-body\"><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#4ade80\"></span><span>\u270f\ufe0f 2 contact person dengan nombor WhatsApp</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#4ade80\"></span><span>\ud83d\udcde Tetamu boleh terus call atau WhatsApp</span></div><div class=\"dg-item\"><span class=\"dg-dot\" style=\"background:#4ade80\"></span><span>\u270f\ufe0f Nama & nombor boleh dikustomkan</span></div></div><div class=\"dg-cta\"><a href=\"https://eqstudio.nreqmal.workers.dev/borang.html\" class=\"dg-btn\" style=\"background:#4ade8022;border-color:#4ade8055;color:#4ade80\">Tempah Kad Saya \u2192</a></div></div>"
+};
 
-// ── FAQ ACCORDION ──
-document.querySelectorAll('.faq-q').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  });
-});
-
-// ── FADE IN ON SCROLL ──
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-  });
-}, { threshold: 0.12 });
-function observeAll() {
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-}
-observeAll();
-
-// ── STICKY BAR ──
-const stickyBar = document.getElementById('stickyBar');
-window.addEventListener('scroll', () => {
-  if (window.innerWidth <= 900) {
-    stickyBar.style.display = window.scrollY > 300 ? 'flex' : 'none';
+function injectDialogs(html) {
+  if (html.indexOf('</head>') !== -1) {
+    html = html.replace('</head>', DIALOG_INJECT_CSS + '</head>');
+  } else {
+    html = DIALOG_INJECT_CSS + html;
   }
+  var ids = Object.keys(DIALOGS_MAP);
+  for (var i = 0; i < ids.length; i++) {
+    var id = ids[i];
+    var dialogHtml = DIALOGS_MAP[id];
+    var re = new RegExp('(<(?:section|div)[^>]*id="' + id + '"[^>]*>)', 'i');
+    html = html.replace(re, function(match) {
+      return match + '\n' + dialogHtml + '\n';
+    });
+  }
+  return html;
+}
+
+var QR_B64 = "data:image/png;base64,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";
+var MUSIC_URL = "https://www.dropbox.com/scl/fi/29njqtn4uzcbsoenb5yp8/boybandpop_beautiful-in-white-shane-filan-westlife-1.mp3?rlkey=63mwr6mklv14a43nz0ea0j9eb&st=2z3pq1jl&dl=1";
+
+var DUMMY = {
+  groom_name: 'Izzat', bride_name: 'Hana',
+  groom_full: 'Muhammad Izzat bin Ibrahim', bride_full: 'Nur Hana binti Abdullah',
+  groom_father: 'Ibrahim bin Salleh', groom_mother: 'Siti binti Yusof',
+  bride_father: 'Abdullah bin Hassan', bride_mother: 'Aminah binti Ahmad',
+  host_family: 'Keluarga Ibrahim & Keluarga Abdullah',
+  host_family_full: 'Keluarga Haji Ibrahim bin Salleh & Keluarga Haji Abdullah bin Hassan',
+  host_message_bm: 'Dengan penuh kerendahan hati dan rasa syukur ke hadrat Allah SWT, kami menjemput Tuan/Puan hadir ke majlis perkahwinan putera/puteri kami.',
+  host_message_en: 'With humble hearts and gratitude to Allah SWT, we joyfully invite you to the wedding celebration of our beloved son and daughter.',
+  date_display: '5 Jun 2027', date_day: 'Jumaat', date_hijri: '20 Zulhijjah 1448H',
+  date_iso: '2027-06-05T11:00:00', date_yyyymmdd: '20270605',
+  time_start: '11:00 PG', time_end: '4:00 PTG',
+  time_start_hhmm: '1100', time_end_hhmm: '1600',
+  time_arrival: '11:00 PG', time_akad: '11:30 PG',
+  time_bersanding: '12:30 TG', time_makan: '1:00 PTG', time_bersurai: '4:00 PTG',
+  venue_name: 'Dewan Seri Endon', venue_fullname: 'Dewan Seri Endon, Presint 10',
+  venue_address: 'Presint 10, 62250 Putrajaya, Malaysia', venue_city: 'Putrajaya',
+  venue_waze_query: 'Dewan+Seri+Endon+Putrajaya', venue_gmaps_query: 'Dewan+Seri+Endon+Putrajaya',
+  waze_link: 'https://waze.com/ul?q=Dewan+Seri+Endon+Putrajaya',
+  gmap_link: 'https://maps.google.com/?q=Dewan+Seri+Endon+Putrajaya',
+  contact1_name: 'Encik Ibrahim', contact1_phone_display: '011-1234 5678', contact1_phone_wa: '601112345678',
+  contact2_name: 'Puan Aminah', contact2_phone_display: '012-8765 4321', contact2_phone_wa: '601287654321',
+  music_url: MUSIC_URL, music_label: 'Beautiful In White - Shane Filan (Westlife)',
+  love_year_1: '2020', love_story_1: 'Kami pertama kali berjumpa di universiti semasa Minggu Destini Siswa.',
+  love_year_2: '2021', love_story_2: 'Selepas banyak projek bersama, perasaan mula bercambah. Kami rasmi hubungan pada hari jadi Hana.',
+  love_year_3: '2024', love_story_3: 'Izzat melamar Hana di tepi pantai Langkawi. Jawapannya - Ya.',
+  love_year_4: '2027',
+  dresscode_theme: 'Sage Green & Warm Ivory', dresscode_theme_en: 'Sage Green & Warm Ivory',
+  dresscode_note: 'Elakkan warna putih tulen - reserved untuk pengantin',
+  color1_hex: '#8a9a5b', color1_name: 'Sage', color2_hex: '#c5b99a', color2_name: 'Sand',
+  color3_hex: '#f0ede6', color3_name: 'Ivory', color4_hex: '#d4a574', color4_name: 'Champagne',
+  color5_hex: '#4a6741', color5_name: 'Forest',
+  doa_sample1_name: 'Kak Lina & Family', doa_sample1_msg: 'Semoga perkahwinan ini berkekalan hingga ke syurga. Barakallah!',
+  doa_sample2_name: 'Pak Long Azman', doa_sample2_msg: 'Selamat pengantin baru! Moga murah rezeki dan dikurniakan zuriat yang soleh.',
+  qr_code_url: QR_B64,
+  hero_url: '', photo1_url: '', photo2_url: '', photo3_url: '',
+  opening_url: '', video_url: '',
+  gallery1_url: '', gallery2_url: '', gallery3_url: '', gallery4_url: '', gallery5_url: '',
+  order_id: 'DEMO0000000000', kad_id: 'demo0000000000'
+};
+
+function applyDummy(html) {
+  html = html.replace(/\{\{(\w+)\}\}/g, function(_, key) {
+    if (DUMMY[key] !== undefined) return DUMMY[key];
+    if (DUMMY[key.toLowerCase()] !== undefined) return DUMMY[key.toLowerCase()];
+    return '';
+  });
+
+  html = html.replace(/const KAD_ID\s*=\s*['"][^'"]*['"]/, "const KAD_ID='es-pb'");
+
+  html = html.replace(
+    /function initMonogram\(\)\{[\s\S]*?\}/,
+    "function initMonogram(){var el=document.getElementById('sealInitials');if(el)el.textContent='I & H';}"
+  );
+
+  // Fix countdown date format: 20270605T1100:00 -> 2027-06-05T11:00:00
+  html = html.replace(
+    /new Date\(['"]([0-9]{4})([0-9]{2})([0-9]{2})T([0-9]{2})([0-9]{2}):00['"]\)/g,
+    function(_, yr, mo, dy, hh, mm) {
+      return "new Date('" + yr + "-" + mo + "-" + dy + "T" + hh + ":" + mm + ":00')";
+    }
+  );
+
+  // Kosongkan RSVP & doa
+  // Clear RSVP & doa setiap load -- _isTemplate=true (KAD_ID='es-pb') skip Firebase auto
+  var domClear = '<scr'+'ipt>' +
+    'window.addEventListener("DOMContentLoaded",function(){' +
+
+      // Kosongkan on load
+    '  function clr(){' +
+    '    var r=document.getElementById("rsvpList");if(r)r.innerHTML="";' +
+    '    var d=document.getElementById("doaWall");if(d)d.innerHTML="";' +
+    '    var rc=document.getElementById("rsvpCards");if(rc)rc.innerHTML="";' +
+    '  }' +
+    '  clr();setTimeout(clr,500);setTimeout(clr,1500);' +
+
+      // Override submitDoa -- allow write tapi render local je
+    '  var _origSubmitDoa=window.submitDoa;' +
+    '  window.submitDoa=async function(){' +
+    '    var n=document.getElementById("doaName").value.trim();' +
+    '    var m=document.getElementById("doaMsg").value.trim();' +
+    '    if(!n||!m){alert("Sila isi nama dan ucapan.");return;}' +
+    '    try{if(window.kadRef)await window.kadRef.child("doa").push({n:n,m:m,t:Date.now()});}catch(e){}' +
+    '    document.getElementById("doaName").value="";' +
+    '    document.getElementById("doaMsg").value="";' +
+    '    var btn=document.querySelector("#doa .btn-g");' +
+    '    if(btn){var orig=btn.textContent;btn.textContent="Dihantar! ✨";btn.style.opacity="0.7";setTimeout(function(){btn.textContent=orig;btn.style.opacity="1";},2500);}' +
+      // Inject entry ke doaWall secara local
+    '    var w=document.getElementById("doaWall");' +
+    '    if(w){' +
+    '      var card=document.createElement("div");' +
+    '      card.className="doa-card";' +
+    '      card.innerHTML="<div class=\\"doa-n\\">"+n+"</div><div class=\\"doa-m\\">"+m+"</div>";' +
+    '      card.style.animation="cardIn 0.4s ease";' +
+    '      w.insertBefore(card,w.firstChild);' +
+    '    }' +
+    '  };' +
+
+      // Override submitRSVP -- local only, update _rsvpAllEntries + badge + search
+    '  window.submitRSVP=async function(){' +
+    '    var n=document.getElementById("rsvpName").value.trim();' +
+    '    var countEl=document.getElementById("rsvpCount");' +
+    '    var count=countEl?String(countEl.value).trim():"";' +
+    '    var s=document.getElementById("rsvpStatus").value;' +
+    '    if(!n||!count||!s){alert("Sila lengkapkan semua maklumat.");return;}' +
+    '    var countLabel=count+" orang";' +
+    '    var rsvpFormEl=document.getElementById("rsvpForm")||document.querySelector(".form-card");' +
+    '    if(rsvpFormEl)rsvpFormEl.style.display="none";' +
+    '    var succ=document.getElementById("rsvpSuccess");' +
+    '    if(succ){' +
+    '      succ.style.display="flex";' +
+    '      var rc=document.getElementById("rsvpCards");' +
+    '      if(rc)rc.innerHTML="<div class=\\"rsvp-card\\">"+n+" · "+countLabel+" · "+(s==="hadir"?"Insya-Allah Hadir ✅":"Tidak Hadir ❌")+"</div>";' +
+    '    }' +
+    '    if(s==="hadir"){' +
+    '      var entry={n:n,c:countLabel,s:"hadir",t:Date.now()};' +
+    '      if(window._rsvpAllEntries)window._rsvpAllEntries.unshift(entry);' +
+    '      else window._rsvpAllEntries=[entry];' +
+    '      var list=document.getElementById("rsvpList");' +
+    '      if(list){' +
+    '        var ph=list.firstChild;if(ph&&ph.style&&ph.style.textAlign==="center")list.removeChild(ph);' +
+    '        var row=document.createElement("div");' +
+    '        row.className="re-row";' +
+    '        row.innerHTML="<span class=\\"re-n\\">"+n+"</span><span class=\\"re-s\\">"+countLabel+" · ✅ Hadir</span>";' +
+    '        list.insertBefore(row,list.firstChild);' +
+    '      }' +
+    '      var total=(window._rsvpAllEntries||[]).reduce(function(sum,r){var m=String(r.c||"").match(/\\d+/);return sum+(m?parseInt(m[0]):1);},0);' +
+    '      var badge=document.getElementById("rsvpTotalBadge");' +
+    '      var paxEl=document.getElementById("rsvpTotalPax");' +
+    '      if(badge)badge.style.display="block";' +
+    '      if(paxEl)paxEl.textContent=total;' +
+    '      var sw=document.getElementById("rsvpSearchWrap");' +
+    '      if(sw)sw.style.display="block";' +
+    '    }' +
+    '  };' +
+
+    '});' +
+    '</'+'script>';
+  html = html.replace('<head>', '<head>' + domClear);
+  
+    html = injectDialogs(html);
+
+  // ── PATCH TEMPLATE FUNCTIONS ──
+
+  function findFuncEnd(html, startIdx) {
+    var depth = 0, i = startIdx;
+    while (i < html.length) {
+      if (html[i] === '{') depth++;
+      else if (html[i] === '}') { depth--; if (depth === 0) return i + 1; }
+      i++;
+    }
+    return -1;
+  }
+
+  // 1. Patch renderDoa
+  var rdS = html.indexOf('function renderDoa(){');
+  if (rdS !== -1) {
+    var rdE = findFuncEnd(html, rdS);
+    if (rdE !== -1) html = html.slice(0, rdS) +
+      'function renderDoa(){var w=document.getElementById("doaWall");if(w)w.innerHTML=\'<div style="text-align:center;padding:1rem;font-size:0.7rem;color:var(--muted)">Jadilah yang pertama menghantar ucapan! \u2728</div>\';}' +
+      html.slice(rdE);
+  }
+
+  // 2. Patch loadRSVPList
+  var rlS = html.indexOf('function loadRSVPList(){');
+  if (rlS !== -1) {
+    var rlE = findFuncEnd(html, rlS);
+    if (rlE !== -1) html = html.slice(0, rlS) +
+      'function loadRSVPList(){var el=document.getElementById("rsvpList");if(el)el.innerHTML="";}' +
+      html.slice(rlE);
+  }
+
+  // 3. Patch submitDoa
+  var sdS = html.indexOf('async function submitDoa(){');
+  if (sdS !== -1) {
+    var sdE = findFuncEnd(html, sdS);
+    if (sdE !== -1) html = html.slice(0, sdS) +
+      'async function submitDoa(){' +
+        'var n=document.getElementById("doaName").value.trim();' +
+        'var m=document.getElementById("doaMsg").value.trim();' +
+        'if(!n||!m){alert("Sila isi nama dan ucapan.");return;}' +
+        'try{await kadRef.child("doa").push({n:n,m:m,t:Date.now()});}catch(e){}' +
+        'document.getElementById("doaName").value="";' +
+        'document.getElementById("doaMsg").value="";' +
+        'var btn=document.querySelector("#doa .btn-g");' +
+        'if(btn){var ot=btn.textContent;btn.textContent="Dihantar! \u2728";btn.style.opacity="0.7";' +
+        'setTimeout(function(){btn.textContent=ot;btn.style.opacity="1";},2500);}' +
+        'var w=document.getElementById("doaWall");' +
+        'if(w){var ph=w.querySelector("[style]");if(ph)w.innerHTML="";' +
+        'var card=document.createElement("div");card.className="doa-card";' +
+        'card.innerHTML="<div class=\'doa-n\'>"+n+"</div><div class=\'doa-m\'>"+m+"</div>";' +
+        'w.insertBefore(card,w.firstChild);}' +
+      '}' +
+      html.slice(sdE);
+  }
+
+  // 4. Patch submitRSVP -- removed: window.submitRSVP already overridden above via domClear inject
+  // No need to patch here; the DOMContentLoaded override handles everything
+
+  return html;
+}
+
+document.getElementById('btnTengok').addEventListener('click', function() {
+  var el = document.getElementById('demo-overlay');
+  el.style.transition = 'opacity .3s ease';
+  el.style.opacity = '0';
+  setTimeout(function() { el.remove(); }, 300);
 });
 
-// ── TEMPLATE REGISTRY FETCH ──
-(async function loadTemplates() {
-  const grid       = document.getElementById('templateGrid');
-  const filterWrap = document.getElementById('filterWrap');
+(async function() {
+  var params = new URLSearchParams(location.search);
+  var tmpl = params.get('t');
+  var loading = document.getElementById('demo-loading');
+  var error = document.getElementById('demo-error');
+  var iframe = document.getElementById('demo-iframe');
 
-  // Collect all templates from registry
-  let allTemplates = [];
-  let styleCategories = [];
+  if (!tmpl) { loading.style.display = 'none'; error.style.display = 'flex'; return; }
 
   try {
-    const res = await fetch(REGISTRY_URL);
-    if (!res.ok) throw new Error('registry fetch failed');
-    const registry = await res.json();
-
-    // Extract style categories list
-    if (Array.isArray(registry._style_categories)) {
-      styleCategories = registry._style_categories;
-    }
-
-    // Flatten all packages + templates into one list
-    const PACKAGES = ['Essential', 'Potrait', 'Cinematic', 'Prestige'];
-    PACKAGES.forEach(pkg => {
-      const pkgData = registry[pkg];
-      if (!pkgData || typeof pkgData !== 'object') return;
-      Object.entries(pkgData).forEach(([key, info]) => {
-        if (!info || typeof info !== 'object') return;
-        allTemplates.push({
-          key,
-          pkg,
-          name:  info.name  || key,
-          file:  info.file  || '',
-          emoji: info.preview_emoji || '✦',
-          desc:  info.desc  || '',
-          style: info.style || '',
-        });
-      });
-    });
-
-  } catch (e) {
-    grid.innerHTML = `<div class="template-empty">Gagal memuatkan template. Sila <a href="https://wa.me/601154151433" style="color:var(--rose-drk)">hubungi kami</a> terus.</div>`;
-    return;
+    var url = 'https://raw.githubusercontent.com/nureqmal/eqstudio-cards/main/templates/' + tmpl;
+    var res = await fetch(url);
+    if (!res.ok) throw new Error('404');
+    var html = applyDummy(await res.text());
+    iframe.srcdoc = html;
+    iframe.style.display = 'block';
+    loading.style.display = 'none';
+  } catch(e) {
+    console.error('Demo load error:', e, 'template:', tmpl);
+    loading.style.display = 'none';
+    error.style.display = 'flex';
   }
-
-  if (!allTemplates.length) {
-    grid.innerHTML = `<div class="template-empty">Tiada template tersedia buat masa ini. Kami sedang menambah koleksi baru!</div>`;
-    return;
-  }
-
-  // ── BUILD FILTER BUTTONS ──
-  // Collect unique styles actually used in registry
-  const usedStyles = [...new Set(allTemplates.map(t => t.style).filter(Boolean))];
-  // Order: follow _style_categories order, then append any extras
-  const orderedStyles = [
-    ...styleCategories.filter(s => usedStyles.includes(s)),
-    ...usedStyles.filter(s => !styleCategories.includes(s))
-  ];
-
-  orderedStyles.forEach(style => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn';
-    btn.dataset.filter = style;
-    btn.textContent = style;
-    filterWrap.appendChild(btn);
-  });
-
-  // ── RENDER CARDS ──
-  function renderCards(filterStyle) {
-    grid.innerHTML = '';
-    const filtered = filterStyle === 'Semua'
-      ? allTemplates
-      : allTemplates.filter(t => t.style === filterStyle);
-
-    if (!filtered.length) {
-      grid.innerHTML = `<div class="template-empty">Tiada template dalam kategori ini buat masa ini.</div>`;
-      return;
-    }
-
-    filtered.forEach(t => {
-      const demoUrl = t.file ? DEMO_BASE + encodeURIComponent(t.file) : 'borang.html';
-      const card = document.createElement('div');
-      card.className = 'template-card';
-      card.innerHTML = `
-        <div class="template-thumb">
-          <div class="template-thumb-inner">
-            <div class="template-thumb-emoji">${t.emoji}</div>
-            <div class="template-thumb-name">${t.name}</div>
-            ${t.desc ? `<div style="font-size:11px;color:var(--ink3);margin-top:8px;line-height:1.5">${t.desc}</div>` : ''}
-          </div>
-        </div>
-        <div class="template-info">
-          <div class="template-name">${t.name}</div>
-          <div class="template-meta">
-            <span class="template-tag">${t.style || t.pkg}</span>
-            ${t.file ? `<a class="template-preview-link" href="${demoUrl}" target="_blank">Lihat demo →</a>` : ''}
-          </div>
-        </div>`;
-
-      // Clicking card body (not the link) also opens demo
-      card.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') return;
-        if (t.file) window.open(demoUrl, '_blank');
-        else window.location.href = 'borang.html';
-      });
-
-      grid.appendChild(card);
-    });
-
-    observeAll();
-  }
-
-  // Initial render
-  renderCards('Semua');
-
-  // ── FILTER CLICK ──
-  filterWrap.addEventListener('click', e => {
-    const btn = e.target.closest('.filter-btn');
-    if (!btn) return;
-    filterWrap.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderCards(btn.dataset.filter);
-  });
-
 })();
 </script>
 </body>
