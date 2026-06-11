@@ -76,5 +76,11 @@
     "desc": "Harga promo",
     "active": true,
     "expiry": null
+  },
+  "IKA": {
+    "discount": 10,
+    "desc": "Diskaun RM10",
+    "active": true,
+    "expiry": null
   }
 }
