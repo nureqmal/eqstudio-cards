@@ -106,5 +106,11 @@
     "desc": "Diskaun RM10",
     "active": true,
     "expiry": null
+  },
+  "LYN10": {
+    "discount": 10,
+    "desc": "Diskaun RM10",
+    "active": true,
+    "expiry": null
   }
 }
