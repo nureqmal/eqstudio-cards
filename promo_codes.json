@@ -100,5 +100,11 @@
     "desc": "Diskaun RM10",
     "active": true,
     "expiry": null
+  },
+  "FAQIHAH": {
+    "discount": 10,
+    "desc": "Diskaun RM10",
+    "active": true,
+    "expiry": null
   }
 }
