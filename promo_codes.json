@@ -22,5 +22,11 @@
     "desc": "Harga promo",
     "active": true,
     "expiry": null
+  },
+  "QIF10": {
+    "discount": 10,
+    "desc": "Harga promo",
+    "active": true,
+    "expiry": null
   }
 }
