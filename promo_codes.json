@@ -94,5 +94,11 @@
     "desc": "Diskaun RM10",
     "active": true,
     "expiry": null
+  },
+  "MIRA10": {
+    "discount": 10,
+    "desc": "Diskaun RM10",
+    "active": true,
+    "expiry": null
   }
 }
