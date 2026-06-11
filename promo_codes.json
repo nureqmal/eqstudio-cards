@@ -58,5 +58,11 @@
     "desc": "Harga promo",
     "active": true,
     "expiry": null
+  },
+  "TULIP10": {
+    "discount": 10,
+    "desc": "Harga promo",
+    "active": true,
+    "expiry": null
   }
 }
