@@ -112,5 +112,11 @@
     "desc": "Diskaun RM10",
     "active": true,
     "expiry": null
+  },
+  "MILA10": {
+    "discount": 10,
+    "desc": "Diskaun RM10",
+    "active": true,
+    "expiry": null
   }
 }
