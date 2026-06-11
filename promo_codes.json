@@ -46,5 +46,11 @@
     "desc": "Harga promo",
     "active": true,
     "expiry": null
+  },
+  "FIA10": {
+    "discount": 10,
+    "desc": "Harga promo",
+    "active": true,
+    "expiry": null
   }
 }
