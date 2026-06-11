@@ -88,5 +88,11 @@
     "desc": "Diskaun RM10",
     "active": true,
     "expiry": null
+  },
+  "AMIR10": {
+    "discount": 10,
+    "desc": "Diskaun RM10",
+    "active": true,
+    "expiry": null
   }
 }
