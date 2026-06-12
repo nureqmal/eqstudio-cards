@@ -905,7 +905,8 @@ footer{background:#f0e0d0;text-align:center;padding:4.5rem 1.4rem;position:relat
 </head>
 <body>
 <canvas id="confettiCanvas"></canvas>
-<audio id="bgAudio" loop preload="auto"><source src="{{MUSIC_URL}}" type="audio/mpeg"></audio>
+<div id="bgAudio" style="display:none;"><div id="ytPlayer"></div></div>
+<script src="https://www.youtube.com/iframe_api"></script>
 <button id="shareBtn" onclick="shareKad()" title="Kongsi Kad">🔗</button>
 <div id="audioViz">
   <div class="viz-bar" style="height:20px;"></div>
@@ -2665,74 +2666,68 @@ function openEnvelope(){
   },1100);
 }
 
-// ═══════════════════════════════════
-//  AUDIO
-// ═══════════════════════════════════
+// ══════════════════════
+//  AUDIO (YouTube IFrame API)
+// ══════════════════════
 let isPlaying=false;
-const audio=document.getElementById('bgAudio');
-
-// iOS Safari fix: must call audio.play() directly inside user gesture
-// We store a pending play flag and trigger from envelope click
+let _ytPlayer=null;
+let _ytReady=false;
 let _audioPending=false;
+let _startPending=false;
 
-function _iosUnlock(){
-  // Create and immediately suspend a silent AudioContext to unlock Web Audio on iOS
-  try{
-    const ac=new(window.AudioContext||window.webkitAudioContext)();
-    const buf=ac.createBuffer(1,1,22050);
-    const src=ac.createBufferSource();
-    src.buffer=buf; src.connect(ac.destination); src.start(0);
-    ac.resume().catch(()=>{});
-  }catch(e){}
-  // Also try loading the audio element
-  try{ audio.load(); }catch(e){}
-}
+window.onYouTubeIframeAPIReady=function(){
+  _ytPlayer=new YT.Player('ytPlayer',{
+    height:'0',width:'0',
+    videoId:'{{YT_VIDEO_ID}}',
+    playerVars:{autoplay:0,controls:0,loop:1,playlist:'{{YT_VIDEO_ID}}',playsinline:1,rel:0,modestbranding:1},
+    events:{
+      onReady:function(e){
+        _ytReady=true;
+        e.target.setVolume(0);
+        if(_startPending){_doStartAudio();}
+      },
+      onStateChange:function(e){
+        if(e.data===YT.PlayerState.PLAYING){
+          const btn=document.getElementById('audioBtn');
+          const viz=document.getElementById('audioViz');
+          isPlaying=true;
+          if(btn){btn.textContent='🔊';btn.classList.add('playing');}
+          if(viz){viz.style.display='flex';viz.classList.add('viz-playing');}
+          let v=0;
+          const fade=setInterval(()=>{v=Math.min(v+3,75);_ytPlayer.setVolume(v);if(v>=75)clearInterval(fade);},200);
+        }
+      }
+    }
+  });
+};
 
-// Call unlock on first touch anywhere (catches envelope tap on iOS)
-document.addEventListener('touchstart', _iosUnlock, {once:true, passive:true});
-document.addEventListener('click', _iosUnlock, {once:true, passive:true});
-
-function startAudio(){
-  if(!audio.src && !audio.querySelector) return;
-  const btn=document.getElementById('audioBtn');
-  audio.volume=0;
-  const playPromise=audio.play();
-  if(playPromise!==undefined){
-    playPromise.then(()=>{
-      isPlaying=true;
-      let v=0;
-      const fade=setInterval(()=>{v=Math.min(v+0.03,0.75); audio.volume=v; if(v>=0.75)clearInterval(fade);},200);
-      btn.textContent='🔊'; btn.classList.add('playing');
-      const viz=document.getElementById('audioViz');
-      if(viz){viz.style.display='flex'; viz.classList.add('viz-playing');}
-    }).catch(()=>{
-      // Autoplay blocked — show play button, wait for user tap
-      btn.textContent='▶️';
-      btn.style.display='flex';
-      _audioPending=true;
-    });
+function _doStartAudio(){
+  if(!_ytReady||!_ytPlayer){_startPending=true;return;}
+  _ytPlayer.setVolume(0);
+  try{_ytPlayer.playVideo();}catch(e){
+    const btn=document.getElementById('audioBtn');
+    if(btn){btn.textContent='▶️';btn.style.display='flex';}_audioPending=true;
   }
 }
+
+function startAudio(){
+  if(!_ytReady){_startPending=true;return;}
+  _doStartAudio();
+}
+
 function toggleAudio(){
   const btn=document.getElementById('audioBtn');
   const viz=document.getElementById('audioViz');
+  if(!_ytReady||!_ytPlayer) return;
   if(isPlaying){
-    audio.pause(); isPlaying=false; btn.textContent='🎵'; btn.classList.remove('playing');
-    if(viz) viz.classList.remove('viz-playing');
+    _ytPlayer.pauseVideo();
+    isPlaying=false;
+    if(btn){btn.textContent='🎵';btn.classList.remove('playing');}
+    if(viz)viz.classList.remove('viz-playing');
   } else {
-    _iosUnlock();
-    const p=audio.play();
-    if(p!==undefined){
-      p.then(()=>{isPlaying=true; btn.textContent='🔊'; btn.classList.add('playing'); if(viz) viz.classList.add('viz-playing');}).catch(()=>{});
-    }
+    _ytPlayer.playVideo();
   }
-}
-
-// ═══════════════════════════════════
-//  COUNTDOWN
-// ═══════════════════════════════════
-function startCountdown(){
-  const target=new Date('{{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}:00');
+}T{{TIME_START_HHMM}}:00');
   let prev={};
   function upd(){
     const diff=target-new Date();
