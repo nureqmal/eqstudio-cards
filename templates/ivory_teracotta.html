@@ -905,7 +905,7 @@ footer{background:#f0e0d0;text-align:center;padding:4.5rem 1.4rem;position:relat
 </head>
 <body>
 <canvas id="confettiCanvas"></canvas>
-<div id="bgAudio" style="display:none;"><div id="ytPlayer"></div></div>
+<div id="ytPlayer" style="display:none;"></div>
 <script src="https://www.youtube.com/iframe_api"></script>
 <button id="shareBtn" onclick="shareKad()" title="Kongsi Kad">🔗</button>
 <div id="audioViz">
@@ -2666,68 +2666,61 @@ function openEnvelope(){
   },1100);
 }
 
-// ══════════════════════
-//  AUDIO (YouTube IFrame API)
-// ══════════════════════
+// ═══════════════════════════════════
+//  AUDIO
+// ═══════════════════════════════════
 let isPlaying=false;
 let _ytPlayer=null;
 let _ytReady=false;
-let _audioPending=false;
-let _startPending=false;
+let _ytPending=false;
 
 window.onYouTubeIframeAPIReady=function(){
   _ytPlayer=new YT.Player('ytPlayer',{
-    height:'0',width:'0',
     videoId:'{{YT_VIDEO_ID}}',
-    playerVars:{autoplay:0,controls:0,loop:1,playlist:'{{YT_VIDEO_ID}}',playsinline:1,rel:0,modestbranding:1},
+    playerVars:{autoplay:0,controls:0,loop:1,playlist:'{{YT_VIDEO_ID}}',playsinline:1,enablejsapi:1},
     events:{
-      onReady:function(e){
-        _ytReady=true;
-        e.target.setVolume(0);
-        if(_startPending){_doStartAudio();}
-      },
+      onReady:function(){_ytReady=true; if(_ytPending){_doYtPlay(); _ytPending=false;}},
       onStateChange:function(e){
+        const btn=document.getElementById('audioBtn');
+        const viz=document.getElementById('audioViz');
         if(e.data===YT.PlayerState.PLAYING){
-          const btn=document.getElementById('audioBtn');
-          const viz=document.getElementById('audioViz');
-          isPlaying=true;
-          if(btn){btn.textContent='🔊';btn.classList.add('playing');}
-          if(viz){viz.style.display='flex';viz.classList.add('viz-playing');}
-          let v=0;
-          const fade=setInterval(()=>{v=Math.min(v+3,75);_ytPlayer.setVolume(v);if(v>=75)clearInterval(fade);},200);
+          isPlaying=true; btn.textContent='🔊'; btn.classList.add('playing');
+          if(viz){viz.style.display='flex'; viz.classList.add('viz-playing');}
+        } else if(e.data===YT.PlayerState.PAUSED||e.data===YT.PlayerState.ENDED){
+          isPlaying=false; btn.textContent='🎵'; btn.classList.remove('playing');
+          if(viz) viz.classList.remove('viz-playing');
         }
       }
     }
   });
 };
 
-function _doStartAudio(){
-  if(!_ytReady||!_ytPlayer){_startPending=true;return;}
+function _doYtPlay(){
+  if(!_ytPlayer||!_ytReady) return;
   _ytPlayer.setVolume(0);
-  try{_ytPlayer.playVideo();}catch(e){
-    const btn=document.getElementById('audioBtn');
-    if(btn){btn.textContent='▶️';btn.style.display='flex';}_audioPending=true;
-  }
+  _ytPlayer.playVideo();
+  let v=0;
+  const fade=setInterval(()=>{v=Math.min(v+3,75); _ytPlayer.setVolume(v); if(v>=75)clearInterval(fade);},200);
 }
 
 function startAudio(){
-  if(!_ytReady){_startPending=true;return;}
-  _doStartAudio();
+  if(!_ytReady){_ytPending=true; return;}
+  _doYtPlay();
 }
-
 function toggleAudio(){
-  const btn=document.getElementById('audioBtn');
-  const viz=document.getElementById('audioViz');
-  if(!_ytReady||!_ytPlayer) return;
+  if(!_ytPlayer||!_ytReady) return;
   if(isPlaying){
     _ytPlayer.pauseVideo();
-    isPlaying=false;
-    if(btn){btn.textContent='🎵';btn.classList.remove('playing');}
-    if(viz)viz.classList.remove('viz-playing');
   } else {
     _ytPlayer.playVideo();
   }
-}T{{TIME_START_HHMM}}:00');
+}
+
+// ═══════════════════════════════════
+//  COUNTDOWN
+// ═══════════════════════════════════
+function startCountdown(){
+  const target=new Date('{{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}:00');
   let prev={};
   function upd(){
     const diff=target-new Date();
