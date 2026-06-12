@@ -401,7 +401,8 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
 <body>
 <canvas id="confettiCanvas"></canvas>
 <canvas id="petalCanvas"></canvas>
-<audio id="bgAudio" loop preload="auto"><source src="{{MUSIC_URL}}" type="audio/mpeg"></audio>
+<div id="bgAudio" style="display:none;"><div id="ytPlayer"></div></div>
+<script src="https://www.youtube.com/iframe_api"></script>
 
 <div id="audioViz"><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div></div>
 <div id="safariNotice">🎵 Safari: tap ▶ untuk muzik</div>
@@ -423,6 +424,7 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
       <div class="env-letter"><div class="el-tag" data-ms="Jemputan Perkahwinan" data-en="Wedding Invitation" data-kor="청첩장">Jemputan Perkahwinan</div><div class="el-name">{{GROOM_NAME}} &amp; {{BRIDE_NAME}}</div></div>
     </div>
     <div class="env-hint" data-ms="Ketuk untuk buka ✦" data-en="Tap to open ✦" data-kor="열어보세요 ✦">Ketuk untuk buka ✦</div>
+    <div class="env-bismillah">بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
   </div>
 </div>
 
@@ -540,7 +542,7 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
       <div class="sec-cards reveal">
         <div class="info-card" onclick="toggleExpand('detTarikh','arrTarikh')">
           <div class="ic-ico">📅</div>
-          <div><div class="ic-label" data-ms="Tarikh" data-en="Date" data-kor="날짜">Tarikh</div><div class="ic-val">{{DATE_DISPLAY}}</div><div class="ic-sub">{{DATE_DAY}} · {{DATE_HIJRI}}</div></div>
+          <div><div class="ic-label" data-ms="Tarikh" data-en="Date" data-kor="날짜">Tarikh</div><div class="ic-val">{{DATE_DD}} <span id="mmText"></span> {{DATE_YYYY}}</div><div class="ic-sub">{{DATE_DAY}}</div></div>
           <div class="ic-arr" id="arrTarikh">▼</div>
         </div>
         <div class="ic-expand" id="detTarikh"><div class="ic-expand-body"><div class="cal-wrap"><div class="cal-head"><div class="cal-month" id="calMonth"></div></div><div class="cal-grid" id="calGrid"></div></div></div></div>
@@ -550,7 +552,7 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
           <div><div class="ic-label" data-ms="Masa" data-en="Time" data-kor="시간">Masa</div><div class="ic-val">{{TIME_START}} — {{TIME_END}}</div><div class="ic-sub" data-ms="Waktu Malaysia" data-en="Malaysian Time" data-kor="말레이시아 시간">Waktu Malaysia</div></div>
           <div class="ic-arr" id="arrMasa">▼</div>
         </div>
-        <div class="ic-expand" id="detMasa"><div class="ic-expand-body"><div class="clk-wrap"><svg width="90" height="90" viewBox="0 0 105 105"><circle cx="52.5" cy="52.5" r="44" fill="none" stroke="#e8e0d8" stroke-width="0.8"/><circle cx="52.5" cy="52.5" r="36" fill="#faf8f5" stroke="#e8e0d8" stroke-width="0.6"/><line id="svgHour" x1="52.5" y1="52.5" x2="52.5" y2="37" stroke="#c9968a" stroke-width="2" stroke-linecap="round"/><line id="svgMin" x1="52.5" y1="52.5" x2="52.5" y2="26" stroke="#2c2419" stroke-width="1.2" stroke-linecap="round"/><circle cx="52.5" cy="52.5" r="2.5" fill="#c9968a"/></svg><div class="clk-time">{{TIME_START_SHORT}} — {{TIME_END_SHORT}}</div></div></div></div>
+        <div class="ic-expand" id="detMasa"><div class="ic-expand-body"><div class="clk-wrap"><svg width="90" height="90" viewBox="0 0 105 105"><circle cx="52.5" cy="52.5" r="44" fill="none" stroke="#e8e0d8" stroke-width="0.8"/><circle cx="52.5" cy="52.5" r="36" fill="#faf8f5" stroke="#e8e0d8" stroke-width="0.6"/><line id="svgHour" x1="52.5" y1="52.5" x2="52.5" y2="37" stroke="#c9968a" stroke-width="2" stroke-linecap="round"/><line id="svgMin" x1="52.5" y1="52.5" x2="52.5" y2="26" stroke="#2c2419" stroke-width="1.2" stroke-linecap="round"/><circle cx="52.5" cy="52.5" r="2.5" fill="#c9968a"/></svg><div class="clk-time">{{TIME_START}} — {{TIME_END}}</div></div></div></div>
 
         <div class="info-card" onclick="toggleExpand('detVenue','arrVenue')">
           <div class="ic-ico">📍</div>
@@ -572,15 +574,7 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
         <div class="sw"><div class="sw-ring"><div class="sw-inner" style="background:{{COLOR4_HEX}};"></div></div><div class="sw-name">{{COLOR4_NAME}}</div></div>
         <div class="sw"><div class="sw-ring"><div class="sw-inner" style="background:{{COLOR5_HEX}};"></div></div><div class="sw-name">{{COLOR5_NAME}}</div></div>
       </div>
-      <div class="dc-note reveal" data-ms="* Tema: {{DRESSCODE_THEME}} — {{DRESSCODE_NOTE}}" data-en="* Theme: {{DRESSCODE_THEME}} — {{DRESSCODE_NOTE}}" data-kor="* {{DRESSCODE_THEME}} — {{DRESSCODE_NOTE}}">* Tema: {{DRESSCODE_THEME}} — {{DRESSCODE_NOTE}}</div>
-
-      <!-- Tuan Rumah -->
-      <div class="sec-cards reveal" style="margin-top:1rem;">
-        <div class="info-card" style="cursor:default;">
-          <div class="ic-ico">🏠</div>
-          <div><div class="ic-label" data-ms="Tuan Rumah" data-en="Host" data-kor="주최자">Tuan Rumah</div><div class="ic-val">{{HOST_FAMILY}}</div><div class="ic-sub" data-ms="Bersama keluarga" data-en="Together with family" data-kor="가족과 함께">Bersama keluarga</div></div>
-        </div>
-      </div>
+      <div class="dc-note reveal">{{DRESSCODE_NOTE}}</div>
 
       <!-- Location -->
       <div class="sec-header reveal" style="padding-top:1.8rem;">
@@ -592,7 +586,6 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
       <div class="map-btns reveal">
         <a class="map-btn mb-waze" href="https://waze.com/ul?q={{VENUE_WAZE_QUERY}}&navigate=yes" target="_blank">🗺️ Waze</a>
         <a class="map-btn mb-gmap" href="https://maps.google.com/?q={{VENUE_GMAPS_QUERY}}" target="_blank">📍 Google Maps</a>
-        <a class="map-btn mb-gmap" href="https://maps.google.com/?q={{VENUE_NAME_URL}}" target="_blank" style="display:none;">{{VENUE_NAME_URL}}</a>
       </div>
 
       <div class="chapter-footer reveal">
@@ -612,7 +605,6 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
         <div class="tl-row"><div class="tl-dot">🤲</div><div class="tl-body"><div class="tl-time">{{TIME_AKAD}}</div><div class="tl-ev" data-ms="Akad Nikah" data-en="Solemnisation" data-kor="혼인 서약">Akad Nikah</div></div></div>
         <div class="tl-row"><div class="tl-dot">👑</div><div class="tl-body"><div class="tl-time">{{TIME_BERSANDING}}</div><div class="tl-ev" data-ms="Persandingan" data-en="Wedding Dais" data-kor="결혼식 행사">Persandingan</div></div></div>
         <div class="tl-row"><div class="tl-dot">🍽️</div><div class="tl-body"><div class="tl-time">{{TIME_MAKAN}}</div><div class="tl-ev" data-ms="Jamuan Makan" data-en="Wedding Feast" data-kor="피로연">Jamuan Makan</div></div></div>
-        <div class="tl-row"><div class="tl-dot">🌙</div><div class="tl-body"><div class="tl-time">{{TIME_BERSURAI}}</div><div class="tl-ev" data-ms="Majlis Bersurai" data-en="End of Programme" data-kor="행사 종료">Majlis Bersurai</div></div></div>
       </div>
 
       <div class="sec-header reveal" style="padding-top:1.8rem;">
@@ -656,7 +648,6 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
         <div class="love-row"><div class="love-yr">{{LOVE_YEAR_1}}</div><div class="love-body"><div class="love-title" data-ms="{{LOVE_STORY_1}}" data-en="{{LOVE_STORY_1}}" data-kor="{{LOVE_STORY_1}}">{{LOVE_STORY_1}}</div><div class="love-desc" data-ms="{{LOVE_STORY_1}}" data-en="{{LOVE_STORY_1}}" data-kor="{{LOVE_STORY_1}}">{{LOVE_STORY_1}}</div></div></div>
         <div class="love-row"><div class="love-yr">{{LOVE_YEAR_2}}</div><div class="love-body"><div class="love-title" data-ms="{{LOVE_STORY_2}}" data-en="{{LOVE_STORY_2}}" data-kor="{{LOVE_STORY_2}}">{{LOVE_STORY_2}}</div><div class="love-desc" data-ms="{{LOVE_STORY_2}}" data-en="{{LOVE_STORY_2}}" data-kor="{{LOVE_STORY_2}}">{{LOVE_STORY_2}}</div></div></div>
         <div class="love-row"><div class="love-yr">{{LOVE_YEAR_3}}</div><div class="love-body"><div class="love-title" data-ms="{{LOVE_STORY_3}}" data-en="{{LOVE_STORY_3}}" data-kor="{{LOVE_STORY_3}}">{{LOVE_STORY_3}}</div><div class="love-desc" data-ms="{{LOVE_STORY_3}}" data-en="{{LOVE_STORY_3}}" data-kor="{{LOVE_STORY_3}}">{{LOVE_STORY_3}}</div></div></div>
-        <div class="love-row"><div class="love-yr">{{LOVE_YEAR_4}}</div><div class="love-body"><div class="love-title" data-ms="Hari Perkahwinan 💍" data-en="Wedding Day 💍" data-kor="결혼식 날 💍">Hari Perkahwinan 💍</div><div class="love-desc" data-ms="Alhamdulillah, saat yang dinantikan telah tiba. Semoga kebahagiaan ini berkekalan hingga ke syurga." data-en="Alhamdulillah, the moment we've been waiting for. May this happiness last till Jannah." data-kor="알함두릴라, 기다리던 순간이 찾아왔어요. 이 행복이 영원하길 바랍니다.">Alhamdulillah, saat yang dinantikan telah tiba. Semoga kebahagiaan ini berkekalan hingga ke syurga.</div></div></div>
       </div>
 
       <div class="sec-header reveal" style="padding-top:1.8rem;">
@@ -667,7 +658,7 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
         <div class="mesej-qm">"</div>
         <p class="mesej-text" data-ms="{{HOST_MESSAGE_BM}}" data-en="{{HOST_MESSAGE_EN}}" data-kor="{{HOST_MESSAGE_BM}}">{{HOST_MESSAGE_BM}}</p>
         <div class="mesej-from" data-ms="Daripada" data-en="From" data-kor="보내는 사람">Daripada</div>
-        <div class="mesej-name">{{HOST_FAMILY_FULL}}</div>
+        <div class="mesej-name">{{GROOM_NAME}} &amp; {{BRIDE_NAME}}</div>
       </div>
 
       <div class="chapter-footer reveal">
@@ -785,10 +776,8 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
         <div class="sh-title" data-ms="Ada <em>Pertanyaan?</em>" data-en="Any <em>Questions?</em>" data-kor="문의 <em>사항?</em>">Ada <em>Pertanyaan?</em></div>
       </div>
       <div class="sec-cards reveal">
-        <a class="ct-card" href="https://wa.me/{{CONTACT1_PHONE_WA}}"><div class="ct-ico">📞</div><div><div class="ct-role" data-ms="Urusetia Majlis" data-en="Event Coordinator" data-kor="행사 담당자">Urusetia Majlis</div><div class="ct-name">{{CONTACT1_NAME}}</div><div class="ct-num">{{CONTACT1_PHONE_DISPLAY}}</div></div><span class="ct-arr">›</span></a>
-        <a class="ct-card" href="https://wa.me/{{CONTACT2_PHONE_WA}}"><div class="ct-ico">📞</div><div><div class="ct-role" data-ms="Urusetia Majlis" data-en="Event Coordinator" data-kor="행사 담당자">Urusetia Majlis</div><div class="ct-name">{{CONTACT2_NAME}}</div><div class="ct-num">{{CONTACT2_PHONE_DISPLAY}}</div></div><span class="ct-arr">›</span></a>
-        <a class="ct-card" href="https://wa.me/{{BRIDE_NAME_URL}}"><div class="ct-ico">👰</div><div><div class="ct-role" data-ms="Pengantin Perempuan" data-en="Bride" data-kor="신부">Pengantin Perempuan</div><div class="ct-name">{{BRIDE_NAME}}</div></div><span class="ct-arr">›</span></a>
-        <a class="ct-card" href="https://wa.me/{{GROOM_NAME_URL}}"><div class="ct-ico">🤵</div><div><div class="ct-role" data-ms="Pengantin Lelaki" data-en="Groom" data-kor="신랑">Pengantin Lelaki</div><div class="ct-name">{{GROOM_NAME}}</div></div><span class="ct-arr">›</span></a>
+        <a class="ct-card" href="https://wa.me/{{CONTACT1_PHONE_WA}}"><div class="ct-ico">📞</div><div><div class="ct-role" data-ms="Hubungi" data-en="Contact" data-kor="연락처">Hubungi</div><div class="ct-name">{{CONTACT1_NAME}}</div><div class="ct-num">{{CONTACT1_PHONE_DISPLAY}}</div></div><span class="ct-arr">›</span></a>
+        <a class="ct-card" href="https://wa.me/{{CONTACT2_PHONE_WA}}"><div class="ct-ico">📞</div><div><div class="ct-role" data-ms="Hubungi" data-en="Contact" data-kor="연락처">Hubungi</div><div class="ct-name">{{CONTACT2_NAME}}</div><div class="ct-num">{{CONTACT2_PHONE_DISPLAY}}</div></div><span class="ct-arr">›</span></a>
       </div>
 
       <div class="page-footer reveal">
@@ -888,24 +877,65 @@ function openEnvelope(){
   },1050);
 }
 
-// ══ AUDIO ══
+// ══ AUDIO (YouTube IFrame API) ══
 let isPlaying=false;
-const audio=document.getElementById('bgAudio');
-function _iosUnlock(){try{const ac=new(window.AudioContext||window.webkitAudioContext)();const b=ac.createBuffer(1,1,22050);const s=ac.createBufferSource();s.buffer=b;s.connect(ac.destination);s.start(0);ac.resume().catch(()=>{});}catch(e){}try{audio.load();}catch(e){}}
-document.addEventListener('touchstart',_iosUnlock,{once:true,passive:true});
-document.addEventListener('click',_iosUnlock,{once:true,passive:true});
-function startAudio(){
-  const btn=document.getElementById('audioBtn');audio.volume=0;
-  const p=audio.play();if(p!==undefined){
-    p.then(()=>{isPlaying=true;let v=0;const f=setInterval(()=>{v=Math.min(v+0.03,0.75);audio.volume=v;if(v>=0.75)clearInterval(f);},200);btn.textContent='🔊';btn.classList.add('playing');document.getElementById('audioViz').classList.add('playing');
-    const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);if(isSafari){const n=document.getElementById('safariNotice');if(n){n.style.display='block';setTimeout(()=>n.style.display='none',4000);}}
-    }).catch(()=>{btn.textContent='▶️';});
+let _ytPlayer=null;
+let _ytReady=false;
+let _audioPending=false;
+let _startPending=false;
+
+window.onYouTubeIframeAPIReady=function(){
+  _ytPlayer=new YT.Player('ytPlayer',{
+    height:'0',width:'0',
+    videoId:'{{YT_VIDEO_ID}}',
+    playerVars:{autoplay:0,controls:0,loop:1,playlist:'{{YT_VIDEO_ID}}',playsinline:1,rel:0,modestbranding:1},
+    events:{
+      onReady:function(e){
+        _ytReady=true;
+        e.target.setVolume(0);
+        if(_startPending){_doStartAudio();}
+      },
+      onStateChange:function(e){
+        if(e.data===YT.PlayerState.PLAYING){
+          const btn=document.getElementById('audioBtn');
+          const viz=document.getElementById('audioViz');
+          isPlaying=true;
+          if(btn){btn.textContent='🔊';btn.classList.add('playing');}
+          if(viz){viz.style.display='flex';viz.classList.add('viz-playing');}
+          let v=0;
+          const fade=setInterval(()=>{v=Math.min(v+3,75);_ytPlayer.setVolume(v);if(v>=75)clearInterval(fade);},200);
+        }
+      }
+    }
+  });
+};
+
+function _doStartAudio(){
+  if(!_ytReady||!_ytPlayer){_startPending=true;return;}
+  _ytPlayer.setVolume(0);
+  try{_ytPlayer.playVideo();}catch(e){
+    const btn=document.getElementById('audioBtn');
+    if(btn){btn.textContent='▶️';btn.style.display='flex';}_audioPending=true;
   }
 }
+
+function startAudio(){
+  if(!_ytReady){_startPending=true;return;}
+  _doStartAudio();
+}
+
 function toggleAudio(){
-  const btn=document.getElementById('audioBtn');const viz=document.getElementById('audioViz');
-  if(isPlaying){audio.pause();isPlaying=false;btn.textContent='🎵';btn.classList.remove('playing');viz.classList.remove('playing');}
-  else{_iosUnlock();const p=audio.play();if(p!==undefined)p.then(()=>{isPlaying=true;btn.textContent='🔊';btn.classList.add('playing');viz.classList.add('playing');}).catch(()=>{});}
+  const btn=document.getElementById('audioBtn');
+  const viz=document.getElementById('audioViz');
+  if(!_ytReady||!_ytPlayer) return;
+  if(isPlaying){
+    _ytPlayer.pauseVideo();
+    isPlaying=false;
+    if(btn){btn.textContent='🎵';btn.classList.remove('playing');}
+    if(viz)viz.classList.remove('viz-playing');
+  } else {
+    _ytPlayer.playVideo();
+  }
 }
 
 // ══ CHAPTER NAVIGATION ══
@@ -963,7 +993,6 @@ function initMonogram(){
 
 // ══ MODAL ══
 function openModal(){document.getElementById('modal').classList.add('show');}
-function showModal(){openModal();}
 function closeModal(){document.getElementById('modal').classList.remove('show');}
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
@@ -1050,20 +1079,20 @@ function launchConfetti(){
 
 // ══ SHARE ══
 function shareKad(){
-  const g='{{GROOM_NAME}}';const b='{{BRIDE_NAME}}';
-  const names=(g&&!g.includes('{{'))?(b&&!b.includes('{{')?g+' & '+b:g):'Pengantin';
+  const g='{{GROOM_NAME}}'!='{{GROOM_NAME}}'?'{{GROOM_NAME}}':'Pengantin';
+  const b='{{BRIDE_NAME}}'!='{{BRIDE_NAME}}'?'{{BRIDE_NAME}}':"";
+  const names=b?g+' & '+b:g;
   if(navigator.share){navigator.share({title:'Jemputan Perkahwinan '+names,url:window.location.href}).catch(()=>{});}
   else{navigator.clipboard&&navigator.clipboard.writeText(window.location.href).then(()=>{const btn=document.getElementById('shareBtn');const o=btn.textContent;btn.textContent='✓';setTimeout(()=>btn.textContent=o,2000);});}
 }
-function showShare(){shareKad();}
 
 // ══ FIREBASE ══
 const firebaseConfig={apiKey:"AIzaSyBiubRnhd-PPamnc0rxJ_NDmmxsa7W2Lsw",authDomain:"eqstudio-6225d.firebaseapp.com",databaseURL:"https://eqstudio-6225d-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"eqstudio-6225d",storageBucket:"eqstudio-6225d.firebasestorage.app",messagingSenderId:"702399155563",appId:"1:702399155563:web:2e397996948663fa27102e"};
 firebase.initializeApp(firebaseConfig);
 const db=firebase.database();
-const KAD_ID='es-korean-hybrid';
+const KAD_ID='{{KAD_ID}}';
 const kadRef=db.ref('kads/'+KAD_ID);
-const _isTemplate=false;
+const _isTemplate=KAD_ID.includes('{{');
 
 // ══ RSVP ══
 async function submitRSVP(){
@@ -1104,7 +1133,7 @@ function loadRSVPList(){
     if(!_rsvpAll.length){list.innerHTML='<div style="font-size:0.63rem;color:var(--muted);text-align:center;padding:0.75rem;font-style:italic;">Belum ada yang mendaftar lagi.</div>';if(badge)badge.style.display='none';return;}
     const total=_rsvpAll.reduce((s,r)=>s+_parsePax(r.c),0);
     if(badge)badge.style.display='block';if(totalPax)totalPax.textContent=total;
-    if(sw&&_rsvpAll.length>2)sw.style.display='block';
+    if(sw&&_rsvpAll.length>0)sw.style.display='block';
     renderRSVPList(_rsvpAll,document.getElementById('rsvpSearch')?document.getElementById('rsvpSearch').value:'');
   });
 }
