@@ -114,6 +114,15 @@
       "preview_emoji": "✨",
       "desc": "Korean",
       "style": "Korean Style"
+    },
+    "Neon Green": {
+      "name": "Neon Green",
+      "file": "neon_green.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#39FF14",
+      "style": "Modern GenZ"
     }
   },
   "Portrait": {
