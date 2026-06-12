@@ -173,6 +173,7 @@ var DUMMY = {
   contact2_name: 'Puan Aminah', contact2_phone_display: '012-8765 4321', contact2_phone_wa: '601287654321',
   music_url: '', music_label: 'Beautiful In White - Shane Filan (Westlife)',
   yt_video_id: DEMO_YT_VIDEO_ID,
+  YT_VIDEO_ID: DEMO_YT_VIDEO_ID,
   love_year_1: '2020', love_story_1: 'Kami pertama kali berjumpa di universiti semasa Minggu Destini Siswa.',
   love_year_2: '2021', love_story_2: 'Selepas banyak projek bersama, perasaan mula bercambah. Kami rasmi hubungan pada hari jadi Hana.',
   love_year_3: '2024', love_story_3: 'Izzat melamar Hana di tepi pantai Langkawi. Jawapannya - Ya.',
@@ -217,37 +218,6 @@ function applyDummy(html) {
   // Clear RSVP & doa setiap load -- _isTemplate=true (KAD_ID='es-pb') skip Firebase auto
   var domClear = '<scr'+'ipt>' +
     'window.addEventListener("DOMContentLoaded",function(){' +
-
-      // Patch YouTube player ID untuk demo
-    '  var _DEMO_YT_ID="' + DEMO_YT_VIDEO_ID + '";' +
-    '  var _origYTReady=window.onYouTubeIframeAPIReady;' +
-    '  window.onYouTubeIframeAPIReady=function(){' +
-    '    if(window.YT&&window.YT.Player){' +
-    '      window._ytPlayer=new YT.Player("ytPlayer",{' +
-    '        height:"0",width:"0",' +
-    '        videoId:_DEMO_YT_ID,' +
-    '        playerVars:{autoplay:0,controls:0,loop:1,playlist:_DEMO_YT_ID,playsinline:1,rel:0,modestbranding:1},' +
-    '        events:{' +
-    '          onReady:function(e){' +
-    '            window._ytReady=true;e.target.setVolume(0);' +
-    '            if(window._startPending){window._doStartAudio();}' +
-    '          },' +
-    '          onStateChange:function(e){' +
-    '            if(e.data===YT.PlayerState.PLAYING){' +
-    '              var btn=document.getElementById("audioBtn");' +
-    '              var viz=document.getElementById("audioViz");' +
-    '              window.isPlaying=true;' +
-    '              if(btn){btn.textContent="🔊";btn.classList.add("playing");}' +
-    '              if(viz){viz.style.display="flex";viz.classList.add("viz-playing");}' +
-    '              var v=0;' +
-    '              var fade=setInterval(function(){v=Math.min(v+3,75);window._ytPlayer.setVolume(v);if(v>=75)clearInterval(fade);},200);' +
-    '            }' +
-    '          }' +
-    '        }' +
-    '      });' +
-    '    }' +
-    '  };' +
-    '  if(window.YT&&window.YT.Player){window.onYouTubeIframeAPIReady();}' +
 
       // Kosongkan on load
     '  function clr(){' +
