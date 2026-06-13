@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Ahmad Faris & Nurul Aina</title>
+<title>{{GROOM_NAME}} & {{BRIDE_NAME}}</title>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{width:100%;height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
 :root{
-  --maroon:#6B0F1A;--maroon2:#8B1A28;--maroon3:#4A0A12;--maroon4:#3A0808;
+  --maroon:#7D1525;--maroon2:#A02438;--maroon3:#5C1020;--maroon4:#480E1A;
   --cream:#FFF8F0;--cream2:#F5EAD8;--gold:#D4AF6A;--gold2:#E8C88A;
   --white:#FFFFFF;
 }
@@ -49,6 +49,16 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 #audioFab svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 #audioFab.playing{background:var(--gold);border-color:var(--gold)}
 #audioFab.playing svg{stroke:var(--maroon4)}
+#eqWrap{position:fixed;bottom:100px;right:68px;z-index:299;display:none;align-items:flex-end;gap:2px;height:24px;padding:0 6px;background:rgba(58,14,26,.85);border:1px solid rgba(255,255,255,.12);border-radius:20px}
+#eqWrap.show{display:flex}
+.eq-bar{width:3px;border-radius:2px;background:var(--gold2);animation:eqAnim 0s ease infinite alternate}
+.eq-bar:nth-child(1){animation-duration:.4s;height:6px}
+.eq-bar:nth-child(2){animation-duration:.55s;height:14px;animation-delay:.1s}
+.eq-bar:nth-child(3){animation-duration:.35s;height:20px;animation-delay:.05s}
+.eq-bar:nth-child(4){animation-duration:.5s;height:12px;animation-delay:.15s}
+.eq-bar:nth-child(5){animation-duration:.45s;height:8px;animation-delay:.2s}
+@keyframes eqAnim{from{transform:scaleY(1)}to{transform:scaleY(.2)}}
+.eq-title{font-family:'Cinzel',serif;font-size:.3rem;letter-spacing:.1em;color:rgba(255,255,255,.5);white-space:nowrap;padding:0 2px;align-self:center}
 
 /* ══ TAB BAR ══ */
 #tabBar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--maroon4);border-top:1px solid rgba(255,255,255,.1);transform:translateY(0);transition:transform .3s ease;display:none}
@@ -137,6 +147,11 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
 
 /* ══ CALENDAR ══ */
+.cal-mini-lbl{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;text-transform:uppercase;color:var(--maroon2);margin-bottom:.5rem;text-align:center}
+#calGrid .cdn{font-size:.38rem;text-align:center;padding:2px 0;color:rgba(74,10,18,.4);letter-spacing:.04em}
+#calGrid .cdd{font-size:.6rem;text-align:center;padding:4px 1px;color:var(--maroon3)}
+#calGrid .cdd.hl{background:var(--maroon2);color:#fff;border-radius:2px}
+#calGrid .cdd.em{visibility:hidden}
 .cal-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:300px;margin:0 auto}
 .cal-btn{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding:1rem .7rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);text-decoration:none;color:var(--white);transition:background .2s}
 .cal-btn:active{background:rgba(255,255,255,.1)}
@@ -352,6 +367,14 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
   <button id="audioFab" onclick="toggleAudio()" aria-label="Muzik latar">
     <svg id="fabIco" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
   </button>
+  <div id="eqWrap">
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-bar"></div>
+    <div class="eq-title" id="eqTitle">{{MUSIC_LABEL}}</div>
+  </div>
   <button id="shareFab" onclick="doShare()" aria-label="Kongsi" style="position:fixed;bottom:90px;right:68px;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--maroon3);border:1px solid rgba(255,255,255,.2);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4)">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
   </button>
@@ -382,26 +405,27 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 
         <div class="frame-wrap h-anim-2">
           <div class="frame-inner">
-            <div class="hero-groom">Ahmad Faris</div>
+            <div class="hero-groom">{{CONTACT1_NAME}}</div>
             <div class="hero-amp">&amp;</div>
-            <div class="hero-bride">Nurul Aina</div>
+            <div class="hero-bride">{{CONTACT2_NAME}}</div>
           </div>
         </div>
 
+        <div style="font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;color:rgba(255,255,255,.6);margin-bottom:.6rem" class="h-anim-3">{{DATE_DAY}}</div>
         <div class="hero-date-strip h-anim-3">
-          <div class="hds-item"><div class="hds-n">14</div><div class="hds-l">Hari</div></div>
+          <div class="hds-item"><div class="hds-n">{{DATE_DD}}</div><div class="hds-l">Hari</div></div>
           <div class="hds-sep"></div>
           <div class="hds-item"><div class="hds-n" id="heroMonth">--</div><div class="hds-l">Bulan</div></div>
           <div class="hds-sep"></div>
-          <div class="hds-item"><div class="hds-n">2026</div><div class="hds-l">Tahun</div></div>
+          <div class="hds-item"><div class="hds-n">{{DATE_YYYY}}</div><div class="hds-l">Tahun</div></div>
         </div>
 
         <div class="h-anim-4">
-          <div class="hero-venue-name">Dewan Seri Rawang,</div>
-          <div class="hero-venue-city">Rawang, Selangor</div>
+          <div class="hero-venue-name">{{VENUE_NAME}},</div>
+          <div class="hero-venue-city">{{VENUE_CITY}}</div>
         </div>
 
-        <div style="margin-top:1rem;font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;color:rgba(255,255,255,.35)" class="h-anim-5">18 Zulhijjah 1447H</div>
+        <div style="margin-top:1rem;font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;color:rgba(255,255,255,.35)" class="h-anim-5">{{DATE_HIJRI}}</div>
       </div>
 
       <div class="scroll-hint">
@@ -418,9 +442,9 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
       </div>
       <div class="host-msg-wrap rv rv-d1">
         <div class="host-msg-q">"</div>
-        <div class="host-msg-text">Dengan penuh kesyukuran ke hadrat Allah SWT, kami sekeluarga dengan segala kerendahan hati menjemput Tuan/Puan hadir ke majlis perkahwinan putera dan puteri kami. Kehadiran anda adalah penghormatan yang amat kami sanjungi.</div>
+        <div class="host-msg-text">{{HOST_MESSAGE_BM}}</div>
         <div class="host-msg-from">Daripada</div>
-        <div class="host-msg-name">Keluarga Razali & Keluarga Shahrul</div>
+        <div class="host-msg-name">{{HOST_FAMILY_FULL}}</div>
       </div>
     </section>
 
@@ -433,16 +457,16 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
       <div class="duo-wrap">
         <div class="duo-card rv rv-left">
           <div class="duo-side">— Pengantin Lelaki —</div>
-          <div class="duo-name">Ahmad Faris bin Razali</div>
+          <div class="duo-name">{{GROOM_FULL_NAME}}</div>
           <div class="duo-conn">putera kepada</div>
-          <div class="duo-parents">Encik Razali bin Hamid<br><span style="opacity:.3;font-size:.7rem">&amp;</span><br>Puan Rohani binti Yusoff</div>
+          <div class="duo-parents">{{GROOM_FATHER}}<br><span style="opacity:.3;font-size:.7rem">&amp;</span><br>{{GROOM_MOTHER}}</div>
         </div>
         <div class="duo-amp-row rv"><span class="duo-amp-sym">&amp;</span></div>
         <div class="duo-card rv rv-right">
           <div class="duo-side">— Pengantin Perempuan —</div>
-          <div class="duo-name">Nurul Aina binti Shahrul</div>
+          <div class="duo-name">{{BRIDE_FULL_NAME}}</div>
           <div class="duo-conn">puteri kepada</div>
-          <div class="duo-parents">Encik Shahrul bin Osman<br><span style="opacity:.3;font-size:.7rem">&amp;</span><br>Puan Norzahra binti Majid</div>
+          <div class="duo-parents">{{BRIDE_FATHER}}<br><span style="opacity:.3;font-size:.7rem">&amp;</span><br>{{BRIDE_MOTHER}}</div>
         </div>
       </div>
     </section>
@@ -454,11 +478,25 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="rv rv-d1">
-        <div class="tl-item"><div class="tl-t">10.00 pagi</div><div class="tl-ev">Ketibaan Tetamu</div></div>
-        <div class="tl-item"><div class="tl-t">11.00 pagi</div><div class="tl-ev">Akad Nikah</div></div>
-        <div class="tl-item"><div class="tl-t">1.00 petang</div><div class="tl-ev">Persandingan</div></div>
-        <div class="tl-item"><div class="tl-t">1.30 petang</div><div class="tl-ev">Jamuan Makan</div></div>
-        <div class="tl-item" style="border-bottom:none"><div class="tl-t">5.00 petang</div><div class="tl-ev">Bersurai</div></div>
+        <div class="tl-item"><div class="tl-t">{{TIME_ARRIVAL}}</div><div class="tl-ev">Ketibaan Tetamu</div></div>
+        <div class="tl-item"><div class="tl-t">{{TIME_AKAD}}</div><div class="tl-ev">Akad Nikah</div></div>
+        <div class="tl-item"><div class="tl-t">{{TIME_BERSANDING}}</div><div class="tl-ev">Persandingan</div></div>
+        <div class="tl-item"><div class="tl-t">{{TIME_MAKAN}}</div><div class="tl-ev">Jamuan Makan</div></div>
+        <div class="tl-item" style="border-bottom:none"><div class="tl-t">{{TIME_BERSURAI}}</div><div class="tl-ev">Bersurai</div></div>
+      </div>
+    </section>
+
+    <!-- ── MINI CALENDAR ── -->
+    <section class="section light rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow dk">Kalendar</div>
+        <div class="ornament dk">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="rv rv-scale rv-d1">
+        <div style="background:#fff;border:1px solid rgba(107,21,37,.1);padding:.8rem">
+          <div style="font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--maroon2);margin-bottom:.6rem;text-align:center">{{CAL_MONTH_LABEL}}</div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:1px" id="calGrid">{{CAL_GRID_CELLS}}</div>
+        </div>
       </div>
     </section>
 
@@ -484,11 +522,11 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="cal-btns rv rv-scale rv-d1">
-        <a class="cal-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ahmad+Faris+%26+Nurul+Aina&dates=20260614T10000000%2F20260614T17000000&location=Dewan+Seri+Rawang" target="_blank">
+        <a class="cal-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text={{GROOM_NAME_URL}}+%26+{{BRIDE_NAME_URL}}&dates={{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}0000%2F{{DATE_YYYYMMDD}}T{{TIME_END_HHMM}}0000&location={{VENUE_NAME_URL}}" target="_blank">
           <div class="cal-btn-ico">📅</div>
           <div class="cal-btn-lbl">Google Calendar</div>
         </a>
-        <a class="cal-btn" href="https://outlook.live.com/calendar/0/deeplink/compose?subject=Ahmad+Faris+%26+Nurul+Aina&startdt=20260614T100000&location=Dewan+Seri+Rawang" target="_blank">
+        <a class="cal-btn" href="https://outlook.live.com/calendar/0/deeplink/compose?subject=Ahmad+Faris+%26+{{BRIDE_NAME_URL}}&startdt={{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}00&location={{VENUE_NAME_URL}}" target="_blank">
           <div class="cal-btn-ico">🗓</div>
           <div class="cal-btn-lbl">Apple / Outlook</div>
         </a>
@@ -500,16 +538,16 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
       <div class="sec-header">
         <div class="sec-eyebrow">Kod Pakaian</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
-        <div style="font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:.1em;color:rgba(255,255,255,.85)">Moden Tradisional</div>
+        <div style="font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:.1em;color:rgba(255,255,255,.85)">{{DRESSCODE_THEME}}</div>
       </div>
       <div class="sw-row rv rv-d1">
-        <div class="sw"><div class="sw-ring" style="background:#8B1A28"></div><div class="sw-lbl">Maroon</div></div>
-        <div class="sw"><div class="sw-ring" style="background:#D4AF6A"></div><div class="sw-lbl">Emas</div></div>
-        <div class="sw"><div class="sw-ring" style="background:#C8B8A0"></div><div class="sw-lbl">Champagne</div></div>
-        <div class="sw"><div class="sw-ring" style="background:#6B4830"></div><div class="sw-lbl">Tembaga</div></div>
-        <div class="sw"><div class="sw-ring" style="background:#F5EAD8"></div><div class="sw-lbl">Krim</div></div>
+        <div class="sw"><div class="sw-ring" style="background:{{COLOR1_HEX}}"></div><div class="sw-lbl">{{COLOR1_NAME}}</div></div>
+        <div class="sw"><div class="sw-ring" style="background:{{COLOR2_HEX}}"></div><div class="sw-lbl">{{COLOR2_NAME}}</div></div>
+        <div class="sw"><div class="sw-ring" style="background:{{COLOR3_HEX}}"></div><div class="sw-lbl">{{COLOR3_NAME}}</div></div>
+        <div class="sw"><div class="sw-ring" style="background:{{COLOR4_HEX}}"></div><div class="sw-lbl">{{COLOR4_NAME}}</div></div>
+        <div class="sw"><div class="sw-ring" style="background:{{COLOR5_HEX}}"></div><div class="sw-lbl">{{COLOR5_NAME}}</div></div>
       </div>
-      <div class="dc-note rv rv-d2">Sila elakkan warna merah, hitam pekat dan putih tulen. Pakaian mestilah menutup aurat dan kemas. Terima kasih atas kerjasama anda.</div>
+      <div class="dc-note rv rv-d2">{{DRESSCODE_NOTE}}</div>
     </section>
 
     <!-- ── LOKASI ── -->
@@ -520,11 +558,11 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
       </div>
       <div class="rv rv-scale rv-d1">
         <div class="map-box"><canvas id="mapCvs"></canvas><div class="map-pin">📍</div></div>
-        <div class="map-name">Dewan Seri Rawang</div>
-        <div class="map-addr">Jalan Besar Rawang, 48000 Rawang, Selangor Darul Ehsan.</div>
+        <div class="map-name">{{VENUE_FULLNAME}}</div>
+        <div class="map-addr">{{VENUE_ADDRESS}}</div>
         <div class="map-btns">
-          <a class="map-btn" href="https://waze.com/ul?q=Dewan+Seri+Rawang&navigate=yes" target="_blank">🗺 Waze</a>
-          <a class="map-btn" href="https://maps.google.com/?q=Dewan+Seri+Rawang+Rawang+Selangor" target="_blank">📍 Google Maps</a>
+          <a class="map-btn" href="{{WAZE_LINK}}" target="_blank">🗺 Waze</a>
+          <a class="map-btn" href="{{GMAP_LINK}}" target="_blank">📍 Google Maps</a>
         </div>
       </div>
     </section>
@@ -537,7 +575,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
       </div>
       <div class="qr-block rv rv-scale rv-d1">
         <div id="qrWrap">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png" class="qr-img" alt="QR DuitNow" onerror="this.parentNode.innerHTML='<div class=qr-placeholder><span style=font-size:.46rem;letter-spacing:.1em;color:rgba(255,255,255,.25);font-family:Cinzel,serif>QR DuitNow</span></div>'">
+          <img src="{{QR_CODE_URL}}" class="qr-img" alt="QR DuitNow" onerror="this.parentNode.innerHTML='<div class=qr-placeholder><span style=font-size:.46rem;letter-spacing:.1em;color:rgba(255,255,255,.25);font-family:Cinzel,serif>QR DuitNow</span></div>'">
         </div>
         <div class="qr-lbl">Imbas untuk DuitNow</div>
       </div>
@@ -637,17 +675,17 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
       </div>
       <div class="rv rv-d1">
         <div class="contact-item">
-          <div><div class="ci-name">Ahmad Faris</div><div class="ci-role">012-345 6789</div></div>
+          <div><div class="ci-name">{{CONTACT1_NAME}}</div><div class="ci-role">{{CONTACT1_PHONE_DISPLAY}}</div></div>
           <div class="ci-actions">
-            <a class="ci-btn" href="https://wa.me/60123456789" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
-            <a class="ci-btn" href="tel:012-345 6789" target="_blank"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 9.5 19.79 19.79 0 0 1 1.64 4.11 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+            <a class="ci-btn" href="https://wa.me/{{CONTACT1_PHONE_WA}}" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+            <a class="ci-btn" href="tel:{{CONTACT1_PHONE_DISPLAY}}" target="_blank"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 9.5 19.79 19.79 0 0 1 1.64 4.11 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
           </div>
         </div>
         <div class="contact-item">
-          <div><div class="ci-name">Nurul Aina</div><div class="ci-role">011-234 5678</div></div>
+          <div><div class="ci-name">{{CONTACT2_NAME}}</div><div class="ci-role">{{CONTACT2_PHONE_DISPLAY}}</div></div>
           <div class="ci-actions">
-            <a class="ci-btn" href="https://wa.me/60112345678" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
-            <a class="ci-btn" href="tel:011-234 5678" target="_blank"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 9.5 19.79 19.79 0 0 1 1.64 4.11 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+            <a class="ci-btn" href="https://wa.me/{{CONTACT2_PHONE_WA}}" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+            <a class="ci-btn" href="tel:{{CONTACT2_PHONE_DISPLAY}}" target="_blank"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 9.5 19.79 19.79 0 0 1 1.64 4.11 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
           </div>
         </div>
       </div>
@@ -702,8 +740,8 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 
     <!-- ── FOOTER ── -->
     <div class="eq-footer">
-      <div class="eq-footer-names">Ahmad Faris &amp; Nurul Aina</div>
-      <div class="eq-footer-date">14 · 06 · 2026</div>
+      <div class="eq-footer-names">{{GROOM_NAME}} &amp; {{BRIDE_NAME}}</div>
+      <div class="eq-footer-date">{{DATE_DD}} · {{DATE_MM}} · {{DATE_YYYY}}</div>
       <div class="eq-footer-ayat">وَجَعَلْنَاكُمْ أَزْوَاجًا</div>
       <div class="eq-footer-trans">"Dan kami telah menciptakan kamu berpasang-pasangan." — An-Naba': 8</div>
       <a class="eq-home-btn" href="https://eqstudio.nreqmal.workers.dev/" target="_blank">
@@ -718,23 +756,23 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
   <!-- TAB BAR -->
   <nav id="tabBar">
     <div class="tabs">
-      <button class="tab on" onclick="scrollTo('top')">
+      <button class="tab on" onclick="goSection('top')">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span>Utama</span>
       </button>
-      <button class="tab" onclick="scrollTo('sekLokasi')">
+      <button class="tab" onclick="goSection('sekLokasi')">
         <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
         <span>Lokasi</span>
       </button>
-      <button class="tab" onclick="scrollTo('sekSalamKasih')">
+      <button class="tab" onclick="goSection('sekSalamKasih')">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
         <span>Salam Kasih</span>
       </button>
-      <button class="tab" onclick="scrollTo('sekHubungi')">
+      <button class="tab" onclick="goSection('sekHubungi')">
         <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 9.5 19.79 19.79 0 0 1 1.64 4.11 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         <span>Hubungi</span>
       </button>
-      <button class="tab" onclick="scrollTo('sekRSVP')">
+      <button class="tab" onclick="goSection('sekRSVP')">
         <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         <span>RSVP</span>
       </button>
@@ -750,7 +788,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-const _KAD_ID='kad_demo_ahmad_faris_2026';
+const _KAD_ID='{{KAD_ID}}';
 const _isTemplate=_KAD_ID.includes('{{');
 firebase.initializeApp({apiKey:"AIzaSyBiubRnhd-PPamnc0rxJ_NDmmxsa7W2Lsw",authDomain:"eqstudio-6225d.firebaseapp.com",databaseURL:"https://eqstudio-6225d-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"eqstudio-6225d",storageBucket:"eqstudio-6225d.firebasestorage.app",messagingSenderId:"702399155563",appId:"1:702399155563:web:2e397996948663fa27102e"});
 const _db=firebase.database();
@@ -758,13 +796,13 @@ const _kadRef=_db.ref('kads/'+_KAD_ID);
 window._fbPush=(path,d)=>{if(_isTemplate)return;return _kadRef.child(path).push(d)};
 window._fbListen=(path,cb)=>{if(_isTemplate)return;_kadRef.child(path).on('value',s=>cb(s.val()))};
 window._fbListenQ=(path,cb,order,limit)=>{if(_isTemplate)return;let q=_kadRef.child(path);if(order)q=q.orderByChild(order);if(limit)q=q.limitToLast(limit);q.on('value',s=>cb(s.val()))};
-if(!_isTemplate){window._fbListen('rsvp',onRSVPData);window._fbListenQ('doa',onDoaData,'t',50);}
+// listeners started after openGate
 </script>
 
 <script>
 // ══ INITIALS from placeholder ══
 (function(){
-  const g='Ahmad Faris',b='Nurul Aina';
+  const g='{{GROOM_NAME}}',b='{{BRIDE_NAME}}';
   const gi=g&&!g.includes('{{')?g.trim()[0]:'A';
   const bi=b&&!b.includes('{{')?b.trim()[0]:'N';
   const el=document.getElementById('sealInitials');
@@ -773,7 +811,7 @@ if(!_isTemplate){window._fbListen('rsvp',onRSVPData);window._fbListenQ('doa',onD
 
 // ══ MONTH LABEL ══
 (function(){
-  const mm='06';
+  const mm='{{DATE_MM}}';
   const months=['Januari','Februari','Mac','April','Mei','Jun','Julai','Ogos','September','Oktober','November','Disember'];
   const idx=parseInt(mm)-1;
   const el=document.getElementById('heroMonth');
@@ -792,6 +830,10 @@ function openGate(){
     document.getElementById('shareFab').style.display='flex';
     launchConfetti();
     startCountdown();initReveal();initGame();initMapCanvas();initScrollBehaviour();fetchWeather();
+    if(!_isTemplate){
+      window._fbListen('rsvp',onRSVPData);
+      window._fbListenQ('doa',onDoaData,'t',50);
+    }
   },1100)
 }
 
@@ -821,7 +863,7 @@ function updateActiveTab(y){
   tabs[active].classList.add('on')
 }
 
-function scrollTo(id){
+function goSection(id){
   if(id==='top'){document.getElementById('scrollBody').scrollTo({top:0,behavior:'smooth'});return}
   const el=document.getElementById(id);
   if(el)document.getElementById('scrollBody').scrollTo({top:el.offsetTop-62,behavior:'smooth'})
@@ -848,7 +890,7 @@ function initMapCanvas(){
 }
 
 // ══ COUNTDOWN ══
-const _tgt=new Date('20260614T1000:00');
+const _tgt=new Date('{{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}:00');
 function startCountdown(){
   function tick(){
     const diff=_tgt-new Date();
@@ -865,14 +907,16 @@ function startCountdown(){
 let _isPlay=false,_yt=null,_ytRdy=false,_ytPend=false;
 window.onYouTubeIframeAPIReady=function(){
   _yt=new YT.Player('ytPlayer',{
-    height:'0',width:'0',videoId:'KkvSe6Hr12M',
-    playerVars:{autoplay:0,controls:0,loop:1,playlist:'KkvSe6Hr12M',playsinline:1,rel:0},
+    height:'0',width:'0',videoId:'{{YT_VIDEO_ID}}',
+    playerVars:{autoplay:0,controls:0,loop:1,playlist:'{{YT_VIDEO_ID}}',playsinline:1,rel:0},
     events:{
       onReady(e){_ytRdy=true;e.target.setVolume(0);if(_ytPend){_doPlay(e.target);_ytPend=false}},
       onStateChange(e){
         const on=e.data===YT.PlayerState.PLAYING;_isPlay=on;
         const fab=document.getElementById('audioFab'),ico=document.getElementById('fabIco');
+        const eq=document.getElementById('eqWrap');
         fab.classList.toggle('playing',on);
+        if(eq)eq.classList.toggle('show',on);
         if(on)ico.innerHTML='<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
         else ico.innerHTML='<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>';
       }
@@ -898,7 +942,7 @@ let _wxDone=false;
 async function fetchWeather(){
   if(_wxDone)return;
   try{
-    const city=encodeURIComponent('Rawang, Selangor, Malaysia');
+    const city=encodeURIComponent('{{VENUE_CITY}}, Malaysia');
     const geo=await(await fetch('https://nominatim.openstreetmap.org/search?q='+city+'&format=json&limit=1',{headers:{'Accept-Language':'ms'}})).json();
     let lat=3.32,lon=101.57;if(geo&&geo[0]){lat=+geo[0].lat;lon=+geo[0].lon}
     const wx=await(await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia%2FKuala_Lumpur')).json();
@@ -908,14 +952,14 @@ async function fetchWeather(){
     if(ico)ico.textContent=w.i;if(tmp)tmp.textContent=Math.round(c.temperature_2m)+'°C';if(dsc)dsc.textContent=w.d;
     if(hum)hum.textContent=c.relative_humidity_2m+'%';if(fel)fel.textContent=Math.round(c.apparent_temperature)+'°C';if(wnd)wnd.textContent=Math.round(c.wind_speed_10m)+' km/h';
     if(ext)ext.style.display='grid';
-    const note=document.getElementById('wxNote');if(note)note.textContent='📍 Rawang, Selangor · '+new Date().toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});
+    const note=document.getElementById('wxNote');if(note)note.textContent='📍 {{VENUE_CITY}} · '+new Date().toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});
     _wxDone=true
   }catch(e){console.warn('Weather:',e)}
 }
 
 // ══ SHARE ══
 async function doShare(){
-  if(navigator.share){try{await navigator.share({title:'Ahmad Faris & Nurul Aina',url:window.location.href})}catch(e){}}
+  if(navigator.share){try{await navigator.share({title:'{{GROOM_NAME}} & {{BRIDE_NAME}}',url:window.location.href})}catch(e){}}
   else if(navigator.clipboard)navigator.clipboard.writeText(window.location.href).then(()=>alert('Pautan disalin ✓'))
 }
 
