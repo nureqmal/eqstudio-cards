@@ -133,6 +133,20 @@
       "preview_emoji": "✨",
       "desc": "#39FF14",
       "style": "Modern GenZ"
+    },
+    "Red Maroon": {
+      "name": "Red Maroon",
+      "file": "red_maroon.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#7B1113",
+      "style": "Dark Luxury",
+      "colors": [
+        "#800000",
+        "#7b1113",
+        "#800020"
+      ]
     }
   },
   "Portrait": {
