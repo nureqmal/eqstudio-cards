@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Ahmad Faris & Nurul Aina</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;-webkit-text-size-adjust:100%}
+:root{
+  --maroon:#6B0F1A;--maroon2:#8B1A28;--maroon3:#4A0A12;--maroon4:#3A0808;
+  --cream:#FFF8F0;--cream2:#F5EAD8;--gold:#D4AF6A;--gold2:#E8C88A;
+  --white:#FFFFFF;
+}
+body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);color:var(--white);overscroll-behavior:none}
+
+/* ══ GATE ══ */
+#gate{position:fixed;inset:0;z-index:999;display:flex;overflow:hidden;transition:opacity .8s ease,visibility .8s ease}
+#gate.gone{opacity:0;visibility:hidden;pointer-events:none}
+.gate-half{flex:1;position:relative;overflow:hidden;background:var(--maroon3);transition:transform 1.1s cubic-bezier(.77,0,.18,1)}
+.gate-half.left{transform-origin:left center;border-right:.5px solid rgba(255,255,255,.08)}
+.gate-half.right{transform-origin:right center;border-left:.5px solid rgba(255,255,255,.08)}
+#gate.open .gate-half.left{transform:translateX(-100%)}
+#gate.open .gate-half.right{transform:translateX(100%)}
+.gate-songket{position:absolute;inset:0;opacity:.2}
+.gate-arch{position:absolute;top:10%;left:8%;right:8%;bottom:4%;border:1px solid rgba(255,255,255,.12);clip-path:polygon(50% 0%,100% 8%,100% 100%,0% 100%,0% 8%)}
+.gate-arch-inner{position:absolute;top:13%;left:12%;right:12%;bottom:7%;border:1px solid rgba(255,255,255,.07);clip-path:polygon(50% 0%,100% 8%,100% 100%,0% 100%,0% 8%)}
+
+/* wax seal */
+.gate-seal-wrap{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;text-align:center;pointer-events:none;transition:opacity .5s,transform .5s}
+#gate.open .gate-seal-wrap{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+.gate-seal{width:148px;height:148px;cursor:pointer;pointer-events:all;position:relative;display:flex;align-items:center;justify-content:center;filter:drop-shadow(0 8px 24px rgba(0,0,0,.5))}
+.seal-svg{width:148px;height:148px;position:absolute;top:0;left:0}
+.seal-text{position:relative;z-index:1;text-align:center;padding:0 12px}
+.seal-initials{font-family:'Cinzel',serif;font-size:1.3rem;letter-spacing:.1em;color:#fff;line-height:1;text-shadow:0 1px 4px rgba(0,0,0,.5)}
+.seal-buka{font-size:.38rem;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:.5rem;font-family:'Cinzel',serif;animation:pulse .4s ease infinite alternate}
+@keyframes pulse{from{opacity:.5}to{opacity:.9}}
+
+/* ══ APP ══ */
+#app{position:fixed;inset:0;display:flex;flex-direction:column;opacity:0;transition:opacity .9s ease;pointer-events:none}
+#app.on{opacity:1;pointer-events:all}
+#scrollBody{flex:1;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+
+/* ══ FLOATING AUDIO BTN ══ */
+#audioFab{position:fixed;bottom:90px;right:16px;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--maroon2);border:1px solid rgba(255,255,255,.2);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4);transition:transform .2s}
+#audioFab:active{transform:scale(.92)}
+#audioFab svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+#audioFab.playing{background:var(--gold);border-color:var(--gold)}
+#audioFab.playing svg{stroke:var(--maroon4)}
+
+/* ══ TAB BAR ══ */
+#tabBar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--maroon4);border-top:1px solid rgba(255,255,255,.1);transform:translateY(0);transition:transform .3s ease;display:none}
+#tabBar.hidden{transform:translateY(100%)}
+.tabs{display:flex;max-width:480px;margin:0 auto}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:.48rem .1rem .38rem;cursor:pointer;border:none;background:transparent;color:rgba(255,255,255,.4);transition:color .2s}
+.tab.on{color:var(--gold2)}
+.tab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tab span{font-size:.3rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Cinzel',serif}
+
+/* ══ HERO ══ */
+.hero-section{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:var(--maroon2)}
+.hero-songket{position:absolute;inset:0;opacity:.2}
+.hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(58,8,8,.7) 100%)}
+.hero-content{position:relative;z-index:2;text-align:center;padding:2rem 1.5rem 7rem;width:100%;max-width:420px}
+.hero-eyebrow{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.55em;color:rgba(255,255,255,.65);margin-bottom:1.4rem}
+
+/* frame */
+.frame-wrap{position:relative;margin:0 auto;width:min(310px,84vw);border:1px solid rgba(255,255,255,.22);background:rgba(107,15,26,.45);padding:.3rem}
+.frame-wrap::before{content:'';position:absolute;inset:6px;border:1px solid rgba(255,255,255,.1);pointer-events:none;z-index:0}
+.frame-wrap::after{content:'✦';position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:.8rem;color:var(--gold2);background:var(--maroon2);padding:0 8px;line-height:1}
+.frame-svg{display:none}
+.frame-inner{padding:2rem 1.4rem 1.8rem;position:relative;z-index:1;text-align:center}
+.hero-groom{font-family:'Great Vibes',cursive;font-size:clamp(3.2rem,13vw,5rem);color:var(--white);line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.hero-amp{font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold2);margin:.4rem 0;display:block;letter-spacing:.3em}
+.hero-bride{font-family:'Great Vibes',cursive;font-size:clamp(3.2rem,13vw,5rem);color:var(--white);line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.hero-date-strip{margin-top:1.6rem;display:flex;align-items:center;justify-content:center;gap:.8rem}
+.hds-sep{width:1px;height:24px;background:rgba(255,255,255,.2)}
+.hds-item{text-align:center}
+.hds-n{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--white);line-height:1}
+.hds-l{font-size:.36rem;letter-spacing:.25em;color:rgba(255,255,255,.5);margin-top:.15rem;font-family:'Cinzel',serif}
+.hero-venue{margin-top:1.4rem}
+.hero-venue-name{font-family:'Great Vibes',cursive;font-size:1.7rem;color:var(--gold2)}
+.hero-venue-city{font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;color:rgba(255,255,255,.55);margin-top:.15rem}
+
+/* scroll hint */
+.scroll-hint{position:absolute;bottom:5.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.3rem;animation:scrollBounce 2s ease infinite}
+.scroll-hint-line{width:1px;height:28px;background:linear-gradient(to bottom,rgba(255,255,255,.5),transparent)}
+.scroll-hint-txt{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.35em;color:rgba(255,255,255,.4);text-transform:uppercase}
+@keyframes scrollBounce{0%,100%{opacity:.4;transform:translateX(-50%) translateY(0)}50%{opacity:.8;transform:translateX(-50%) translateY(5px)}}
+
+/* ══ SECTIONS ══ */
+.section{padding:2.4rem 1.4rem;position:relative;overflow:hidden}
+.section.light{background:var(--cream);color:var(--maroon3)}
+.section.dark{background:var(--maroon3)}
+.section.mid{background:var(--maroon4)}
+.sec-eyebrow{font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold2)}
+.sec-eyebrow.dk{color:var(--maroon2)}
+.ornament{text-align:center;margin:.5rem 0 1.2rem;font-size:.75rem;color:var(--gold2);letter-spacing:.25em;opacity:.55}
+.ornament.dk{color:var(--maroon2)}
+.sec-header{text-align:center;margin-bottom:1.4rem}
+
+/* ══ PESAN IBU BAPA ══ */
+.host-msg-wrap{border:1px solid rgba(255,255,255,.12);padding:1.4rem 1.2rem;background:rgba(255,255,255,.04);position:relative}
+.host-msg-q{font-family:'Great Vibes',cursive;font-size:3rem;color:var(--gold2);line-height:.7;margin-bottom:.5rem;opacity:.5}
+.host-msg-text{font-family:'Cinzel',serif;font-size:.7rem;color:rgba(255,255,255,.8);line-height:2;letter-spacing:.04em;font-style:italic}
+.host-msg-from{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:1rem}
+.host-msg-name{font-family:'Great Vibes',cursive;font-size:1.3rem;color:var(--gold2);margin-top:.15rem}
+
+/* ══ PENGANTIN ══ */
+.duo-wrap{display:flex;flex-direction:column;gap:0}
+.duo-card{text-align:center;padding:1.4rem .8rem}
+.duo-side{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.4rem}
+.duo-name{font-family:'Great Vibes',cursive;font-size:2.4rem;color:var(--white);margin-bottom:.25rem;line-height:1.1}
+.duo-conn{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);margin:.3rem 0}
+.duo-parents{font-family:'Cinzel',serif;font-size:.62rem;color:rgba(255,255,255,.65);line-height:2.2;letter-spacing:.04em}
+.duo-amp-row{display:flex;align-items:center;gap:.8rem;padding:.2rem 1.5rem}
+.duo-amp-row::before,.duo-amp-row::after{content:'';flex:1;height:.5px;background:rgba(255,255,255,.12)}
+.duo-amp-sym{font-family:'Great Vibes',cursive;font-size:1.8rem;color:var(--gold2)}
+
+/* ══ ATURCARA ══ */
+.tl-item{display:flex;gap:.9rem;padding:.9rem 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.tl-item:last-child{border-bottom:none}
+.tl-t{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.15em;color:var(--gold);min-width:72px;padding-top:.1rem}
+.tl-ev{font-family:'Cinzel',serif;font-size:.8rem;color:var(--white);letter-spacing:.05em}
+
+/* ══ COUNTDOWN ══ */
+.cd-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:340px;margin:0 auto}
+.cd-cell{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:1rem .4rem;text-align:center}
+.cd-n{font-family:'Cinzel',serif;font-size:2rem;color:var(--white);line-height:1}
+.cd-l{font-size:.32rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:.3rem;font-family:'Cinzel',serif}
+#cdLive{display:none;text-align:center;padding:1rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);margin-top:6px}
+.cd-live-t{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;color:var(--gold2)}
+.cd-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gold2);margin-right:5px;animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+
+/* ══ CALENDAR ══ */
+.cal-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:300px;margin:0 auto}
+.cal-btn{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding:1rem .7rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);text-decoration:none;color:var(--white);transition:background .2s}
+.cal-btn:active{background:rgba(255,255,255,.1)}
+.cal-btn-ico{font-size:1.5rem}
+.cal-btn-lbl{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+
+/* ══ DRESS CODE ══ */
+.sw-row{display:flex;justify-content:center;gap:.9rem;flex-wrap:wrap}
+.sw{display:flex;flex-direction:column;align-items:center;gap:.35rem}
+.sw-ring{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.18)}
+.sw-lbl{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.dc-note{margin-top:1rem;font-size:.62rem;color:rgba(255,255,255,.55);text-align:center;line-height:1.8;font-style:italic;border-top:1px solid rgba(255,255,255,.08);padding-top:.8rem}
+
+/* ══ LOKASI ══ */
+.map-box{height:115px;background:rgba(0,0,0,.25);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.08);margin-bottom:.8rem}
+#mapCvs{position:absolute;inset:0}
+.map-pin{position:absolute;top:50%;left:50%;transform:translate(-50%,-65%);font-size:1.8rem;animation:pf 2.5s ease infinite}
+@keyframes pf{0%,100%{transform:translate(-50%,-65%)}50%{transform:translate(-50%,-75%)}}
+.map-name{font-family:'Cinzel',serif;font-size:.88rem;color:var(--white);text-align:center;letter-spacing:.05em}
+.map-addr{font-size:.62rem;color:rgba(255,255,255,.55);line-height:1.7;text-align:center;margin:.3rem 0 .8rem}
+.map-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.map-btn{text-align:center;padding:.62rem .3rem;font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;text-decoration:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);background:rgba(255,255,255,.04)}
+
+/* ══ SALAM KASIH ══ */
+.qr-block{text-align:center;margin-bottom:1.2rem}
+.qr-img{width:160px;height:160px;object-fit:contain;border:1px solid rgba(255,255,255,.1);margin:0 auto .5rem;display:block;background:rgba(255,255,255,.04)}
+.qr-placeholder{width:160px;height:160px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;margin:0 auto .5rem}
+.qr-lbl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.reg-done{display:none;flex-direction:column;align-items:center;text-align:center;padding:1.5rem 0}
+.reg-done-mark{font-size:1.8rem;margin-bottom:.4rem;color:var(--gold2)}
+.reg-done-t{font-family:'Cinzel',serif;font-size:.85rem;color:var(--gold2);letter-spacing:.1em}
+#regMsg{font-size:.62rem;color:rgba(255,255,255,.55);margin:.4rem 0 .8rem;line-height:1.7}
+
+/* ══ FORMS ══ */
+.fg{margin-bottom:.85rem}
+.fl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.5);display:block;margin-bottom:.4rem}
+.fi{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:.62rem .8rem;color:var(--white);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:300;outline:none}
+.fi::placeholder{color:rgba(255,255,255,.25)}
+.btn-gold{display:block;width:100%;padding:.78rem;background:var(--gold);color:var(--maroon4);border:none;font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.35em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;margin-top:.5rem;font-weight:500}
+.btn-gold:active{opacity:.8}
+.btn-ghost{display:block;width:100%;padding:.7rem;background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15);font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;margin-top:.5rem}
+
+/* ══ RSVP ══ */
+.rsvp-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:280px;margin:0 auto 1.4rem}
+.rsvp-opt{display:flex;flex-direction:column;align-items:center;gap:.55rem;padding:1.1rem .8rem;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);cursor:pointer;transition:all .2s}
+.rsvp-opt svg{width:34px;height:34px;stroke:rgba(255,255,255,.5)}
+.rsvp-opt-lbl{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.rsvp-opt.chosen{background:rgba(212,175,106,.12);border-color:rgba(212,175,106,.4)}
+.rsvp-opt.chosen svg{stroke:var(--gold2)}
+.rsvp-opt.chosen .rsvp-opt-lbl{color:var(--gold2)}
+.rsvp-form{display:none;max-width:360px;margin:0 auto}
+.rsvp-form.show{display:block}
+.rsvp-done{display:none;text-align:center;padding:1.5rem .5rem}
+.rsvp-done.show{display:block}
+.rsvp-done-mark{font-size:2.2rem;margin-bottom:.5rem;color:var(--gold2)}
+.rsvp-done-t{font-family:'Cinzel',serif;font-size:.82rem;color:var(--gold2);letter-spacing:.1em}
+.rsvp-done-s{font-size:.6rem;color:rgba(255,255,255,.5);margin-top:.3rem}
+
+/* rsvp live list */
+.rsvp-list-wrap{margin-top:1.6rem;border-top:1px solid rgba(255,255,255,.08);padding-top:1.2rem}
+.rl-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem}
+.rl-lbl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+#rsvpBadge{display:none;font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.08em;color:var(--gold2);background:rgba(212,175,106,.08);padding:.12rem .5rem;border:1px solid rgba(212,175,106,.2)}
+.search-wrap{display:flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:.42rem .7rem;margin-bottom:.6rem}
+.search-wrap input{flex:1;border:none;background:transparent;font-family:'Inter',sans-serif;font-size:.75rem;color:var(--white);outline:none;font-weight:300}
+.search-wrap input::placeholder{color:rgba(255,255,255,.25)}
+.rsvp-row{display:flex;align-items:center;justify-content:space-between;padding:.52rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.rsvp-row:last-child{border-bottom:none}
+.rr-name{font-family:'Cinzel',serif;font-size:.76rem;color:var(--white)}
+.rr-pax{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.1em;color:var(--gold);background:rgba(212,175,106,.08);padding:.1rem .42rem;border:1px solid rgba(212,175,106,.18)}
+.list-empty{font-size:.6rem;font-style:italic;color:rgba(255,255,255,.28);text-align:center;padding:.8rem 0;font-family:'Cinzel',serif}
+
+/* ══ UCAPAN ══ */
+.ucapan-notice{background:rgba(212,175,106,.06);border:1px solid rgba(212,175,106,.2);padding:.9rem 1rem;margin-bottom:1.2rem;font-size:.6rem;color:rgba(255,255,255,.6);line-height:1.8;font-style:italic;text-align:center}
+.ucapan-notice strong{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.15em;color:var(--gold2);font-style:normal;display:block;margin-bottom:.3rem}
+.doa-wall-hd{display:flex;align-items:center;justify-content:space-between;margin-top:1.6rem;margin-bottom:.7rem;border-top:1px solid rgba(255,255,255,.08);padding-top:1.2rem}
+.doa-wall-lbl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+#doaCount{display:none;font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.08em;color:var(--gold2);background:rgba(212,175,106,.08);padding:.1rem .45rem;border:1px solid rgba(212,175,106,.18)}
+.doa-wall{display:flex;flex-direction:column;gap:6px}
+.doa-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:.85rem .95rem}
+.doa-n{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold2);margin-bottom:.3rem}
+.doa-m{font-size:.75rem;color:rgba(255,255,255,.75);line-height:1.65}
+
+/* ══ HUBUNGI ══ */
+.contact-item{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0;border-bottom:1px solid rgba(74,10,18,.08)}
+.contact-item:last-child{border-bottom:none}
+.ci-name{font-family:'Cinzel',serif;font-size:.82rem;color:var(--maroon3)}
+.ci-role{font-size:.56rem;color:rgba(74,10,18,.45);font-style:italic;margin-top:2px}
+.ci-actions{display:flex;gap:8px}
+.ci-btn{width:36px;height:36px;border-radius:50%;border:1px solid rgba(74,10,18,.12);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--maroon3);transition:background .15s}
+.ci-btn:active{background:rgba(74,10,18,.07)}
+.ci-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ══ MINI GAME ══ */
+.game-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.9rem}
+.gs-c{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:.75rem;text-align:center}
+.gs-l{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:.22rem}
+.gs-v{font-family:'Cinzel',serif;font-size:1.6rem;color:var(--white)}
+#memGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.mc{aspect-ratio:1;cursor:pointer;perspective:500px}
+.mc-in{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .42s}
+.mc.fl .mc-in,.mc.ma .mc-in{transform:rotateY(180deg)}
+.mc-f,.mc-b{position:absolute;inset:0;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.mc-f{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+.mc-f-g{font-size:.85rem;color:rgba(255,255,255,.18)}
+.mc-b{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);transform:rotateY(180deg);font-size:1.35rem}
+.mc-lbl{font-size:.28rem;color:rgba(255,255,255,.45);margin-top:2px;letter-spacing:.05em;font-family:'Cinzel',serif}
+.mc.ma .mc-b{background:rgba(212,175,106,.1);border-color:rgba(212,175,106,.3)}
+#gameResult{text-align:center;font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold2);margin-top:.7rem;min-height:1.1rem;letter-spacing:.12em}
+
+/* ══ EQSTUDIO FOOTER ══ */
+.eq-footer{text-align:center;padding:1.8rem 1.4rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
+.eq-footer-names{font-family:'Great Vibes',cursive;font-size:1.8rem;color:var(--gold2);margin-bottom:.4rem}
+.eq-footer-date{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.45em;color:rgba(255,255,255,.3);margin-bottom:1.2rem}
+.eq-footer-ayat{font-size:.9rem;color:rgba(255,255,255,.2);margin-bottom:.2rem}
+.eq-footer-trans{font-family:'Cinzel',serif;font-size:.42rem;font-style:italic;color:rgba(255,255,255,.2);margin-bottom:1.4rem}
+.eq-home-btn{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;padding:.4rem .9rem;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.3);font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.2em;text-transform:uppercase;transition:all .2s}
+.eq-home-btn:hover{color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.25)}
+.eq-home-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* ══ BOTTOM PAD ══ */
+.bottom-pad{height:75px}
+
+/* ══ REVEAL ANIMATIONS ══ */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .75s ease,transform .75s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+.rv-left{opacity:0;transform:translateX(-20px);transition:opacity .75s ease,transform .75s ease}
+.rv-left.in{opacity:1;transform:translateX(0)}
+.rv-right{opacity:0;transform:translateX(20px);transition:opacity .75s ease,transform .75s ease}
+.rv-right.in{opacity:1;transform:translateX(0)}
+.rv-scale{opacity:0;transform:scale(.92);transition:opacity .75s ease,transform .75s ease}
+.rv-scale.in{opacity:1;transform:scale(1)}
+.rv-d1{transition-delay:.1s}.rv-d2{transition-delay:.2s}.rv-d3{transition-delay:.3s}.rv-d4{transition-delay:.4s}.rv-d5{transition-delay:.5s}
+
+/* hero animations */
+@keyframes heroFadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.h-anim-1{animation:heroFadeUp .9s ease .3s both}
+.h-anim-2{animation:heroFadeUp .9s ease .6s both}
+.h-anim-3{animation:heroFadeUp .9s ease .9s both}
+.h-anim-4{animation:heroFadeUp .9s ease 1.2s both}
+.h-anim-5{animation:heroFadeUp .9s ease 1.5s both}
+</style>
+</head>
+<body>
+
+<!-- ══ GATE ══ -->
+<div id="gate">
+  <div class="gate-half left">
+    <svg class="gate-songket" viewBox="0 0 60 120" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id="skL" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+        <polygon points="10,1 19,10 10,19 1,10" fill="none" stroke="white" stroke-width=".7"/>
+        <polygon points="10,4 16,10 10,16 4,10" fill="none" stroke="white" stroke-width=".4"/>
+        <circle cx="10" cy="10" r="1.1" fill="white" opacity=".6"/>
+        <line x1="10" y1="0" x2="10" y2="4" stroke="white" stroke-width=".3"/>
+        <line x1="10" y1="16" x2="10" y2="20" stroke="white" stroke-width=".3"/>
+        <line x1="0" y1="10" x2="4" y2="10" stroke="white" stroke-width=".3"/>
+        <line x1="16" y1="10" x2="20" y2="10" stroke="white" stroke-width=".3"/>
+      </pattern></defs>
+      <rect width="100%" height="100%" fill="url(#skL)"/>
+      <rect x="0" y="0" width="100%" height="15" fill="rgba(255,255,255,.06)"/>
+      <line x1="0" y1="15" x2="100%" y2="15" stroke="white" stroke-width=".6" opacity=".2"/>
+      <rect x="0" y="105" width="100%" height="15" fill="rgba(255,255,255,.06)"/>
+    </svg>
+    <div class="gate-arch"></div>
+    <div class="gate-arch-inner"></div>
+  </div>
+  <div class="gate-half right">
+    <svg class="gate-songket" viewBox="0 0 60 120" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs><pattern id="skR" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+        <polygon points="10,1 19,10 10,19 1,10" fill="none" stroke="white" stroke-width=".7"/>
+        <polygon points="10,4 16,10 10,16 4,10" fill="none" stroke="white" stroke-width=".4"/>
+        <circle cx="10" cy="10" r="1.1" fill="white" opacity=".6"/>
+        <line x1="10" y1="0" x2="10" y2="4" stroke="white" stroke-width=".3"/>
+        <line x1="10" y1="16" x2="10" y2="20" stroke="white" stroke-width=".3"/>
+        <line x1="0" y1="10" x2="4" y2="10" stroke="white" stroke-width=".3"/>
+        <line x1="16" y1="10" x2="20" y2="10" stroke="white" stroke-width=".3"/>
+      </pattern></defs>
+      <rect width="100%" height="100%" fill="url(#skR)"/>
+      <rect x="0" y="0" width="100%" height="15" fill="rgba(255,255,255,.06)"/>
+      <line x1="0" y1="15" x2="100%" y2="15" stroke="white" stroke-width=".6" opacity=".2"/>
+      <rect x="0" y="105" width="100%" height="15" fill="rgba(255,255,255,.06)"/>
+    </svg>
+    <div class="gate-arch"></div>
+    <div class="gate-arch-inner"></div>
+  </div>
+  <!-- wax seal — initials only -->
+  <div class="gate-seal-wrap">
+    <div class="gate-seal" onclick="openGate()">
+      <svg class="seal-svg" viewBox="0 0 148 148" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="sg" cx="42%" cy="32%" r="62%">
+            <stop offset="0%" stop-color="#9B1A28"/>
+            <stop offset="100%" stop-color="#4A0A12"/>
+          </radialGradient>
+        </defs>
+        <path d="M74,6 L81,13 L90,9 L94,17 L104,15 L106,24 L116,24 L116,34 L126,36 L124,46 L133,50 L129,59 L137,65 L130,72 L136,80 L127,85 L130,94 L121,97 L120,107 L110,107 L108,117 L99,114 L95,123 L86,118 L80,127 L74,122 L68,127 L62,118 L53,123 L49,114 L40,117 L38,107 L28,107 L27,97 L18,94 L21,85 L12,80 L18,72 L11,65 L19,59 L15,50 L24,46 L22,36 L32,34 L32,24 L42,24 L44,15 L54,17 L58,9 L67,13 Z" fill="url(#sg)"/>
+        <circle cx="74" cy="74" r="40" fill="none" stroke="rgba(255,255,255,.18)" stroke-width=".8"/>
+        <circle cx="74" cy="74" r="35" fill="none" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
+      </svg>
+      <div class="seal-text">
+        <div class="seal-initials" id="sealInitials">A &amp; N</div>
+        <div class="seal-buka">Buka</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+  <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:400;opacity:1"></canvas>
+
+  <!-- floating audio -->
+  <button id="audioFab" onclick="toggleAudio()" aria-label="Muzik latar">
+    <svg id="fabIco" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+  </button>
+  <button id="shareFab" onclick="doShare()" aria-label="Kongsi" style="position:fixed;bottom:90px;right:68px;z-index:300;width:44px;height:44px;border-radius:50%;background:var(--maroon3);border:1px solid rgba(255,255,255,.2);display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.4)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+  </button>
+
+  <div id="scrollBody">
+
+    <!-- ── HERO ── -->
+    <section class="hero-section">
+      <div class="hero-bg"></div>
+      <svg class="hero-songket" viewBox="0 0 80 80" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs><pattern id="skH" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <polygon points="10,1 19,10 10,19 1,10" fill="none" stroke="white" stroke-width=".65"/>
+          <polygon points="10,4 16,10 10,16 4,10" fill="none" stroke="white" stroke-width=".38"/>
+          <circle cx="10" cy="10" r="1" fill="white" opacity=".5"/>
+          <line x1="10" y1="0" x2="10" y2="4" stroke="white" stroke-width=".3"/>
+          <line x1="10" y1="16" x2="10" y2="20" stroke="white" stroke-width=".3"/>
+          <line x1="0" y1="10" x2="4" y2="10" stroke="white" stroke-width=".3"/>
+          <line x1="16" y1="10" x2="20" y2="10" stroke="white" stroke-width=".3"/>
+        </pattern></defs>
+        <rect width="100%" height="100%" fill="url(#skH)"/>
+        <rect x="0" y="0" width="100%" height="14" fill="rgba(255,255,255,.07)"/>
+        <line x1="0" y1="14" x2="100%" y2="14" stroke="white" stroke-width=".7" opacity=".2"/>
+      </svg>
+      <div class="hero-vignette"></div>
+
+      <div class="hero-content">
+        <div class="hero-eyebrow h-anim-1">Walimatul Urus</div>
+
+        <div class="frame-wrap h-anim-2">
+          <div class="frame-inner">
+            <div class="hero-groom">Ahmad Faris</div>
+            <div class="hero-amp">&amp;</div>
+            <div class="hero-bride">Nurul Aina</div>
+          </div>
+        </div>
+
+        <div class="hero-date-strip h-anim-3">
+          <div class="hds-item"><div class="hds-n">14</div><div class="hds-l">Hari</div></div>
+          <div class="hds-sep"></div>
+          <div class="hds-item"><div class="hds-n" id="heroMonth">--</div><div class="hds-l">Bulan</div></div>
+          <div class="hds-sep"></div>
+          <div class="hds-item"><div class="hds-n">2026</div><div class="hds-l">Tahun</div></div>
+        </div>
+
+        <div class="h-anim-4">
+          <div class="hero-venue-name">Dewan Seri Rawang,</div>
+          <div class="hero-venue-city">Rawang, Selangor</div>
+        </div>
+
+        <div style="margin-top:1rem;font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;color:rgba(255,255,255,.35)" class="h-anim-5">18 Zulhijjah 1447H</div>
+      </div>
+
+      <div class="scroll-hint">
+        <div class="scroll-hint-txt">Tatal ke bawah</div>
+        <div class="scroll-hint-line"></div>
+      </div>
+    </section>
+
+    <!-- ── PESAN IBU BAPA ── -->
+    <section class="section dark rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Perutusan</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="host-msg-wrap rv rv-d1">
+        <div class="host-msg-q">"</div>
+        <div class="host-msg-text">Dengan penuh kesyukuran ke hadrat Allah SWT, kami sekeluarga dengan segala kerendahan hati menjemput Tuan/Puan hadir ke majlis perkahwinan putera dan puteri kami. Kehadiran anda adalah penghormatan yang amat kami sanjungi.</div>
+        <div class="host-msg-from">Daripada</div>
+        <div class="host-msg-name">Keluarga Razali & Keluarga Shahrul</div>
+      </div>
+    </section>
+
+    <!-- ── PENGANTIN ── -->
+    <section class="section mid rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Pengantin Kami</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="duo-wrap">
+        <div class="duo-card rv rv-left">
+          <div class="duo-side">— Pengantin Lelaki —</div>
+          <div class="duo-name">Ahmad Faris bin Razali</div>
+          <div class="duo-conn">putera kepada</div>
+          <div class="duo-parents">Encik Razali bin Hamid<br><span style="opacity:.3;font-size:.7rem">&amp;</span><br>Puan Rohani binti Yusoff</div>
+        </div>
+        <div class="duo-amp-row rv"><span class="duo-amp-sym">&amp;</span></div>
+        <div class="duo-card rv rv-right">
+          <div class="duo-side">— Pengantin Perempuan —</div>
+          <div class="duo-name">Nurul Aina binti Shahrul</div>
+          <div class="duo-conn">puteri kepada</div>
+          <div class="duo-parents">Encik Shahrul bin Osman<br><span style="opacity:.3;font-size:.7rem">&amp;</span><br>Puan Norzahra binti Majid</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ATURCARA ── -->
+    <section class="section dark rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Aturcara Majlis</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="rv rv-d1">
+        <div class="tl-item"><div class="tl-t">10.00 pagi</div><div class="tl-ev">Ketibaan Tetamu</div></div>
+        <div class="tl-item"><div class="tl-t">11.00 pagi</div><div class="tl-ev">Akad Nikah</div></div>
+        <div class="tl-item"><div class="tl-t">1.00 petang</div><div class="tl-ev">Persandingan</div></div>
+        <div class="tl-item"><div class="tl-t">1.30 petang</div><div class="tl-ev">Jamuan Makan</div></div>
+        <div class="tl-item" style="border-bottom:none"><div class="tl-t">5.00 petang</div><div class="tl-ev">Bersurai</div></div>
+      </div>
+    </section>
+
+    <!-- ── COUNTDOWN ── -->
+    <section class="section mid rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Kiraan Masa</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="cd-row rv rv-scale">
+        <div class="cd-cell"><div class="cd-n" id="cdD">00</div><div class="cd-l">Hari</div></div>
+        <div class="cd-cell"><div class="cd-n" id="cdH">00</div><div class="cd-l">Jam</div></div>
+        <div class="cd-cell"><div class="cd-n" id="cdM">00</div><div class="cd-l">Minit</div></div>
+        <div class="cd-cell"><div class="cd-n" id="cdS">00</div><div class="cd-l">Saat</div></div>
+      </div>
+      <div id="cdLive"><div class="cd-live-t"><span class="cd-dot"></span>Majlis Sedang Berlangsung</div></div>
+    </section>
+
+    <!-- ── KALENDAR ── -->
+    <section class="section dark rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Simpan Tarikh</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="cal-btns rv rv-scale rv-d1">
+        <a class="cal-btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Ahmad+Faris+%26+Nurul+Aina&dates=20260614T10000000%2F20260614T17000000&location=Dewan+Seri+Rawang" target="_blank">
+          <div class="cal-btn-ico">📅</div>
+          <div class="cal-btn-lbl">Google Calendar</div>
+        </a>
+        <a class="cal-btn" href="https://outlook.live.com/calendar/0/deeplink/compose?subject=Ahmad+Faris+%26+Nurul+Aina&startdt=20260614T100000&location=Dewan+Seri+Rawang" target="_blank">
+          <div class="cal-btn-ico">🗓</div>
+          <div class="cal-btn-lbl">Apple / Outlook</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ── DRESS CODE ── -->
+    <section class="section mid rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Kod Pakaian</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+        <div style="font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:.1em;color:rgba(255,255,255,.85)">Moden Tradisional</div>
+      </div>
+      <div class="sw-row rv rv-d1">
+        <div class="sw"><div class="sw-ring" style="background:#8B1A28"></div><div class="sw-lbl">Maroon</div></div>
+        <div class="sw"><div class="sw-ring" style="background:#D4AF6A"></div><div class="sw-lbl">Emas</div></div>
+        <div class="sw"><div class="sw-ring" style="background:#C8B8A0"></div><div class="sw-lbl">Champagne</div></div>
+        <div class="sw"><div class="sw-ring" style="background:#6B4830"></div><div class="sw-lbl">Tembaga</div></div>
+        <div class="sw"><div class="sw-ring" style="background:#F5EAD8"></div><div class="sw-lbl">Krim</div></div>
+      </div>
+      <div class="dc-note rv rv-d2">Sila elakkan warna merah, hitam pekat dan putih tulen. Pakaian mestilah menutup aurat dan kemas. Terima kasih atas kerjasama anda.</div>
+    </section>
+
+    <!-- ── LOKASI ── -->
+    <section class="section dark rv" id="sekLokasi">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Lokasi Majlis</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="rv rv-scale rv-d1">
+        <div class="map-box"><canvas id="mapCvs"></canvas><div class="map-pin">📍</div></div>
+        <div class="map-name">Dewan Seri Rawang</div>
+        <div class="map-addr">Jalan Besar Rawang, 48000 Rawang, Selangor Darul Ehsan.</div>
+        <div class="map-btns">
+          <a class="map-btn" href="https://waze.com/ul?q=Dewan+Seri+Rawang&navigate=yes" target="_blank">🗺 Waze</a>
+          <a class="map-btn" href="https://maps.google.com/?q=Dewan+Seri+Rawang+Rawang+Selangor" target="_blank">📍 Google Maps</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SALAM KASIH ── -->
+    <section class="section mid rv" id="sekSalamKasih">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Salam Kasih</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="qr-block rv rv-scale rv-d1">
+        <div id="qrWrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/220px-QR_code_for_mobile_English_Wikipedia.svg.png" class="qr-img" alt="QR DuitNow" onerror="this.parentNode.innerHTML='<div class=qr-placeholder><span style=font-size:.46rem;letter-spacing:.1em;color:rgba(255,255,255,.25);font-family:Cinzel,serif>QR DuitNow</span></div>'">
+        </div>
+        <div class="qr-lbl">Imbas untuk DuitNow</div>
+      </div>
+      <div id="regForm" class="rv rv-d2">
+        <div class="fg"><label class="fl">Nama Anda</label><input type="text" class="fi" id="regName" placeholder="Nama anda..."></div>
+        <div class="fg"><label class="fl">Jumlah (RM) — Pilihan</label><input type="number" class="fi" id="regAmt" placeholder="cth: 50"></div>
+        <button class="btn-gold" onclick="submitReg()">Rekod Hadiah</button>
+      </div>
+      <div class="reg-done" id="regDone">
+        <div class="reg-done-mark">✦</div>
+        <div class="reg-done-t">Terima Kasih</div>
+        <div id="regMsg"></div>
+        <button class="btn-ghost" onclick="resetReg()">Rekod lain</button>
+        <button class="btn-ghost" style="margin-top:4px" onclick="shareReg()">Kongsi ↗</button>
+      </div>
+    </section>
+
+    <!-- ── RSVP ── -->
+    <section class="section dark rv" id="sekRSVP">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Pengesahan Kehadiran</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+        <div style="font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:.15em;color:rgba(255,255,255,.7)">RSVP</div>
+      </div>
+      <div class="rsvp-choice rv rv-scale rv-d1" id="rsvpChoice">
+        <div class="rsvp-opt" id="optHadir" onclick="chooseRSVP('hadir')">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <div class="rsvp-opt-lbl">Hadir</div>
+        </div>
+        <div class="rsvp-opt" id="optTidak" onclick="chooseRSVP('tidak')">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <div class="rsvp-opt-lbl">Tidak Hadir</div>
+        </div>
+      </div>
+      <div class="rsvp-form" id="rsvpForm">
+        <div class="fg"><label class="fl">Nama Penuh</label><input type="text" class="fi" id="rsvpName" placeholder="Nama anda..."></div>
+        <div class="fg" id="paxWrap"><label class="fl">Bilangan Hadir</label>
+          <div style="display:flex;align-items:center;gap:.7rem">
+            <button onclick="rsvpAdj(-1)" style="width:30px;height:30px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:white;font-size:1.1rem;cursor:pointer">−</button>
+            <div id="rsvpCnt" style="flex:1;text-align:center;font-family:'Cinzel',serif;font-size:1.2rem;color:white">1</div>
+            <button onclick="rsvpAdj(1)" style="width:30px;height:30px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:white;font-size:1.1rem;cursor:pointer">+</button>
+          </div>
+        </div>
+        <button class="btn-gold" onclick="submitRSVP()">Hantar</button>
+        <button class="btn-ghost" onclick="cancelRSVP()">Batal</button>
+      </div>
+      <div class="rsvp-done" id="rsvpDone">
+        <div class="rsvp-done-mark">✦</div>
+        <div class="rsvp-done-t">Jazakallahu Khairan</div>
+        <div class="rsvp-done-s">Kehadiran anda telah direkodkan.</div>
+        <button class="btn-ghost" onclick="resetRSVP()" style="margin-top:.8rem;max-width:200px;margin-left:auto;margin-right:auto">Daftar lain</button>
+      </div>
+      <!-- live list -->
+      <div class="rsvp-list-wrap rv rv-d2">
+        <div class="rl-hd">
+          <div class="rl-lbl">Senarai Hadir</div>
+          <div id="rsvpBadge"><span id="rsvpPax">0</span> pax dijangka</div>
+        </div>
+        <div id="rsvpSearchWrap" style="display:none">
+          <div class="search-wrap"><span style="font-size:.75rem;opacity:.3">🔍</span><input type="text" id="rsvpSearch" placeholder="Cari nama..." oninput="filterRSVP()"></div>
+        </div>
+        <div id="rsvpList"><div class="list-empty">Belum ada pendaftaran.</div></div>
+      </div>
+    </section>
+
+    <!-- ── UCAPAN ── -->
+    <section class="section mid rv" id="sekUcapan">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Doa &amp; Ucapan</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <!-- notice -->
+      <div class="ucapan-notice rv rv-d1">
+        <strong>📢 Perhatian</strong>
+        Ucapan anda direkodkan secara langsung dan boleh dilihat oleh semua tetamu. Sila jaga tutur kata dan gunakan bahasa yang sopan. Sebarang ucapan yang tidak sesuai akan dipadam. Terima kasih atas kerjasama anda.
+      </div>
+      <div class="rv rv-d2">
+        <div class="fg"><label class="fl">Nama Anda</label><input type="text" class="fi" id="doaName" placeholder="Nama anda..."></div>
+        <div class="fg"><label class="fl">Ucapan / Doa</label><textarea class="fi" id="doaMsg" rows="3" placeholder="Tuliskan ucapan atau doa..." style="resize:none;line-height:1.6"></textarea></div>
+        <button class="btn-gold" id="doaBtn" onclick="submitDoa()">Hantar Ucapan</button>
+      </div>
+      <!-- wall -->
+      <div class="doa-wall-hd rv rv-d3">
+        <div class="doa-wall-lbl">Ucapan Diterima</div>
+        <div id="doaCount"></div>
+      </div>
+      <div class="doa-wall rv rv-d3" id="doaWall">
+        <div class="list-empty">Jadilah yang pertama menghantar ucapan.</div>
+      </div>
+    </section>
+
+    <!-- ── HUBUNGI ── -->
+    <section class="section light rv" id="sekHubungi">
+      <div class="sec-header">
+        <div class="sec-eyebrow dk">Hubungi Kami</div>
+        <div class="ornament dk">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="rv rv-d1">
+        <div class="contact-item">
+          <div><div class="ci-name">Ahmad Faris</div><div class="ci-role">012-345 6789</div></div>
+          <div class="ci-actions">
+            <a class="ci-btn" href="https://wa.me/60123456789" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+            <a class="ci-btn" href="tel:012-345 6789" target="_blank"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 9.5 19.79 19.79 0 0 1 1.64 4.11 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div><div class="ci-name">Nurul Aina</div><div class="ci-role">011-234 5678</div></div>
+          <div class="ci-actions">
+            <a class="ci-btn" href="https://wa.me/60112345678" target="_blank"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></a>
+            <a class="ci-btn" href="tel:011-234 5678" target="_blank"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 9.5 19.79 19.79 0 0 1 1.64 4.11 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CUACA ── -->
+    <section class="section dark rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Cuaca Semasa</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="rv rv-scale rv-d1" style="border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)">
+        <div style="display:flex;align-items:center;gap:1rem;padding:1.1rem">
+          <div id="wxIcon" style="font-size:2.5rem;line-height:1">🌡️</div>
+          <div>
+            <div id="wxTemp" style="font-family:'Cinzel',serif;font-size:2rem;color:var(--white);line-height:1">--°C</div>
+            <div id="wxDesc" style="font-size:.6rem;color:rgba(255,255,255,.5);margin-top:.2rem">Memuatkan...</div>
+          </div>
+        </div>
+        <div id="wxExtras" style="display:none;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.06)">
+          <div style="padding:.7rem .5rem;text-align:center;border-right:1px solid rgba(255,255,255,.06)">
+            <div style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.2rem">Kelembapan</div>
+            <div id="wxHumidity" style="font-size:.78rem;color:var(--white)">--%</div>
+          </div>
+          <div style="padding:.7rem .5rem;text-align:center;border-right:1px solid rgba(255,255,255,.06)">
+            <div style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.2rem">Rasa Seperti</div>
+            <div id="wxFeels" style="font-size:.78rem;color:var(--white)">--°C</div>
+          </div>
+          <div style="padding:.7rem .5rem;text-align:center">
+            <div style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.2rem">Angin</div>
+            <div id="wxWind" style="font-size:.78rem;color:var(--white)">--</div>
+          </div>
+        </div>
+      </div>
+      <div id="wxNote" style="font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-top:.6rem;text-align:center">📍 Rawang, Selangor</div>
+    </section>
+
+    <!-- ── MINI GAME ── -->
+    <section class="section dark rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow">Mini Game</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="game-stats rv rv-d1">
+        <div class="gs-c"><div class="gs-l">Langkah</div><div class="gs-v" id="moveCount">0</div></div>
+        <div class="gs-c"><div class="gs-l">Padanan</div><div class="gs-v" id="matchCount">0</div></div>
+      </div>
+      <div id="memGrid" class="rv rv-scale rv-d2"></div>
+      <div id="gameResult"></div>
+      <button class="btn-ghost" onclick="initGame()" style="margin-top:.7rem">Main Semula ↺</button>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <div class="eq-footer">
+      <div class="eq-footer-names">Ahmad Faris &amp; Nurul Aina</div>
+      <div class="eq-footer-date">14 · 06 · 2026</div>
+      <div class="eq-footer-ayat">وَجَعَلْنَاكُمْ أَزْوَاجًا</div>
+      <div class="eq-footer-trans">"Dan kami telah menciptakan kamu berpasang-pasangan." — An-Naba': 8</div>
+      <a class="eq-home-btn" href="https://eqstudio.nreqmal.workers.dev/" target="_blank">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        EQStudio
+      </a>
+    </div>
+
+    <div class="bottom-pad"></div>
+  </div>
+
+  <!-- TAB BAR -->
+  <nav id="tabBar">
+    <div class="tabs">
+      <button class="tab on" onclick="scrollTo('top')">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Utama</span>
+      </button>
+      <button class="tab" onclick="scrollTo('sekLokasi')">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span>Lokasi</span>
+      </button>
+      <button class="tab" onclick="scrollTo('sekSalamKasih')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        <span>Salam Kasih</span>
+      </button>
+      <button class="tab" onclick="scrollTo('sekHubungi')">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 9.5 19.79 19.79 0 0 1 1.64 4.11 2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.09 6.09l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span>Hubungi</span>
+      </button>
+      <button class="tab" onclick="scrollTo('sekRSVP')">
+        <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span>RSVP</span>
+      </button>
+    </div>
+  </nav>
+</div>
+
+<!-- YouTube -->
+<div id="ytPlayer" style="display:none"></div>
+<script src="https://www.youtube.com/iframe_api"></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+const _KAD_ID='kad_demo_ahmad_faris_2026';
+const _isTemplate=_KAD_ID.includes('{{');
+firebase.initializeApp({apiKey:"AIzaSyBiubRnhd-PPamnc0rxJ_NDmmxsa7W2Lsw",authDomain:"eqstudio-6225d.firebaseapp.com",databaseURL:"https://eqstudio-6225d-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"eqstudio-6225d",storageBucket:"eqstudio-6225d.firebasestorage.app",messagingSenderId:"702399155563",appId:"1:702399155563:web:2e397996948663fa27102e"});
+const _db=firebase.database();
+const _kadRef=_db.ref('kads/'+_KAD_ID);
+window._fbPush=(path,d)=>{if(_isTemplate)return;return _kadRef.child(path).push(d)};
+window._fbListen=(path,cb)=>{if(_isTemplate)return;_kadRef.child(path).on('value',s=>cb(s.val()))};
+window._fbListenQ=(path,cb,order,limit)=>{if(_isTemplate)return;let q=_kadRef.child(path);if(order)q=q.orderByChild(order);if(limit)q=q.limitToLast(limit);q.on('value',s=>cb(s.val()))};
+if(!_isTemplate){window._fbListen('rsvp',onRSVPData);window._fbListenQ('doa',onDoaData,'t',50);}
+</script>
+
+<script>
+// ══ INITIALS from placeholder ══
+(function(){
+  const g='Ahmad Faris',b='Nurul Aina';
+  const gi=g&&!g.includes('{{')?g.trim()[0]:'A';
+  const bi=b&&!b.includes('{{')?b.trim()[0]:'N';
+  const el=document.getElementById('sealInitials');
+  if(el)el.innerHTML=gi+' &amp; '+bi;
+})();
+
+// ══ MONTH LABEL ══
+(function(){
+  const mm='06';
+  const months=['Januari','Februari','Mac','April','Mei','Jun','Julai','Ogos','September','Oktober','November','Disember'];
+  const idx=parseInt(mm)-1;
+  const el=document.getElementById('heroMonth');
+  if(el&&idx>=0&&idx<12)el.textContent=months[idx];
+})();
+
+// ══ GATE OPEN ══
+function openGate(){
+  const g=document.getElementById('gate');
+  g.classList.add('open');
+  setTimeout(()=>{
+    g.classList.add('gone');
+    const app=document.getElementById('app');app.classList.add('on');
+    document.getElementById('tabBar').style.display='block';
+    document.getElementById('audioFab').style.display='flex';
+    document.getElementById('shareFab').style.display='flex';
+    launchConfetti();
+    startCountdown();initReveal();initGame();initMapCanvas();initScrollBehaviour();fetchWeather();
+  },1100)
+}
+
+// ══ SCROLL BEHAVIOUR ══
+function initScrollBehaviour(){
+  const sb=document.getElementById('scrollBody'),tb=document.getElementById('tabBar');
+  let lastY=0,ticking=false;
+  sb.addEventListener('scroll',()=>{
+    if(!ticking){requestAnimationFrame(()=>{
+      const y=sb.scrollTop;
+      if(y>lastY&&y>120)tb.classList.add('hidden');
+      else tb.classList.remove('hidden');
+      lastY=y;updateActiveTab(y);revealCheck();ticking=false
+    });ticking=true}
+  },{passive:true})
+}
+
+function updateActiveTab(y){
+  const tabs=document.querySelectorAll('.tab');
+  tabs.forEach(t=>t.classList.remove('on'));
+  const sections=[
+    {id:'sekLokasi',idx:1},{id:'sekSalamKasih',idx:2},
+    {id:'sekHubungi',idx:3},{id:'sekRSVP',idx:4}
+  ];
+  let active=0;
+  sections.forEach(s=>{const el=document.getElementById(s.id);if(el&&el.offsetTop-160<=y)active=s.idx});
+  tabs[active].classList.add('on')
+}
+
+function scrollTo(id){
+  if(id==='top'){document.getElementById('scrollBody').scrollTo({top:0,behavior:'smooth'});return}
+  const el=document.getElementById(id);
+  if(el)document.getElementById('scrollBody').scrollTo({top:el.offsetTop-62,behavior:'smooth'})
+}
+
+// ══ REVEAL ══
+function initReveal(){revealCheck()}
+function revealCheck(){
+  const sb=document.getElementById('scrollBody');if(!sb)return;
+  const sbTop=sb.scrollTop,sbH=sb.clientHeight;
+  document.querySelectorAll('.rv:not(.in),.rv-left:not(.in),.rv-right:not(.in),.rv-scale:not(.in)').forEach(el=>{
+    const top=el.offsetTop;
+    if(top<sbTop+sbH*.9)el.classList.add('in')
+  })
+}
+
+// ══ MAP ══
+function initMapCanvas(){
+  const c=document.getElementById('mapCvs');if(!c)return;
+  const x=c.getContext('2d');
+  function rs(){c.width=c.offsetWidth;c.height=c.offsetHeight;draw()}
+  function draw(){if(!c.width)return;x.clearRect(0,0,c.width,c.height);x.strokeStyle='rgba(255,255,255,.05)';x.lineWidth=.5;for(let i=0;i<c.width;i+=20){x.beginPath();x.moveTo(i,0);x.lineTo(i,c.height);x.stroke()}for(let i=0;i<c.height;i+=20){x.beginPath();x.moveTo(0,i);x.lineTo(c.width,i);x.stroke()}}
+  window.addEventListener('resize',rs);rs()
+}
+
+// ══ COUNTDOWN ══
+const _tgt=new Date('20260614T1000:00');
+function startCountdown(){
+  function tick(){
+    const diff=_tgt-new Date();
+    const live=document.getElementById('cdLive'),row=document.querySelector('.cd-row');
+    if(diff<=0){['cdD','cdH','cdM','cdS'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent='00'});if(live)live.style.display='block';if(row)row.style.display='none';return}
+    if(live)live.style.display='none';
+    const d=Math.floor(diff/864e5),h=Math.floor((diff%864e5)/36e5),m=Math.floor((diff%36e5)/6e4),s=Math.floor((diff%6e4)/1e3);
+    ['cdD','cdH','cdM','cdS'].forEach((id,i)=>{const e=document.getElementById(id);if(e)e.textContent=String([d,h,m,s][i]).padStart(2,'0')})
+  }
+  tick();setInterval(tick,1000)
+}
+
+// ══ AUDIO ══
+let _isPlay=false,_yt=null,_ytRdy=false,_ytPend=false;
+window.onYouTubeIframeAPIReady=function(){
+  _yt=new YT.Player('ytPlayer',{
+    height:'0',width:'0',videoId:'KkvSe6Hr12M',
+    playerVars:{autoplay:0,controls:0,loop:1,playlist:'KkvSe6Hr12M',playsinline:1,rel:0},
+    events:{
+      onReady(e){_ytRdy=true;e.target.setVolume(0);if(_ytPend){_doPlay(e.target);_ytPend=false}},
+      onStateChange(e){
+        const on=e.data===YT.PlayerState.PLAYING;_isPlay=on;
+        const fab=document.getElementById('audioFab'),ico=document.getElementById('fabIco');
+        fab.classList.toggle('playing',on);
+        if(on)ico.innerHTML='<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+        else ico.innerHTML='<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>';
+      }
+    }
+  })
+}
+function _doPlay(p){p=p||_yt;if(!p)return;p.setVolume(0);try{p.playVideo();let v=0;const f=setInterval(()=>{v=Math.min(v+4,70);p.setVolume(v);if(v>=70)clearInterval(f)},200)}catch(e){_ytPend=true}}
+function toggleAudio(){if(!_yt){_ytPend=true;return}if(_isPlay)_yt.pauseVideo();else{if(_ytRdy)_doPlay();else _ytPend=true}}
+
+// ══ CONFETTI ══
+function launchConfetti(){
+  const c=document.getElementById('confettiCanvas');if(!c)return;
+  const x=c.getContext('2d');c.width=window.innerWidth;c.height=window.innerHeight;
+  const cols=['rgba(212,175,106,.85)','rgba(232,200,138,.85)','rgba(139,26,40,.8)','rgba(255,255,255,.7)','rgba(184,134,74,.8)'];
+  const ps=[];for(let i=0;i<100;i++){const a=Math.random()*Math.PI*2,s=2+Math.random()*4;ps.push({x:window.innerWidth/2,y:window.innerHeight*.4,vx:Math.cos(a)*s*(0.4+Math.random()),vy:Math.sin(a)*s*(0.5+Math.random())-5,col:cols[Math.floor(Math.random()*cols.length)],rot:Math.random()*360,rs:(Math.random()-.5)*7,shape:Math.random()<.55?'c':'r',r:2+Math.random()*3,w:3+Math.random()*5,h:2+Math.random()*4,life:1})}
+  function draw(){x.clearRect(0,0,c.width,c.height);let alive=false;ps.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.vx*=.99;p.rot+=p.rs;p.life-=.008;p.life=Math.max(0,p.life);if(p.life>0)alive=true;x.save();x.globalAlpha=p.life;x.translate(p.x,p.y);x.rotate(p.rot*Math.PI/180);x.fillStyle=p.col;if(p.shape==='c'){x.beginPath();x.arc(0,0,p.r,0,Math.PI*2);x.fill()}else x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()});if(alive)requestAnimationFrame(draw);else{c.style.opacity='0'}}
+  draw()
+}
+
+// ══ WEATHER ══
+const WMO={0:{d:'Cerah',i:'☀️'},1:{d:'Kebanyakan Cerah',i:'🌤️'},2:{d:'Separa Berawan',i:'⛅'},3:{d:'Berawan',i:'☁️'},45:{d:'Kabus',i:'🌫️'},51:{d:'Renyai',i:'🌦️'},61:{d:'Hujan Ringan',i:'🌧️'},63:{d:'Hujan',i:'🌧️'},65:{d:'Hujan Lebat',i:'⛈️'},80:{d:'Renyai',i:'🌦️'},95:{d:'Ribut',i:'⛈️'}};
+let _wxDone=false;
+async function fetchWeather(){
+  if(_wxDone)return;
+  try{
+    const city=encodeURIComponent('Rawang, Selangor, Malaysia');
+    const geo=await(await fetch('https://nominatim.openstreetmap.org/search?q='+city+'&format=json&limit=1',{headers:{'Accept-Language':'ms'}})).json();
+    let lat=3.32,lon=101.57;if(geo&&geo[0]){lat=+geo[0].lat;lon=+geo[0].lon}
+    const wx=await(await fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Asia%2FKuala_Lumpur')).json();
+    const c=wx.current,w=WMO[c.weather_code]||{d:'--',i:'🌡️'};
+    const ico=document.getElementById('wxIcon'),tmp=document.getElementById('wxTemp'),dsc=document.getElementById('wxDesc');
+    const hum=document.getElementById('wxHumidity'),fel=document.getElementById('wxFeels'),wnd=document.getElementById('wxWind'),ext=document.getElementById('wxExtras');
+    if(ico)ico.textContent=w.i;if(tmp)tmp.textContent=Math.round(c.temperature_2m)+'°C';if(dsc)dsc.textContent=w.d;
+    if(hum)hum.textContent=c.relative_humidity_2m+'%';if(fel)fel.textContent=Math.round(c.apparent_temperature)+'°C';if(wnd)wnd.textContent=Math.round(c.wind_speed_10m)+' km/h';
+    if(ext)ext.style.display='grid';
+    const note=document.getElementById('wxNote');if(note)note.textContent='📍 Rawang, Selangor · '+new Date().toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});
+    _wxDone=true
+  }catch(e){console.warn('Weather:',e)}
+}
+
+// ══ SHARE ══
+async function doShare(){
+  if(navigator.share){try{await navigator.share({title:'Ahmad Faris & Nurul Aina',url:window.location.href})}catch(e){}}
+  else if(navigator.clipboard)navigator.clipboard.writeText(window.location.href).then(()=>alert('Pautan disalin ✓'))
+}
+
+// ══ RSVP ══
+let _rsvpAll=[],_rsvpN=1,_rsvpStatus='';
+function chooseRSVP(s){
+  _rsvpStatus=s;
+  document.getElementById('optHadir').classList.toggle('chosen',s==='hadir');
+  document.getElementById('optTidak').classList.toggle('chosen',s==='tidak');
+  const f=document.getElementById('rsvpForm');f.classList.add('show');
+  document.getElementById('paxWrap').style.display=s==='hadir'?'block':'none';
+  setTimeout(()=>f.scrollIntoView({behavior:'smooth',block:'nearest'}),50)
+}
+function cancelRSVP(){document.getElementById('rsvpForm').classList.remove('show');_rsvpStatus='';['optHadir','optTidak'].forEach(id=>document.getElementById(id).classList.remove('chosen'))}
+function rsvpAdj(v){_rsvpN=Math.max(1,Math.min(20,_rsvpN+v));document.getElementById('rsvpCnt').textContent=_rsvpN}
+async function submitRSVP(){
+  const n=document.getElementById('rsvpName').value.trim();
+  if(!n){alert('Sila masukkan nama.');return}if(!_rsvpStatus){alert('Sila pilih status.');return}
+  try{if(window._fbPush)await window._fbPush('rsvp',{n,c:_rsvpN,s:_rsvpStatus,t:Date.now()})}catch(e){console.warn(e)}
+  document.getElementById('rsvpChoice').style.display='none';
+  document.getElementById('rsvpForm').classList.remove('show');
+  document.getElementById('rsvpDone').classList.add('show')
+}
+function resetRSVP(){
+  document.getElementById('rsvpName').value='';_rsvpN=1;document.getElementById('rsvpCnt').textContent='1';_rsvpStatus='';
+  document.getElementById('rsvpDone').classList.remove('show');
+  document.getElementById('rsvpChoice').style.display='grid';
+  ['optHadir','optTidak'].forEach(id=>document.getElementById(id).classList.remove('chosen'))
+}
+function onRSVPData(data){
+  const list=document.getElementById('rsvpList'),badge=document.getElementById('rsvpBadge'),pax=document.getElementById('rsvpPax'),sw=document.getElementById('rsvpSearchWrap');
+  if(!data){if(list)list.innerHTML='<div class="list-empty">Belum ada pendaftaran.</div>';if(badge)badge.style.display='none';return}
+  _rsvpAll=Object.values(data).filter(r=>r&&r.s==='hadir').sort((a,b)=>(b.t||0)-(a.t||0));
+  if(!_rsvpAll.length){if(list)list.innerHTML='<div class="list-empty">Belum ada pendaftaran.</div>';if(badge)badge.style.display='none';return}
+  const total=_rsvpAll.reduce((s,r)=>s+(parseInt(r.c)||1),0);
+  if(badge)badge.style.display='block';if(pax)pax.textContent=total;if(sw)sw.style.display='block';
+  renderRSVP(_rsvpAll)
+}
+function renderRSVP(data){
+  const list=document.getElementById('rsvpList');if(!list)return;
+  if(!data.length){list.innerHTML='<div class="list-empty">Belum ada pendaftaran.</div>';return}
+  list.innerHTML=data.map(r=>`<div class="rsvp-row"><div class="rr-name">${r.n}</div><div class="rr-pax">${parseInt(r.c)||1} pax</div></div>`).join('')
+}
+function filterRSVP(){const q=document.getElementById('rsvpSearch').value.toLowerCase();renderRSVP(q?_rsvpAll.filter(r=>r.n.toLowerCase().includes(q)):_rsvpAll)}
+
+// ══ DOA ══
+async function submitDoa(){
+  const n=document.getElementById('doaName').value.trim(),m=document.getElementById('doaMsg').value.trim();
+  if(!n||!m){alert('Sila isi nama dan ucapan.');return}
+  try{if(window._fbPush)await window._fbPush('doa',{n,m,t:Date.now()})}catch(e){console.warn(e)}
+  document.getElementById('doaName').value='';document.getElementById('doaMsg').value='';
+  const btn=document.getElementById('doaBtn');if(btn){const o=btn.textContent;btn.textContent='Dihantar ✦';btn.style.opacity='.6';setTimeout(()=>{btn.textContent=o;btn.style.opacity='1'},2000)}
+}
+function onDoaData(data){
+  const wall=document.getElementById('doaWall'),cnt=document.getElementById('doaCount');if(!wall)return;
+  if(!data){wall.innerHTML='<div class="list-empty">Jadilah yang pertama menghantar ucapan.</div>';if(cnt)cnt.style.display='none';return}
+  const items=Object.values(data).filter(d=>d&&d.n&&d.m).sort((a,b)=>(b.t||0)-(a.t||0)).slice(0,60);
+  if(!items.length){wall.innerHTML='<div class="list-empty">Jadilah yang pertama menghantar ucapan.</div>';if(cnt)cnt.style.display='none';return}
+  if(cnt){cnt.style.display='block';cnt.textContent=items.length+' ucapan'}
+  wall.innerHTML=items.map(d=>`<div class="doa-card"><div class="doa-n">${d.n}</div><div class="doa-m">${d.m}</div></div>`).join('')
+}
+
+// ══ REGISTRY ══
+async function submitReg(){
+  const n=document.getElementById('regName').value.trim(),a=document.getElementById('regAmt').value.trim();
+  if(!n){alert('Sila masukkan nama.');return}
+  const amt=a?'RM '+parseFloat(a).toFixed(2):'(jumlah tidak dinyatakan)';
+  try{if(window._fbPush)await window._fbPush('registry',{n,a,t:Date.now()})}catch(e){console.warn(e)}
+  document.getElementById('regForm').style.display='none';
+  const done=document.getElementById('regDone');done.style.display='flex';
+  const msg=document.getElementById('regMsg');if(msg)msg.textContent=`Terima kasih ${n} atas hadiah ${amt}. Semoga murah rezeki ✦`
+}
+function resetReg(){document.getElementById('regName').value='';document.getElementById('regAmt').value='';document.getElementById('regDone').style.display='none';document.getElementById('regForm').style.display='block'}
+async function shareReg(){const msg=document.getElementById('regMsg');if(!msg)return;if(navigator.share){try{await navigator.share({text:msg.textContent})}catch(e){}}else if(navigator.clipboard)navigator.clipboard.writeText(msg.textContent).then(()=>alert('Disalin ✓'))}
+function copyTxt(t){navigator.clipboard&&navigator.clipboard.writeText(t).then(()=>alert('Disalin ✓'))}
+
+// ══ GAME ══
+const PAIRS=[{e:'🌸',l:'Bunga'},{e:'💍',l:'Cincin'},{e:'🕌',l:'Masjid'},{e:'🌙',l:'Bulan'},{e:'🌿',l:'Daun'},{e:'💎',l:'Berlian'}];
+let flipped=[],matched=0,moves=0,canFlip=true,cards=[];
+function initGame(){
+  flipped=[];matched=0;moves=0;canFlip=true;
+  document.getElementById('moveCount').textContent='0';document.getElementById('matchCount').textContent='0';document.getElementById('gameResult').textContent='';
+  cards=[...PAIRS,...PAIRS].map((c,i)=>({...c,id:i})).sort(()=>Math.random()-.5);
+  document.getElementById('memGrid').innerHTML=cards.map((c,i)=>`<div class="mc" id="mc${i}" onclick="flipCard(${i})"><div class="mc-in"><div class="mc-f"><div class="mc-f-g">✦</div></div><div class="mc-b">${c.e}<div class="mc-lbl">${c.l}</div></div></div></div>`).join('')
+}
+function flipCard(i){
+  if(!canFlip)return;const el=document.getElementById('mc'+i);
+  if(el.classList.contains('fl')||el.classList.contains('ma'))return;
+  el.classList.add('fl');flipped.push(i);
+  if(flipped.length===2){moves++;document.getElementById('moveCount').textContent=moves;canFlip=false;setTimeout(checkMatch,650)}
+}
+function checkMatch(){
+  const[a,b]=flipped,ea=document.getElementById('mc'+a),eb=document.getElementById('mc'+b);
+  if(cards[a].e===cards[b].e){ea.classList.add('ma');eb.classList.add('ma');matched++;document.getElementById('matchCount').textContent=matched;if(matched===PAIRS.length)document.getElementById('gameResult').textContent=moves<=12?`Cemerlang! ${moves} langkah.`:`Tahniah! ${moves} langkah.`}
+  else setTimeout(()=>{ea.classList.remove('fl');eb.classList.remove('fl')},280);
+  flipped=[];canFlip=true
+}
+</script>
+</body>
+</html>
