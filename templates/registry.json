@@ -23,7 +23,12 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#B76E79",
-      "style": "Bright Mood"
+      "style": "Bright Mood",
+      "colors": [
+        "#de5d83",
+        "#dca1a1",
+        "#b76e79"
+      ]
     },
     "Dusty Blue": {
       "name": "Dusty Blue",
