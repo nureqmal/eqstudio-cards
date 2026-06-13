@@ -9,7 +9,12 @@
       "desc": "#FFFFF0, #E2725B",
       "preview_img": "previews/ivory_teracotta.png",
       "popular": true,
-      "style": "Bright Mood"
+      "style": "Bright Mood",
+      "colors": [
+        "#de5d83",
+        "#dca1a1",
+        "#b76e79"
+      ]
     },
     "Blush Rose Gold": {
       "name": "Blush Rose Gold",
