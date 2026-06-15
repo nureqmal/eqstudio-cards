@@ -470,19 +470,19 @@ body::before{
 
 /* ══ PENGANTIN (INFO) ══ */
 #info{background:#fff;}
-.p-duo{display:flex;flex-direction:column;align-items:center;gap:0;margin-top:1.2rem;}
-.p-portrait{width:100%;text-align:center;padding:1.5rem 1rem;position:relative;}
-.p-portrait-line{width:40px;height:1px;background:var(--border-mid);margin:0.6rem auto;}
-.p-side{font-family:'Inter',sans-serif;font-size:0.47rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--text-light);margin-bottom:0.7rem;font-weight:500;}
+.p-duo{display:flex;flex-direction:row;align-items:stretch;gap:0;margin-top:1.2rem;position:relative;}
+.p-portrait{flex:1;text-align:center;padding:1.5rem 0.6rem;position:relative;}
+.p-portrait-line{width:30px;height:1px;background:var(--border-mid);margin:0.5rem auto;}
+.p-side{font-family:'Inter',sans-serif;font-size:0.42rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--text-light);margin-bottom:0.6rem;font-weight:500;}
 .p-name{
-  font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;
-  color:var(--text-dark);margin-bottom:0.4rem;line-height:1.15;
+  font-family:'Playfair Display',serif;font-size:clamp(1.4rem,5vw,1.9rem);font-weight:700;
+  color:var(--text-dark);margin-bottom:0.35rem;line-height:1.15;word-break:break-word;
 }
-.p-conn{font-family:'Inter',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-light);margin:0.6rem 0 0.4rem;}
-.p-parents{font-size:0.88rem;color:var(--text-muted);line-height:2;font-family:'Cormorant Garamond',serif;font-style:italic;}
-.p-and-divider{display:flex;align-items:center;gap:0.8rem;width:100%;padding:0.2rem 2rem;margin:0.4rem 0;}
-.p-and-divider::before,.p-and-divider::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--border-mid),transparent);}
-.p-and-text{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--crimson);line-height:1;font-style:italic;}
+.p-conn{font-family:'Inter',sans-serif;font-size:0.46rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-light);margin:0.5rem 0 0.35rem;}
+.p-parents{font-size:0.78rem;color:var(--text-muted);line-height:1.85;font-family:'Cormorant Garamond',serif;font-style:italic;}
+.p-and-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;padding:0 0.5rem;flex-shrink:0;position:relative;}
+.p-and-divider::before,.p-and-divider::after{content:'';width:1px;flex:1;background:linear-gradient(to bottom,transparent,var(--border-mid),transparent);}
+.p-and-text{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--crimson);line-height:1;font-style:italic;}
 
 /* ══ DETAILS ══ */
 #details{background:var(--crimson-mist);}
@@ -550,17 +550,21 @@ body::before{
 /* ══ ITINERARY ══ */
 #itinerary{background:var(--crimson-mist);}
 .tl{margin-top:2rem;position:relative;}
-.tl::before{content:'';position:absolute;left:17px;top:26px;bottom:18px;width:1px;background:linear-gradient(to bottom,var(--crimson),transparent);}
-.tl-row{display:flex;gap:1.15rem;margin-bottom:1.6rem;position:relative;}
+.tl::before{content:'';position:absolute;left:50%;top:10px;bottom:10px;width:1px;background:linear-gradient(to bottom,var(--crimson),transparent);transform:translateX(-50%);}
+.tl-row{display:flex;align-items:center;margin-bottom:1.8rem;position:relative;gap:0;}
 .tl-dot{
-  width:34px;height:34px;flex-shrink:0;border-radius:6px;
+  width:38px;height:38px;flex-shrink:0;border-radius:8px;
   background:var(--crimson);border:none;
-  display:flex;align-items:center;justify-content:center;font-size:0.85rem;z-index:1;
-  box-shadow:0 2px 8px rgba(139,0,0,0.25);
+  display:flex;align-items:center;justify-content:center;font-size:1rem;z-index:1;
+  box-shadow:0 2px 12px rgba(139,0,0,0.3);
+  position:absolute;left:50%;transform:translateX(-50%);
 }
-.tl-b{padding-top:0.2rem;}
-.tl-t{font-family:'Inter',sans-serif;font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--crimson);margin-bottom:0.18rem;font-weight:500;}
-.tl-ev{font-family:'Playfair Display',serif;font-size:0.98rem;font-weight:600;color:var(--text-dark);}
+.tl-b-left{flex:1;text-align:right;padding-right:calc(19px + 3rem);padding-left:0.5rem;}
+.tl-b-right{flex:1;text-align:left;padding-left:calc(19px + 3rem);padding-right:0.5rem;}
+.tl-b-spacer{flex:1;}
+.tl-t{font-family:'Inter',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--crimson);margin-bottom:0.18rem;font-weight:500;}
+.tl-ev{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:600;color:var(--text-dark);line-height:1.3;}
+
 
 /* ══ DRESS CODE ══ */
 #dresscode{text-align:center;background:#fff;}
@@ -1110,11 +1114,11 @@ footer::before{
     <div class="eu-chip" data-ms="Aturcara" data-en="Programme" data-ar="البرنامج">Aturcara</div>
     <h2 class="sec-h" data-ms="Aturcara <em>Majlis</em>" data-en="Event <em>Programme</em>" data-ar="برنامج <em>الحفل</em>">Aturcara <em>Majlis</em></h2>
     <div class="tl">
-      <div class="tl-row"><div class="tl-dot">🌅</div><div class="tl-b"><div class="tl-t">{{TIME_ARRIVAL}}</div><div class="tl-ev" data-ms="Ketibaan Tetamu" data-en="Arrival of Guests" data-ar="وصول الضيوف">Ketibaan Tetamu</div></div></div>
-      <div class="tl-row"><div class="tl-dot">🌸</div><div class="tl-b"><div class="tl-t">{{TIME_AKAD}}</div><div class="tl-ev" data-ms="Akad Nikah" data-en="Solemnization" data-ar="عقد الزواج">Akad Nikah</div></div></div>
-      <div class="tl-row"><div class="tl-dot">👑</div><div class="tl-b"><div class="tl-t">{{TIME_BERSANDING}}</div><div class="tl-ev" data-ms="Persandingan Pengantin" data-en="Bridal Dais" data-ar="جلوس العروسين">Persandingan Pengantin</div></div></div>
-      <div class="tl-row"><div class="tl-dot">🍽️</div><div class="tl-b"><div class="tl-t">{{TIME_MAKAN}}</div><div class="tl-ev" data-ms="Jamuan Makan" data-en="Luncheon" data-ar="حفل الغداء">Jamuan Makan</div></div></div>
-      <div class="tl-row"><div class="tl-dot">🌙</div><div class="tl-b"><div class="tl-t">{{TIME_BERSURAI}}</div><div class="tl-ev" data-ms="Majlis Bersurai" data-en="End of Programme" data-ar="نهاية الحفل">Majlis Bersurai</div></div></div>
+      <div class="tl-row"><div class="tl-b-left"><div class="tl-t">{{TIME_ARRIVAL}}</div><div class="tl-ev" data-ms="Ketibaan Tetamu" data-en="Arrival of Guests" data-ar="وصول الضيوف">Ketibaan Tetamu</div></div><div class="tl-dot">🌅</div><div class="tl-b-spacer"></div></div>
+      <div class="tl-row"><div class="tl-b-spacer"></div><div class="tl-dot">🌸</div><div class="tl-b-right"><div class="tl-t">{{TIME_AKAD}}</div><div class="tl-ev" data-ms="Akad Nikah" data-en="Solemnization" data-ar="عقد الزواج">Akad Nikah</div></div></div>
+      <div class="tl-row"><div class="tl-b-left"><div class="tl-t">{{TIME_BERSANDING}}</div><div class="tl-ev" data-ms="Persandingan Pengantin" data-en="Bridal Dais" data-ar="جلوس العروسين">Persandingan Pengantin</div></div><div class="tl-dot">👑</div><div class="tl-b-spacer"></div></div>
+      <div class="tl-row"><div class="tl-b-spacer"></div><div class="tl-dot">🍽️</div><div class="tl-b-right"><div class="tl-t">{{TIME_MAKAN}}</div><div class="tl-ev" data-ms="Jamuan Makan" data-en="Luncheon" data-ar="حفل الغداء">Jamuan Makan</div></div></div>
+      <div class="tl-row"><div class="tl-b-left"><div class="tl-t">{{TIME_BERSURAI}}</div><div class="tl-ev" data-ms="Majlis Bersurai" data-en="End of Programme" data-ar="نهاية الحفل">Majlis Bersurai</div></div><div class="tl-dot">🌙</div><div class="tl-b-spacer"></div></div>
     </div>
   </div>
 </section>
