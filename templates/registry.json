@@ -161,6 +161,20 @@
         "#F5EDE8",
         "#300600"
       ]
+    },
+    "red romano": {
+      "name": "Red Romano",
+      "file": "red_romano.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "✨",
+      "desc": "#8B0000",
+      "style": "Powerful Love",
+      "colors": [
+        "#C9A99E",
+        "#F5EDE8",
+        "#FAF7F4"
+      ]
     }
   },
   "Portrait": {
