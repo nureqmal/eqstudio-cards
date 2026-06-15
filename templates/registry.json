@@ -175,7 +175,8 @@
         "#F5EDE8",
         "#FAF7F4"
       ],
-      "new": true
+      "new": true,
+      "mark_new": true
     }
   },
   "Portrait": {
