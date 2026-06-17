@@ -179,21 +179,6 @@
       "mark_new": true,
       "preview_img": "previews/red_romano.png",
       "is_master": true
-    },
-    "es_strawberry_matcha": {
-      "name": "Strawberry Matcha",
-      "file": "es_strawberry_matcha.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "Pink & Hia",
-      "style": "Powerful Love",
-      "colors": [
-        "#ff00bb",
-        "#1d6b00",
-        "#f5eded"
-      ],
-      "cloned_from": "red romano"
     }
   },
   "Portrait": {
