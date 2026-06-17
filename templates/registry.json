@@ -178,7 +178,7 @@
       "new": true,
       "mark_new": true,
       "preview_img": "previews/red_romano.png",
-      "is_master": true
+      "is_master": false
     }
   },
   "Portrait": {
