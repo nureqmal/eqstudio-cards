@@ -16,7 +16,6 @@ html,body{width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;}
   /* ══ THEME COLORS — tukar nilai ni untuk clone tema baru ══ */
   --rgb-primary:139,0,0;
   --rgb-primary-dark:107,0,0;
-  --bg-cover-image:{{BG_COVER_URL}};
 
   /* ══ SEMANTIC ALIASES ══ */
   --crimson:#8B0000;
@@ -43,6 +42,16 @@ html,body{width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;}
   --bg-card:#FFFFFF;
   --bg-input:#FFFFFF;
   --hero-text:#FFFFFF;
+
+  /* ══ ENVELOPE COLORS ══ */
+  --env-bg-image:none;
+  --env-body-from:#F7F2F2;
+  --env-body-to:#EDE0E0;
+  --env-flap-from:#880000;
+  --env-flap-to:#E8D0D0;
+  --env-side-left:#EDD8D8;
+  --env-side-right:#E8D0D0;
+  --env-bottom:#670909;
 }
 
 body{
@@ -211,7 +220,7 @@ body::before{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:2rem;overflow:hidden;
   background:var(--crimson-dark);
-  background-image:var(--bg-cover-image);
+  background-image:var(--env-bg-image);
   background-size:cover;
   background-position:center top;
   transition:opacity 0.9s ease,visibility 0.9s ease;
@@ -245,14 +254,14 @@ body::before{
 .envelope:active{transform:scale(0.97);}
 .env-body{
   position:absolute;inset:0;
-  background:linear-gradient(160deg,#F7F2F2 0%,#EDE0E0 100%);
+  background:linear-gradient(160deg,var(--env-body-from) 0%,var(--env-body-to) 100%);
   border-radius:4px;
   overflow:hidden;
 }
 .env-graphic{position:absolute;inset:0;z-index:2;pointer-events:none;}
 .env-flap{
   position:absolute;top:0;left:0;right:0;height:52%;
-  background:linear-gradient(170deg,#880000,#E8D0D0);
+  background:linear-gradient(170deg,var(--env-flap-from),var(--env-flap-to));
   clip-path:polygon(0 0,50% 95%,100% 0);
   border-radius:4px 4px 0 0;
   transform-origin:top center;
@@ -261,9 +270,9 @@ body::before{
   border-bottom:1px solid rgba(var(--rgb-primary),0.1);
 }
 .envelope.open .env-flap{transform:rotateX(180deg);}
-.env-left{position:absolute;inset:0;background:#EDD8D8;clip-path:polygon(0 0,0 100%,52% 50%);z-index:3;}
-.env-right{position:absolute;inset:0;background:#E8D0D0;clip-path:polygon(100% 0,48% 50%,100% 100%);z-index:3;}
-.env-bottom{position:absolute;inset:0;background:#670909;clip-path:polygon(0 100%,50% 48%,100% 100%);z-index:3;}
+.env-left{position:absolute;inset:0;background:var(--env-side-left);clip-path:polygon(0 0,0 100%,52% 50%);z-index:3;}
+.env-right{position:absolute;inset:0;background:var(--env-side-right);clip-path:polygon(100% 0,48% 50%,100% 100%);z-index:3;}
+.env-bottom{position:absolute;inset:0;background:var(--env-bottom);clip-path:polygon(0 100%,50% 48%,100% 100%);z-index:3;}
 .env-seal{
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
   width:52px;height:52px;border-radius:50%;
@@ -398,9 +407,6 @@ body::before{
   align-items:center;justify-content:center;text-align:center;
   padding:5rem 1.4rem 6rem;position:relative;overflow:hidden;
   background:var(--crimson-dark);
-  background-image:var(--bg-cover-image);
-  background-size:cover;
-  background-position:center top;
 }
 
 /* Hero damask */
