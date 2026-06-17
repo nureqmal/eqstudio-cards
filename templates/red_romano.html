@@ -36,11 +36,18 @@ html,body{width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;}
   --border-strong:rgba(var(--rgb-primary),0.4);
   --shadow-soft:0 4px 24px rgba(var(--rgb-primary),0.08);
   --shadow-mid:0 8px 40px rgba(var(--rgb-primary),0.12);
+
+  /* ══ BACKGROUND & SURFACE COLORS ══ */
+  --bg-page:#FBF8F8;
+  --bg-section-light:#FFFFFF;
+  --bg-card:#FFFFFF;
+  --bg-input:#FFFFFF;
+  --hero-text:#FFFFFF;
 }
 
 body{
   font-family:'Inter',sans-serif;
-  background:#FBF8F8;
+  background:var(--bg-page);
   color:var(--text-dark);
   min-height:100vh;
   font-size:16px;
@@ -272,7 +279,7 @@ body::before{
   position:absolute;bottom:0;left:50%;
   transform:translateX(-50%) translateY(0%);
   width:82%;
-  background:#fff;
+  background:var(--bg-card);
   border:1px solid rgba(var(--rgb-primary),0.15);
   border-radius:2px 2px 0 0;
   padding:0.85rem 0.9rem 0.7rem;text-align:center;z-index:4;
@@ -294,7 +301,7 @@ body::before{
 .modal-bg{position:fixed;inset:0;background:rgba(26,5,5,0.7);display:flex;align-items:flex-end;justify-content:center;z-index:500;opacity:0;visibility:hidden;transition:all 0.4s ease;}
 .modal-bg.show{opacity:1;visibility:visible;}
 .modal-box{
-  background:#fff;border:1px solid var(--border-light);
+  background:var(--bg-card);border:1px solid var(--border-light);
   border-radius:20px 20px 0 0;padding:2.5rem 2rem 3rem;
   width:100%;max-width:480px;text-align:center;
   transform:translateY(100%);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);
@@ -348,7 +355,7 @@ body::before{
 
 /* Clean card */
 .eu-card{
-  background:#fff;
+  background:var(--bg-card);
   border:1px solid var(--border-light);
   border-radius:8px;padding:1.5rem;
   position:relative;overflow:hidden;
@@ -441,7 +448,7 @@ body::before{
 .h-names{
   font-family:'Playfair Display',serif;
   font-size:clamp(3rem,11vw,4.5rem);font-weight:700;
-  line-height:1.05;color:#fff;
+  line-height:1.05;color:var(--hero-text);
   animation:fadeUp 1s ease 0.5s both;
   letter-spacing:-0.02em;
 }
@@ -481,7 +488,7 @@ body::before{
 @keyframes scrollDrop{0%{opacity:0;transform:translateY(-6px);}50%{opacity:0.7;}100%{opacity:0;transform:translateY(6px);}}
 
 /* ══ PENGANTIN (INFO) ══ */
-#info{background:#fff;}
+#info{background:var(--bg-section-light);}
 .p-duo{display:flex;flex-direction:row;align-items:stretch;gap:0;margin-top:1.2rem;position:relative;}
 .p-portrait{flex:1;text-align:center;padding:1.5rem 0.6rem;position:relative;}
 .p-portrait-line{width:30px;height:1px;background:var(--border-mid);margin:0.5rem auto;}
@@ -500,7 +507,7 @@ body::before{
 #details{background:var(--crimson-mist);}
 .det-cards{display:flex;flex-direction:column;gap:0.55rem;margin-top:1.4rem;}
 .det-card{
-  background:#fff;
+  background:var(--bg-card);
   border:1px solid var(--border-light);
   border-radius:8px;padding:1.15rem 1.25rem;
   cursor:pointer;position:relative;overflow:hidden;
@@ -539,7 +546,7 @@ body::before{
 .clk-sub{font-size:0.62rem;color:var(--text-muted);margin-top:0.15rem;}
 
 /* ══ COUNTDOWN ══ */
-#countdown{padding:5.5rem 1.4rem;text-align:center;position:relative;overflow:hidden;background:#fff;}
+#countdown{padding:5.5rem 1.4rem;text-align:center;position:relative;overflow:hidden;background:var(--bg-section-light);}
 .cd-inner{max-width:480px;margin:0 auto;position:relative;z-index:1;}
 .cd-grid{display:flex;justify-content:center;gap:0.6rem;margin-top:2rem;}
 .cd-box{
@@ -579,7 +586,7 @@ body::before{
 
 
 /* ══ DRESS CODE ══ */
-#dresscode{text-align:center;background:#fff;}
+#dresscode{text-align:center;background:var(--bg-section-light);}
 .swatches{display:flex;justify-content:center;gap:1rem;margin-top:1.8rem;flex-wrap:wrap;}
 .sw{display:flex;flex-direction:column;align-items:center;gap:0.55rem;}
 .sw-ring{width:56px;height:56px;border-radius:50%;padding:3px;background:var(--crimson-mist);border:1px solid var(--border-mid);}
@@ -619,7 +626,7 @@ body::before{
 .mg{background:var(--crimson);color:#fff;}
 
 /* ══ LOVE STORY ══ */
-#lovestory{background:#fff;}
+#lovestory{background:var(--bg-section-light);}
 .love-tl{margin-top:1.8rem;}
 .love-row{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border-light);}
 .love-row:last-child{border-bottom:none;}
@@ -652,7 +659,7 @@ body::before{
 
 /* ══ FORMS ══ */
 .form-card{
-  background:#fff;border:1px solid var(--border-light);
+  background:var(--bg-card);border:1px solid var(--border-light);
   border-radius:8px;padding:1.7rem 1.4rem;margin-top:1.2rem;position:relative;overflow:hidden;
   box-shadow:var(--shadow-soft);
 }
@@ -661,7 +668,7 @@ body::before{
 .fl{font-family:'Inter',sans-serif;font-size:0.5rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--crimson);margin-bottom:0.42rem;display:block;font-weight:500;}
 .fi,.fsel,.fta{
   width:100%;padding:0.75rem 0.95rem;
-  background:#fff;
+  background:var(--bg-input);
   border:1px solid var(--border-mid);border-radius:6px;
   font-family:'Inter',sans-serif;font-size:0.86rem;
   color:var(--text-dark);outline:none;-webkit-appearance:none;
@@ -669,7 +676,7 @@ body::before{
 }
 .fi::placeholder,.fta::placeholder{color:var(--text-light);}
 .fi:focus,.fsel:focus,.fta:focus{border-color:var(--crimson);box-shadow:0 0 0 3px rgba(var(--rgb-primary),0.06);}
-.fsel option{background:#fff;color:var(--text-dark);}
+.fsel option{background:var(--bg-input);color:var(--text-dark);}
 .fta{resize:none;min-height:80px;}
 .btn-g{
   width:100%;padding:0.85rem;
@@ -685,32 +692,32 @@ body::before{
 /* ══ RSVP LIST ══ */
 #rsvp{background:var(--crimson-mist);}
 .rsvp-entries{margin-top:0.9rem;display:flex;flex-direction:column;gap:0.45rem;}
-.re-row{display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0.9rem;background:#fff;border:1px solid var(--border-light);border-radius:6px;font-size:0.78rem;box-shadow:var(--shadow-soft);}
+.re-row{display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0.9rem;background:var(--bg-card);border:1px solid var(--border-light);border-radius:6px;font-size:0.78rem;box-shadow:var(--shadow-soft);}
 .re-n{font-family:'Playfair Display',serif;font-size:0.9rem;color:var(--text-dark);}
 .re-s{font-size:0.65rem;color:var(--crimson);font-family:'Inter',sans-serif;letter-spacing:0.08em;}
 
 /* ══ REGISTRY ══ */
-#registry{background:#fff;}
+#registry{background:var(--bg-section-light);}
 .qr-sec{margin-top:1rem;background:var(--crimson-mist);border:1px solid var(--border-light);border-radius:8px;padding:1.4rem;text-align:center;}
-.qr-box{width:145px;height:145px;border:1px solid var(--border-mid);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 0.9rem;background:#fff;gap:0.4rem;}
+.qr-box{width:145px;height:145px;border:1px solid var(--border-mid);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 0.9rem;background:var(--bg-card);gap:0.4rem;}
 .qr-lbl{font-size:0.65rem;color:var(--text-muted);}
 
 /* ══ DOA WALL ══ */
 #doa{background:var(--crimson-mist);}
 .doa-wall{margin-top:1rem;display:flex;flex-direction:column;gap:0.75rem;max-height:370px;overflow-y:auto;}
-.doa-card{background:#fff;border:1px solid var(--border-light);border-radius:8px;border-left:3px solid var(--crimson);padding:0.85rem 0.95rem;animation:cardIn 0.45s ease;box-shadow:var(--shadow-soft);}
+.doa-card{background:var(--bg-card);border:1px solid var(--border-light);border-radius:8px;border-left:3px solid var(--crimson);padding:0.85rem 0.95rem;animation:cardIn 0.45s ease;box-shadow:var(--shadow-soft);}
 @keyframes cardIn{from{opacity:0;transform:translateX(-12px);}to{opacity:1;transform:translateX(0);}}
 .doa-n{font-family:'Inter',sans-serif;font-size:0.58rem;letter-spacing:0.12em;color:var(--crimson);margin-bottom:0.28rem;font-weight:500;text-transform:uppercase;}
 .doa-m{font-size:0.8rem;color:var(--text-dark);line-height:1.6;font-family:'Cormorant Garamond',serif;}
 
 /* ══ SAVE DATE ══ */
-#savedate{background:#fff;}
+#savedate{background:var(--bg-section-light);}
 .cal-btns{display:flex;flex-direction:column;gap:0.65rem;margin-top:1.4rem;}
 .cal-btn-a{
   display:flex;align-items:center;justify-content:center;gap:0.75rem;
   padding:0.85rem 1.4rem;
   border:1px solid var(--border-mid);border-radius:50px;
-  background:#fff;
+  background:var(--bg-card);
   font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.1em;
   color:var(--text-dark);text-decoration:none;transition:all 0.2s;
   box-shadow:var(--shadow-soft);
@@ -721,7 +728,7 @@ body::before{
 /* ══ WEATHER ══ */
 #weather{background:var(--crimson-mist);}
 .wx-card{
-  background:#fff;border:1px solid var(--border-light);
+  background:var(--bg-card);border:1px solid var(--border-light);
   border-radius:8px;padding:1.9rem 1.4rem;margin-top:1.2rem;position:relative;overflow:hidden;
   box-shadow:var(--shadow-soft);
 }
@@ -732,7 +739,7 @@ body::before{
 .wx-note{font-family:'Inter',sans-serif;font-size:0.58rem;color:var(--text-light);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border-light);}
 
 /* ══ GAME ══ */
-#game{background:#fff;}
+#game{background:var(--bg-section-light);}
 .game-hud{display:flex;justify-content:space-between;padding:0.6rem 0.9rem;margin-bottom:0.75rem;background:var(--crimson-mist);border:1px solid var(--border-light);border-radius:6px;font-size:0.65rem;color:var(--text-muted);}
 .game-hud span{color:var(--crimson);font-family:'Playfair Display',serif;font-weight:600;}
 .mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.42rem;}
@@ -761,7 +768,7 @@ body::before{
 .ct-list{display:flex;flex-direction:column;gap:0.65rem;margin-top:1.2rem;}
 .ct-card{
   display:flex;align-items:center;gap:0.95rem;padding:1.05rem 1.15rem;
-  background:#fff;border:1px solid var(--border-light);
+  background:var(--bg-card);border:1px solid var(--border-light);
   border-radius:8px;text-decoration:none;color:var(--text-dark);transition:all 0.2s;
   box-shadow:var(--shadow-soft);
 }
@@ -789,7 +796,7 @@ footer::before{
 
 /* ══ SEARCH ══ */
 #rsvpSearchWrap{display:none;position:relative;margin-bottom:0.6rem;}
-#rsvpSearch{width:100%;box-sizing:border-box;padding:0.55rem 0.75rem 0.55rem 2.1rem;border:1px solid var(--border-mid);border-radius:6px;background:#fff;font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--text-dark);outline:none;transition:border-color 0.25s;}
+#rsvpSearch{width:100%;box-sizing:border-box;padding:0.55rem 0.75rem 0.55rem 2.1rem;border:1px solid var(--border-mid);border-radius:6px;background:var(--bg-input);font-family:'Inter',sans-serif;font-size:0.68rem;color:var(--text-dark);outline:none;transition:border-color 0.25s;}
 #rsvpSearch:focus{border-color:var(--crimson);}
 #rsvpSearch::placeholder{color:var(--text-light);}
 #rsvpTotalBadge{display:none;background:rgba(var(--rgb-primary),0.08);border:1px solid var(--border-light);border-radius:20px;padding:0.25rem 0.75rem;font-family:'Inter',sans-serif;font-size:0.54rem;color:var(--crimson);letter-spacing:0.1em;}
@@ -1023,7 +1030,7 @@ footer::before{
 </section>
 
 <!-- Torn: white → crimson-mist -->
-<div class="torn-divider" style="background:#fff;">
+<div class="torn-divider" style="background:var(--bg-section-light);">
   <svg viewBox="0 0 480 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,60 L0,32 C22,26 35,42 58,36 C80,30 90,14 112,20 C134,26 145,44 168,38 C190,32 200,10 225,16 C248,22 258,44 280,38 C302,32 312,12 335,18 C356,24 368,40 392,34 C414,28 425,8 450,14 C465,18 475,34 480,30 L480,60 Z" fill="#FAF3F3"/>
   </svg>
@@ -1114,7 +1121,7 @@ footer::before{
 </section>
 
 <!-- Torn: white → crimson-mist -->
-<div class="torn-divider" style="background:#fff;">
+<div class="torn-divider" style="background:var(--bg-section-light);">
   <svg viewBox="0 0 480 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,60 L0,30 C20,24 32,40 55,34 C76,28 88,12 110,18 C132,24 144,42 167,36 C188,30 200,12 222,18 C244,24 256,40 280,34 C302,28 314,8 338,14 C360,20 372,38 396,32 C418,26 430,8 455,15 C468,18 476,32 480,28 L480,60 Z" fill="#FAF3F3"/>
   </svg>
@@ -1159,7 +1166,7 @@ footer::before{
 </section>
 
 <!-- Torn: white → crimson-mist -->
-<div class="torn-divider" style="background:#fff;">
+<div class="torn-divider" style="background:var(--bg-section-light);">
   <svg viewBox="0 0 480 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,60 L0,28 C18,22 30,38 52,32 C72,26 82,10 105,16 C128,22 140,40 164,34 C185,28 195,8 220,14 C244,20 256,40 280,33 C302,26 314,6 338,12 C360,18 372,36 396,30 C418,24 430,6 454,12 C468,16 476,30 480,26 L480,60 Z" fill="#FAF3F3"/>
   </svg>
@@ -1199,7 +1206,7 @@ footer::before{
 </section>
 
 <!-- Torn: white → crimson -->
-<div class="torn-divider" style="background:#fff;">
+<div class="torn-divider" style="background:var(--bg-section-light);">
   <svg viewBox="0 0 480 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,60 L0,30 C24,24 36,42 60,36 C82,30 92,10 118,16 C142,22 154,44 178,38 C200,32 210,10 235,16 C260,22 272,46 296,40 C318,34 330,12 354,18 C376,24 388,42 412,36 C434,30 446,10 470,17 L480,20 L480,60 Z" fill="var(--crimson)"/>
   </svg>
@@ -1230,7 +1237,7 @@ footer::before{
     <h2 class="sec-h" data-ms="Sahkan <em>Kehadiran</em>" data-en="Confirm <em>Attendance</em>" data-ar="تأكيد <em>الحضور</em>">Sahkan <em>Kehadiran</em></h2>
     <div class="form-card" id="rsvpForm">
       <div class="fg"><label class="fl" data-ms="Nama Penuh" data-en="Full Name" data-ar="الاسم الكامل">Nama Penuh</label><input type="text" class="fi" id="rsvpName" placeholder="Nama anda..." data-ph-ms="Nama anda..." data-ph-en="Your name..." data-ph-ar="اسمك..."></div>
-      <div class="fg"><label class="fl" data-ms="Bilangan Hadir" data-en="No. of Guests" data-ar="عدد الضيوف">Bilangan Hadir</label><div style="display:flex;align-items:center;gap:0;border:1px solid var(--border-mid);border-radius:6px;overflow:hidden;background:#fff;"><button type="button" onclick="rsvpCountAdj(-1)" style="width:44px;height:44px;background:var(--crimson-mist);border:none;color:var(--crimson);font-size:1.2rem;cursor:pointer;flex-shrink:0;transition:background 0.2s;" onmouseenter="this.style.background='rgba(var(--rgb-primary),0.15)'" onmouseleave="this.style.background='var(--crimson-mist)'">−</button><input type="text" id="rsvpCount" value="1" readonly style="flex:1;text-align:center;background:transparent;border:none;color:var(--text-dark);font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;padding:0;min-width:0;"></input><button type="button" onclick="rsvpCountAdj(1)" style="width:44px;height:44px;background:var(--crimson-mist);border:none;color:var(--crimson);font-size:1.2rem;cursor:pointer;flex-shrink:0;transition:background 0.2s;" onmouseenter="this.style.background='rgba(var(--rgb-primary),0.15)'" onmouseleave="this.style.background='var(--crimson-mist)'">+</button></div></div>
+      <div class="fg"><label class="fl" data-ms="Bilangan Hadir" data-en="No. of Guests" data-ar="عدد الضيوف">Bilangan Hadir</label><div style="display:flex;align-items:center;gap:0;border:1px solid var(--border-mid);border-radius:6px;overflow:hidden;background:var(--bg-card);"><button type="button" onclick="rsvpCountAdj(-1)" style="width:44px;height:44px;background:var(--crimson-mist);border:none;color:var(--crimson);font-size:1.2rem;cursor:pointer;flex-shrink:0;transition:background 0.2s;" onmouseenter="this.style.background='rgba(var(--rgb-primary),0.15)'" onmouseleave="this.style.background='var(--crimson-mist)'">−</button><input type="text" id="rsvpCount" value="1" readonly style="flex:1;text-align:center;background:transparent;border:none;color:var(--text-dark);font-family:'Inter',sans-serif;font-size:0.85rem;outline:none;padding:0;min-width:0;"></input><button type="button" onclick="rsvpCountAdj(1)" style="width:44px;height:44px;background:var(--crimson-mist);border:none;color:var(--crimson);font-size:1.2rem;cursor:pointer;flex-shrink:0;transition:background 0.2s;" onmouseenter="this.style.background='rgba(var(--rgb-primary),0.15)'" onmouseleave="this.style.background='var(--crimson-mist)'">+</button></div></div>
       <div class="fg"><label class="fl" data-ms="Status Kehadiran" data-en="Attendance" data-ar="حالة الحضور">Status Kehadiran</label><select class="fsel" id="rsvpStatus"><option value="">-- Pilih --</option><option value="hadir">✅ Insya-Allah hadir</option></select></div>
       <button class="btn-g" onclick="submitRSVP()" data-ms="Hantar Kehadiran" data-en="Submit RSVP" data-ar="أرسل التأكيد">Hantar Kehadiran</button>
     </div>
@@ -1287,7 +1294,7 @@ footer::before{
 </section>
 
 <!-- Torn: white → crimson-mist -->
-<div class="torn-divider" style="background:#fff;">
+<div class="torn-divider" style="background:var(--bg-section-light);">
   <svg viewBox="0 0 480 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,60 L0,32 C22,26 34,44 58,38 C80,32 90,12 115,18 C138,24 150,46 174,40 C196,34 206,10 232,16 C256,22 268,44 292,38 C314,32 326,10 350,16 C372,22 384,42 408,36 C430,30 442,10 466,17 L480,21 L480,60 Z" fill="#FAF3F3"/>
   </svg>
@@ -1333,7 +1340,7 @@ footer::before{
 </section>
 
 <!-- Torn: white → crimson-mist -->
-<div class="torn-divider" style="background:#fff;">
+<div class="torn-divider" style="background:var(--bg-section-light);">
   <svg viewBox="0 0 480 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,60 L0,30 C22,24 34,42 58,36 C80,30 90,10 115,16 C138,22 150,44 174,38 C196,32 206,8 232,14 C256,20 268,46 292,40 C314,34 326,12 350,18 C372,24 384,44 408,38 C430,32 442,10 466,17 L480,21 L480,60 Z" fill="#FAF3F3"/>
   </svg>
@@ -1379,7 +1386,7 @@ footer::before{
 </section>
 
 <!-- Torn: white → crimson-mist -->
-<div class="torn-divider" style="background:#fff;">
+<div class="torn-divider" style="background:var(--bg-section-light);">
   <svg viewBox="0 0 480 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M0,60 L0,26 C24,20 36,40 60,34 C82,28 92,6 118,12 C142,18 154,44 178,38 C200,32 210,8 236,14 C260,20 272,46 296,40 C318,34 330,10 354,16 C376,22 388,44 412,38 C434,32 446,8 470,15 L480,19 L480,60 Z" fill="#FAF3F3"/>
   </svg>
