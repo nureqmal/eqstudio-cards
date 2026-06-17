@@ -220,9 +220,6 @@ body::before{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:2rem;overflow:hidden;
   background:var(--crimson-dark);
-  background-image:var(--env-bg-image);
-  background-size:cover;
-  background-position:center top;
   transition:opacity 0.9s ease,visibility 0.9s ease;
 }
 #envSection.hide{opacity:0;visibility:hidden;pointer-events:none;}
@@ -255,6 +252,9 @@ body::before{
 .env-body{
   position:absolute;inset:0;
   background:linear-gradient(160deg,var(--env-body-from) 0%,var(--env-body-to) 100%);
+  background-image:var(--env-bg-image);
+  background-size:cover;
+  background-position:center top;
   border-radius:4px;
   overflow:hidden;
 }
