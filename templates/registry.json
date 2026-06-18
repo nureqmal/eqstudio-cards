@@ -182,7 +182,7 @@
       "is_master": true
     },
     "es_sakura_matcha": {
-      "name": "Strawberry Matcha",
+      "name": "Sakura Cream",
       "file": "es_sakura_matcha.html",
       "has_photo": false,
       "has_portrait_photo": false,
@@ -190,8 +190,8 @@
       "desc": "",
       "style": "Powerful Love",
       "colors": [
-        "#fb2943",
-        "#d96b88",
+        "#a03848",
+        "#a03848",
         "#00ff2a"
       ],
       "cloned_from": "red romano",
