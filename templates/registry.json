@@ -180,6 +180,22 @@
       "mark_new": true,
       "preview_img": "previews/red_romano.png",
       "is_master": true
+    },
+    "es_sakura_matcha": {
+      "name": "Sakura Cream",
+      "file": "es_sakura_matcha.html",
+      "has_photo": false,
+      "has_portrait_photo": false,
+      "preview_emoji": "🌸",
+      "desc": "",
+      "style": "Powerful Love",
+      "colors": [
+        "#fb2943",
+        "#d96b88",
+        "#00ff2a"
+      ],
+      "cloned_from": "red romano",
+      "preset_used": "Strawberry Matcha"
     }
   },
   "Portrait": {
