@@ -362,9 +362,9 @@ body::before{
 .env-seal.cracking .seal-crack,.envelope.open .seal-crack{opacity:1;}
 .envelope.open .env-seal{transform:translate(-50%,-50%) scale(0) rotate(25deg);opacity:0;}
 .env-letter{
-  position:absolute;bottom:62%;left:50%;
+  position:absolute;bottom:6%;left:50%;
   transform:translateX(-50%) translateY(0%) scale(1);
-  width:80%;
+  width:82%;
   background:#FFFFFF;
   border:1px solid rgba(0,0,0,0.22);
   outline:1px solid rgba(0,0,0,0.1);
@@ -692,20 +692,58 @@ body::before{
 /* ══ ITINERARY ══ */
 #itinerary{background:var(--crimson-mist);}
 .tl{margin-top:2rem;position:relative;}
-.tl::before{content:'';position:absolute;left:50%;top:10px;bottom:10px;width:1px;background:linear-gradient(to bottom,var(--crimson),transparent);transform:translateX(-50%);}
-.tl-row{display:flex;align-items:center;margin-bottom:1.8rem;position:relative;gap:0;}
+.tl::before{
+  content:'';position:absolute;left:50%;top:10px;bottom:10px;width:2px;
+  background:linear-gradient(to bottom,rgba(var(--rgb-primary),0.15),rgba(var(--rgb-primary),0.15));
+  transform:translateX(-50%);border-radius:2px;
+}
+.tl-progress{
+  position:absolute;left:50%;top:10px;width:2px;height:0%;
+  background:linear-gradient(to bottom,var(--crimson),var(--crimson-light));
+  transform:translateX(-50%);border-radius:2px;
+  transition:height 1.2s cubic-bezier(0.4,0,0.2,1);
+  box-shadow:0 0 8px rgba(var(--rgb-primary),0.5);
+}
+.tl-row{
+  display:flex;align-items:center;margin-bottom:1.8rem;position:relative;gap:0;
+  opacity:0;transition:opacity 0.7s ease,transform 0.7s cubic-bezier(0.2,0.6,0.3,1);
+}
+.tl-row.from-left{transform:translateX(-28px);}
+.tl-row.from-right{transform:translateX(28px);}
+.tl-row.in-view{opacity:1;transform:translateX(0);}
 .tl-dot{
   width:38px;height:38px;flex-shrink:0;border-radius:8px;
   background:var(--crimson);border:none;
   display:flex;align-items:center;justify-content:center;font-size:1rem;z-index:1;
   box-shadow:0 2px 12px rgba(var(--rgb-primary),0.3);
-  position:absolute;left:50%;transform:translateX(-50%);
+  position:absolute;left:50%;transform:translateX(-50%) scale(0.6);
+  transition:transform 0.5s cubic-bezier(0.34,1.4,0.6,1) 0.15s,box-shadow 0.4s ease;
 }
+.tl-row.in-view .tl-dot{transform:translateX(-50%) scale(1);}
+.tl-row.tl-passed .tl-dot{
+  background:var(--crimson-dark);
+  box-shadow:0 2px 8px rgba(var(--rgb-primary),0.2);
+}
+.tl-row.tl-current .tl-dot{
+  animation:tlPulse 1.8s ease-in-out infinite;
+}
+@keyframes tlPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(var(--rgb-primary),0.5),0 2px 12px rgba(var(--rgb-primary),0.3);}
+  50%{box-shadow:0 0 0 9px rgba(var(--rgb-primary),0),0 2px 12px rgba(var(--rgb-primary),0.3);}
+}
+.tl-now-badge{
+  display:inline-block;font-size:0.42rem;letter-spacing:0.15em;text-transform:uppercase;
+  background:var(--crimson);color:#fff;padding:1px 6px;border-radius:8px;
+  margin-left:0.4rem;vertical-align:middle;opacity:0;
+  animation:tlBadgeIn 0.4s ease 0.3s forwards;
+}
+@keyframes tlBadgeIn{to{opacity:1;}}
 .tl-b-left{flex:1;text-align:right;padding-right:calc(19px + 3rem);padding-left:0.5rem;}
 .tl-b-right{flex:1;text-align:left;padding-left:calc(19px + 3rem);padding-right:0.5rem;}
 .tl-b-spacer{flex:1;}
 .tl-t{font-family:'Inter',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--crimson);margin-bottom:0.18rem;font-weight:500;}
 .tl-ev{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:600;color:var(--text-dark);line-height:1.3;}
+.tl-row.tl-passed .tl-ev,.tl-row.tl-passed .tl-t{opacity:0.5;}
 
 
 /* ══ DRESS CODE ══ */
@@ -939,7 +977,7 @@ footer::before{
   --crimson-dark: #7a9060;
   --crimson-pale: #fc5a8d;
   --crimson-mist: #ffbdd2;
-  --text-dark: #ff004c;
+  --text-dark: #3e1924;
   --text-mid: #e1ff00;
   --text-muted: #052e15;
   --text-light: #54273a;
@@ -1325,11 +1363,12 @@ footer::before{
     <div class="eu-chip" data-ms="Aturcara" data-en="Programme" data-ar="البرنامج">Aturcara</div>
     <h2 class="sec-h" data-ms="Aturcara <em>Majlis</em>" data-en="Event <em>Programme</em>" data-ar="برنامج <em>الحفل</em>">Aturcara <em>Majlis</em></h2>
     <div class="tl">
-      <div class="tl-row"><div class="tl-b-left"><div class="tl-t">{{TIME_ARRIVAL}}</div><div class="tl-ev" data-ms="Ketibaan Tetamu" data-en="Arrival of Guests" data-ar="وصول الضيوف">Ketibaan Tetamu</div></div><div class="tl-dot">🌅</div><div class="tl-b-spacer"></div></div>
-      <div class="tl-row"><div class="tl-b-spacer"></div><div class="tl-dot">🌸</div><div class="tl-b-right"><div class="tl-t">{{TIME_AKAD}}</div><div class="tl-ev" data-ms="Akad Nikah" data-en="Solemnization" data-ar="عقد الزواج">Akad Nikah</div></div></div>
-      <div class="tl-row"><div class="tl-b-left"><div class="tl-t">{{TIME_BERSANDING}}</div><div class="tl-ev" data-ms="Persandingan Pengantin" data-en="Bridal Dais" data-ar="جلوس العروسين">Persandingan Pengantin</div></div><div class="tl-dot">👑</div><div class="tl-b-spacer"></div></div>
-      <div class="tl-row"><div class="tl-b-spacer"></div><div class="tl-dot">🍽️</div><div class="tl-b-right"><div class="tl-t">{{TIME_MAKAN}}</div><div class="tl-ev" data-ms="Jamuan Makan" data-en="Luncheon" data-ar="حفل الغداء">Jamuan Makan</div></div></div>
-      <div class="tl-row"><div class="tl-b-left"><div class="tl-t">{{TIME_BERSURAI}}</div><div class="tl-ev" data-ms="Majlis Bersurai" data-en="End of Programme" data-ar="نهاية الحفل">Majlis Bersurai</div></div><div class="tl-dot">🌙</div><div class="tl-b-spacer"></div></div>
+      <div class="tl-progress" id="tlProgress"></div>
+      <div class="tl-row from-left" data-time="{{TIME_ARRIVAL}}"><div class="tl-b-left"><div class="tl-t">{{TIME_ARRIVAL}}<span class="tl-now-badge" style="display:none;" data-en-badge="NOW" data-ms-badge="SEKARANG">SEKARANG</span></div><div class="tl-ev" data-ms="Ketibaan Tetamu" data-en="Arrival of Guests" data-ar="وصول الضيوف">Ketibaan Tetamu</div></div><div class="tl-dot">🌅</div><div class="tl-b-spacer"></div></div>
+      <div class="tl-row from-right" data-time="{{TIME_AKAD}}"><div class="tl-b-spacer"></div><div class="tl-dot">🌸</div><div class="tl-b-right"><div class="tl-t">{{TIME_AKAD}}<span class="tl-now-badge" style="display:none;">SEKARANG</span></div><div class="tl-ev" data-ms="Akad Nikah" data-en="Solemnization" data-ar="عقد الزواج">Akad Nikah</div></div></div>
+      <div class="tl-row from-left" data-time="{{TIME_BERSANDING}}"><div class="tl-b-left"><div class="tl-t">{{TIME_BERSANDING}}<span class="tl-now-badge" style="display:none;">SEKARANG</span></div><div class="tl-ev" data-ms="Persandingan Pengantin" data-en="Bridal Dais" data-ar="جلوس العروسين">Persandingan Pengantin</div></div><div class="tl-dot">👑</div><div class="tl-b-spacer"></div></div>
+      <div class="tl-row from-right" data-time="{{TIME_MAKAN}}"><div class="tl-b-spacer"></div><div class="tl-dot">🍽️</div><div class="tl-b-right"><div class="tl-t">{{TIME_MAKAN}}<span class="tl-now-badge" style="display:none;">SEKARANG</span></div><div class="tl-ev" data-ms="Jamuan Makan" data-en="Luncheon" data-ar="حفل الغداء">Jamuan Makan</div></div></div>
+      <div class="tl-row from-left" data-time="{{TIME_BERSURAI}}"><div class="tl-b-left"><div class="tl-t">{{TIME_BERSURAI}}<span class="tl-now-badge" style="display:none;">SEKARANG</span></div><div class="tl-ev" data-ms="Majlis Bersurai" data-en="End of Programme" data-ar="نهاية الحفل">Majlis Bersurai</div></div><div class="tl-dot">🌙</div><div class="tl-b-spacer"></div></div>
     </div>
   </div>
 </section>
@@ -1892,7 +1931,111 @@ window.addEventListener('load',()=>{
   renderDoa();
   loadRSVPList();
   fetchWeather();
+  initTimeline();
 });
+
+// ══════════════════════
+//  TIMELINE — fly-in animation + live now/passed indicator + progress bar
+// ══════════════════════
+function parseTimeToMinutes(str){
+  if(!str) return null;
+  const s=str.trim();
+  // Format: "11:00 PG" / "11:00 PTG" / "11:00 AM" / "11:00 PM" / "11:00"
+  const m=s.match(/(\d{1,2}):(\d{2})\s*(PG|PTG|AM|PM)?/i);
+  if(!m) return null;
+  let h=parseInt(m[1],10), mi=parseInt(m[2],10);
+  const period=(m[3]||'').toUpperCase();
+  if(period==='PTG'||period==='PM'){ if(h<12) h+=12; }
+  else if(period==='PG'||period==='AM'){ if(h===12) h=0; }
+  return h*60+mi;
+}
+
+function recheckTimeline(){
+  if(window._tlManualCheck){
+    setTimeout(window._tlManualCheck,50);
+    setTimeout(window._tlManualCheck,500);
+  }
+}
+
+function initTimeline(){
+  const rows=document.querySelectorAll('.tl-row');
+  if(!rows.length) return;
+
+  // ── Fly-in on scroll ──
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting) en.target.classList.add('in-view');
+    });
+  },{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
+  rows.forEach(r=>io.observe(r));
+
+  // Manual checker — guna untuk fallback timer dan scroll/resize backup
+  function manualCheck(){
+    rows.forEach(r=>{
+      if(r.classList.contains('in-view')) return;
+      const rect=r.getBoundingClientRect();
+      if(rect.top<window.innerHeight && rect.bottom>0){
+        r.classList.add('in-view');
+      }
+    });
+  }
+
+  // Fallback timers — beberapa kali sebab #main mungkin masih opacity:0
+  // semasa load (sebelum envelope dibuka), so kena re-check lepas tu jugak
+  setTimeout(manualCheck,400);
+  setTimeout(manualCheck,1200);
+
+  // Scroll/resize backup — kalau IntersectionObserver gagal kesan disebabkan
+  // parent yang baru jadi visible (opacity transition), scroll event akan
+  // tetap fire bila customer scroll sendiri
+  window.addEventListener('scroll',manualCheck,{passive:true});
+  window.addEventListener('resize',manualCheck);
+
+  // Simpan reference untuk recheckTimeline()
+  window._tlManualCheck=manualCheck;
+
+  // ── Live now/passed state + progress bar ──
+  const nowMin=(()=>{ const d=new Date(); return d.getHours()*60+d.getMinutes(); })();
+  let lastPassedIdx=-1;
+  let currentIdx=-1;
+
+  rows.forEach((row,idx)=>{
+    const t=parseTimeToMinutes(row.getAttribute('data-time'));
+    if(t===null) return;
+    if(nowMin>=t){
+      lastPassedIdx=idx;
+    }
+  });
+
+  // Tentukan event "current" — event terakhir yang dah lalu, sebelum yang seterusnya
+  rows.forEach((row,idx)=>{
+    if(idx<lastPassedIdx){
+      row.classList.add('tl-passed');
+    }else if(idx===lastPassedIdx){
+      row.classList.add('tl-current');
+      const badge=row.querySelector('.tl-now-badge');
+      if(badge) badge.style.display='inline-block';
+    }
+  });
+
+  // ── Progress bar height — berdasarkan event terakhir yang dah lalu ──
+  const progress=document.getElementById('tlProgress');
+  if(progress){
+    setTimeout(()=>{
+      if(lastPassedIdx>=0){
+        const targetRow=rows[lastPassedIdx];
+        const tl=document.querySelector('.tl');
+        const dotEl=targetRow.querySelector('.tl-dot');
+        if(tl && dotEl){
+          const tlRect=tl.getBoundingClientRect();
+          const dotRect=dotEl.getBoundingClientRect();
+          const heightPx=(dotRect.top+dotRect.height/2)-tlRect.top;
+          progress.style.height=Math.max(0,heightPx)+'px';
+        }
+      }
+    },300);
+  }
+}
 // ══════════════════════
 //  ENVELOPE
 // ══════════════════════
@@ -1955,6 +2098,7 @@ function openEnvelope(){
     const viz=document.getElementById('audioViz'); if(viz) viz.style.display='flex';
     launchConfetti();
     showShare();
+    recheckTimeline();
     setTimeout(()=>toggleDet('tarikh'),500);
   },5250);
 }
