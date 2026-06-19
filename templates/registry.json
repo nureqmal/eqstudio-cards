@@ -292,6 +292,21 @@
       "preview_emoji": "✨",
       "desc": "#750851",
       "style": "Dark Luxury"
+    },
+    "red_romano_gallery": {
+      "name": "Red Romano Gallery",
+      "file": "red_romano_gallery.html",
+      "has_photo": true,
+      "has_portrait_photo": false,
+      "has_gallery_10": true,
+      "preview_emoji": "✨",
+      "desc": "10 photos",
+      "style": "Powerful Love",
+      "colors": [
+        "#932500",
+        "#F5EDE8",
+        "#ff1c1c"
+      ]
     }
   },
   "_style_categories": [
