@@ -223,15 +223,6 @@
       "desc": "#F5FFFA",
       "style": "Bright Mood"
     },
-    "Portrait Chocolate Copper": {
-      "name": "Chocolate Copper",
-      "file": "portrait_chocolate_copper.html",
-      "has_photo": true,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#7b3f00 ",
-      "style": "Dark Luxury"
-    },
     "Portrait Midnight Sapphire Gold": {
       "name": "Midnight Sapphire Gold",
       "file": "portrait_midnight_sapphire_gold.html",
