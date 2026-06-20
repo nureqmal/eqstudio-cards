@@ -34,15 +34,6 @@
       "desc": "#8A9A5B, #F4EBDD",
       "style": "Bright Mood"
     },
-    "Forrest Copper": {
-      "name": "Forrest Copper",
-      "file": "forrest_copper.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#B87333",
-      "style": "Dark Luxury"
-    },
     "Gold Luxury": {
       "name": "Gold Luxury",
       "file": "gold_luxury.html",
