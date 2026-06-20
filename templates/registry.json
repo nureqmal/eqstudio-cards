@@ -16,20 +16,6 @@
         "#b76e79"
       ]
     },
-    "Blush Rose Gold": {
-      "name": "Blush Rose Gold",
-      "file": "blush_rose_gold.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#B76E79",
-      "style": "Bright Mood",
-      "colors": [
-        "#de5d83",
-        "#dca1a1",
-        "#b76e79"
-      ]
-    },
     "Dusty Blue": {
       "name": "Dusty Blue",
       "file": "dusty_blue.html",
