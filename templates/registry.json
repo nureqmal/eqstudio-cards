@@ -1,14 +1,5 @@
 {
   "Essential": {
-    "Midnight Navy": {
-      "name": "Midnight Navy",
-      "file": "midnight_navy.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#1B2452",
-      "style": "Dark Luxury"
-    },
     "Emerald Royal": {
       "name": "Emerald Royal",
       "file": "emerald_royal.html",
