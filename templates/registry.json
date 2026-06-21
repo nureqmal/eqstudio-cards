@@ -1,14 +1,5 @@
 {
   "Essential": {
-    "Emerald Royal": {
-      "name": "Emerald Royal",
-      "file": "emerald_royal.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#50C878",
-      "style": "Dark Luxury"
-    },
     "burgundy velvet edited": {
       "name": "Burgundy Velvet",
       "file": "burgundy_velvet_edited.html",
