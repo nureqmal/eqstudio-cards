@@ -50,22 +50,6 @@
       "mark_new": true,
       "preview_img": "previews/red_romano.png",
       "is_master": true
-    },
-    "es_sakura_matcha": {
-      "name": "Strawberry Matcha",
-      "file": "es_sakura_matcha.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "🌸",
-      "desc": "",
-      "style": "Powerful Love",
-      "colors": [
-        "#a03848",
-        "#a03848",
-        "#00ff2a"
-      ],
-      "cloned_from": "red romano",
-      "preset_used": "Strawberry Matcha"
     }
   },
   "Portrait": {
