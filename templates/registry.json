@@ -69,15 +69,6 @@
     }
   },
   "Portrait": {
-    "Portrait Midnight Sapphire Gold": {
-      "name": "Midnight Sapphire Gold",
-      "file": "portrait_midnight_sapphire_gold.html",
-      "has_photo": true,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#0C1F3F, #D4AF37",
-      "style": "Dark Luxury"
-    },
     "Portrait Emerald Imperial Gold": {
       "name": "Emerald Imperial Gold",
       "file": "portrait_emerald_imperial_gold.html",
