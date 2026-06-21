@@ -1,21 +1,5 @@
 {
   "Essential": {
-    "ivory teracotta": {
-      "name": "Ivory Teracotta",
-      "file": "ivory_teracotta.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#FFFFF0, #E2725B",
-      "preview_img": "previews/ivory_teracotta.png",
-      "popular": true,
-      "style": "Bright Mood",
-      "colors": [
-        "#de5d83",
-        "#dca1a1",
-        "#b76e79"
-      ]
-    },
     "Sage Green Cream": {
       "name": "Sage Green Cream",
       "file": "sage_green_cream.html",
