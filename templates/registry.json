@@ -69,15 +69,6 @@
     }
   },
   "Portrait": {
-    "Portrait Blush Pink Lavender": {
-      "name": "Blush Pink Lavender",
-      "file": "portrait_blush_pink_lavender.html",
-      "has_photo": true,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#DBB2D1",
-      "style": "Bright Mood"
-    },
     "Potrait Sky Blue Lemon": {
       "name": "Sky Blue Lemon",
       "file": "potrait_sky_blue_lemon.html",
