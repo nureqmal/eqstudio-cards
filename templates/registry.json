@@ -50,21 +50,6 @@
       "mark_new": true,
       "preview_img": "previews/red_romano.png",
       "is_master": true
-    },
-    "strawberry_matcha": {
-      "name": "Strawberry Matcha",
-      "file": "strawberry_matcha.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "has_gallery_10": false,
-      "preview_emoji": "🍓",
-      "desc": "Pink & Matcha Green",
-      "style": "Powerful Love",
-      "colors": [
-        "#c9a99e",
-        "#f5ede8",
-        "#faf7f4"
-      ]
     }
   },
   "Portrait": {
