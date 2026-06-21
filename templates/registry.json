@@ -69,15 +69,6 @@
     }
   },
   "Portrait": {
-    "Potrait Mint Cream": {
-      "name": "Mint Cream",
-      "file": "potrait_mint_cream.html",
-      "has_photo": true,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#F5FFFA",
-      "style": "Bright Mood"
-    },
     "Portrait Midnight Sapphire Gold": {
       "name": "Midnight Sapphire Gold",
       "file": "portrait_midnight_sapphire_gold.html",
