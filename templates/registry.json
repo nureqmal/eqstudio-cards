@@ -69,17 +69,6 @@
     }
   },
   "Portrait": {
-    "Portrait Emerald Imperial Gold": {
-      "name": "Emerald Imperial Gold",
-      "file": "portrait_emerald_imperial_gold.html",
-      "has_photo": true,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#50C878, #DEAF79",
-      "popular": true,
-      "preview_img": "previews/portrait_emerald_imperial_gold.png",
-      "style": "Dark Luxury"
-    },
     "potrait Burgundy Velvet edited": {
       "name": "Burgundy Velvet",
       "file": "potrait_burgundy_velvet_edited.html",
