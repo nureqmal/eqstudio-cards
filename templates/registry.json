@@ -1,17 +1,5 @@
 {
   "Essential": {
-    "Dark Violet": {
-      "name": "Dark Violet- Mordern",
-      "file": "dark_violet.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#301934",
-      "preview_img": "previews/dark_violet.png",
-      "new": true,
-      "mark_new": true,
-      "style": "Modern GenZ"
-    },
     "Korean Style": {
       "name": "Korean Style",
       "file": "korean_style.html",
