@@ -69,17 +69,6 @@
     }
   },
   "Portrait": {
-    "potrait Butter Yellow Ivory": {
-      "name": "Butter Yellow Ivory",
-      "file": "potrait_butter_yellow_ivory.html",
-      "has_photo": true,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#FFFD74, #FFFFF0",
-      "popular": true,
-      "preview_img": "previews/potrait_butter_yellow_ivory.png",
-      "style": "Bright Mood"
-    },
     "Portrait Blush Pink Lavender": {
       "name": "Blush Pink Lavender",
       "file": "portrait_blush_pink_lavender.html",
