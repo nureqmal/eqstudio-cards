@@ -1,16 +1,5 @@
 {
   "Essential": {
-    "burgundy velvet edited": {
-      "name": "Burgundy Velvet",
-      "file": "burgundy_velvet_edited.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#750851",
-      "popular": true,
-      "preview_img": "previews/burgundy_velvet_edited.png",
-      "style": "Dark Luxury"
-    },
     "Dark Violet": {
       "name": "Dark Violet- Mordern",
       "file": "dark_violet.html",
