@@ -1,14 +1,5 @@
 {
   "Essential": {
-    "Gold Luxury": {
-      "name": "Gold Luxury",
-      "file": "gold_luxury.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "#D4af37",
-      "style": "Dark Luxury"
-    },
     "Midnight Navy": {
       "name": "Midnight Navy",
       "file": "midnight_navy.html",
