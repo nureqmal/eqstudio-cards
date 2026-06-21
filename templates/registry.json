@@ -33,20 +33,6 @@
         "#800020"
       ]
     },
-    "Coming soon": {
-      "name": "Coming soon",
-      "file": "coming_soon.html",
-      "has_photo": false,
-      "has_portrait_photo": false,
-      "preview_emoji": "✨",
-      "desc": "draft",
-      "style": "Bright Mood",
-      "colors": [
-        "#ff0000",
-        "#F5EDE8",
-        "#300600"
-      ]
-    },
     "red romano": {
       "name": "Red Romano",
       "file": "red_romano.html",
