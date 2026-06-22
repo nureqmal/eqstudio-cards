@@ -49,7 +49,8 @@
       "new": true,
       "mark_new": true,
       "preview_img": "previews/red_romano.png",
-      "is_master": true
+      "is_master": true,
+      "popular": true
     },
     "strawberry_matcha": {
       "name": "Strawberry Matcha",
