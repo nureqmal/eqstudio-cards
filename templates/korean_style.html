@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>청첩장 | {{GROOM_NAME}} & {{BRIDE_NAME}}</title>
+<title>청첩장 · Portrait | {{GROOM_NAME}} & {{BRIDE_NAME}}</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+KR:wght@200;300;400&family=DM+Sans:wght@300;400;500&family=Amiri:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -41,7 +41,6 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
 .el-name{font-family:'Cormorant Garamond',serif;font-size:0.9rem;color:var(--ink);font-style:italic;}
 .env-hint{margin-top:1.6rem;font-family:'Cormorant Garamond',serif;font-size:0.68rem;letter-spacing:0.3em;color:var(--muted);font-style:italic;animation:hintPulse 2.8s ease infinite;}
 @keyframes hintPulse{0%,100%{opacity:0.3;}50%{opacity:0.8;}}
-.env-bismillah{font-family:'Amiri',serif;font-size:1.3rem;color:var(--rose);margin-top:1.2rem;}
 
 /* ══ APP SHELL ══ */
 #appShell{opacity:0;transition:opacity 1.2s ease;display:flex;flex-direction:column;min-height:100svh;}
@@ -51,6 +50,13 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
 /* ══ TOP BAR ══ */
 #topBar{position:sticky;top:0;z-index:200;background:rgba(250,248,245,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0.55rem 1rem;}
 .tb-lang{display:flex;gap:3px;}
+.tb-status{
+  flex:1;min-width:0;text-align:center;
+  font-size:0.56rem;letter-spacing:0.03em;color:var(--muted);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  padding:0 0.5rem;opacity:0;transition:opacity 0.4s ease;
+}
+.tb-status.show{opacity:1;}
 .lb{padding:0.18rem 0.6rem;border:1px solid var(--border);border-radius:20px;background:transparent;color:var(--ink3);font-family:'DM Sans',sans-serif;font-size:0.48rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;}
 .lb.active{background:var(--rose);color:#fff;border-color:var(--rose);}
 .tb-controls{display:flex;align-items:center;gap:6px;}
@@ -364,14 +370,17 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
 #audioViz.playing .vb:nth-child(8){animation:vbDance 0.7s ease-in-out infinite 0.09s;}
 
 /* Share btn */
-#shareBtn{position:fixed;bottom:5.2rem;right:1rem;width:38px;height:38px;border-radius:50%;background:rgba(250,248,245,0.92);border:1px solid var(--border);display:none;align-items:center;justify-content:center;font-size:0.85rem;cursor:pointer;z-index:280;backdrop-filter:blur(8px);}
+/* shareBtn floating dibuang - guna topbar share button (tb-controls) */
 
 /* Bottom tab bar */
-#tabBar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(250,248,245,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--border);display:none;padding:0.3rem 0 env(safe-area-inset-bottom,0);}
-.tab-inner{display:flex;align-items:center;}
-.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0.4rem 0;cursor:pointer;transition:all 0.2s;border-radius:10px;margin:0 2px;}
-.tab-btn i{font-size:1.1rem;color:var(--muted);}
-.tab-btn span{font-size:0.4rem;letter-spacing:0.06em;color:var(--muted);text-transform:uppercase;}
+#tabBar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(250,248,245,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--border);display:none;padding:0.5rem 0.4rem calc(0.5rem + env(safe-area-inset-bottom,0));box-shadow:0 -4px 20px rgba(0,0,0,0.04);}
+.tab-inner{display:flex;align-items:center;gap:0.2rem;}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0.5rem 0.2rem;cursor:pointer;transition:all 0.25s cubic-bezier(0.4,0,0.2,1);border-radius:12px;}
+.tab-btn i{font-size:1.25rem;color:var(--muted);transition:transform 0.25s ease;display:block;line-height:1;}
+.tab-btn span{font-size:0.56rem;letter-spacing:0.04em;color:var(--muted);text-transform:uppercase;font-weight:600;transition:color 0.25s ease;}
+.tab-btn.active{background:var(--rose3);}
+.tab-btn.active i{transform:translateY(-1px) scale(1.08);}
+.tab-btn.active span{color:var(--rose-drk,var(--rose));}
 .tab-btn.active i{color:var(--rose);}
 .tab-btn.active span{color:var(--rose);}
 .tab-btn.active{background:var(--rose3);}
@@ -393,6 +402,50 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
 
 /* Safari notice */
 #safariNotice{display:none;position:fixed;bottom:4.8rem;right:1rem;z-index:290;background:rgba(250,248,245,0.95);border:1px solid var(--border);border-radius:10px;padding:0.5rem 0.85rem;font-size:0.58rem;color:var(--ink);white-space:nowrap;pointer-events:none;}
+
+/* ══ PORTRAIT PHOTO HERO ══ */
+.hero-photo-wrap{
+  position:relative;width:min(170px,48vw);
+  margin:0 auto 1.4rem;
+  animation:fadeUp 0.8s ease 0.1s both;
+}
+.hero-frame-outer{
+  border-radius:50%;padding:3px;
+  background:linear-gradient(135deg,var(--rose2),var(--cream3),var(--rose));
+}
+.hero-frame-inner{
+  border-radius:50%;overflow:hidden;
+  width:100%;aspect-ratio:1/1;
+  border:2px solid rgba(255,255,255,0.6);
+}
+.hero-frame-inner img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.hfc{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--rose2);box-shadow:0 0 6px var(--rose2);}
+.hfc-tl{top:-2px;left:20%;}.hfc-tr{top:14%;right:-2px;}
+.hfc-bl{bottom:14%;left:-2px;}.hfc-br{bottom:-2px;right:20%;}
+
+/* ══ PHOTO2 CINEMATIC STRIP ══ */
+.photo2-wrap{margin:0 1rem 1rem;position:relative;}
+.photo2-strip{
+  border-radius:12px;overflow:hidden;
+  border:1px solid var(--border);
+}
+.photo2-strip img{
+  width:100%;height:210px;object-fit:cover;display:block;
+}
+.photo2-gradient{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 40%,rgba(44,36,25,0.45));
+  border-radius:12px;
+}
+.photo2-caption{
+  position:absolute;bottom:0.8rem;left:0;right:0;
+  text-align:center;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.64rem;font-style:italic;
+  color:rgba(255,255,255,0.85);letter-spacing:0.22em;
+}
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -406,7 +459,6 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
 
 <div id="audioViz"><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div><div class="vb" style="height:16px"></div></div>
 <div id="safariNotice">🎵 Safari: tap ▶ untuk muzik</div>
-<button id="shareBtn" onclick="shareKad()">🔗</button>
 
 <!-- MODAL -->
 <div class="modal-bg" id="modal"><div class="modal-box"><div class="modal-handle"></div><div style="font-size:1.8rem;margin-bottom:0.7rem;">🌸</div><div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--rose);margin-bottom:0.5rem;font-style:italic;" data-ms="Jemputan Khas" data-en="Special Invitation" data-kor="특별 초대">Jemputan Khas</div><div style="font-size:0.73rem;color:var(--muted);line-height:1.8;" data-ms="Kehadiran anda amat kami hargai dan nantikan." data-en="Your presence means the world to us." data-kor="소중한 참석에 진심으로 감사드립니다.">Kehadiran anda amat kami hargai dan nantikan.</div><button class="modal-close" onclick="closeModal()" data-ms="Tutup" data-en="Close" data-kor="닫기">Tutup</button></div></div>
@@ -424,7 +476,6 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
       <div class="env-letter"><div class="el-tag" data-ms="Jemputan Perkahwinan" data-en="Wedding Invitation" data-kor="청첩장">Jemputan Perkahwinan</div><div class="el-name">{{GROOM_NAME}} &amp; {{BRIDE_NAME}}</div></div>
     </div>
     <div class="env-hint" data-ms="Ketuk untuk buka ✦" data-en="Tap to open ✦" data-kor="열어보세요 ✦">Ketuk untuk buka ✦</div>
-    <div class="env-bismillah">بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
   </div>
 </div>
 
@@ -437,9 +488,10 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
       <button class="lb" onclick="setLang('en')">EN</button>
       <button class="lb" onclick="setLang('kor')">한국어</button>
     </div>
+    <div class="tb-status" id="musicStatus"></div>
     <div class="tb-controls">
       <button class="tb-btn" id="audioBtn" onclick="toggleAudio()">🎵</button>
-      <button class="tb-btn" onclick="shareKad()">🔗</button>
+      <button class="tb-btn" id="shareBtn" onclick="shareKad()">🔗</button>
     </div>
   </div>
 
@@ -468,6 +520,18 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
     <!-- CHAPTER 0: HOME -->
     <div class="chapter-page active" id="ch0">
       <div class="hero-page">
+      <div class="hero-photo-wrap">
+        <div class="hero-frame-outer">
+          <div class="hero-frame-inner">
+            <img src="{{HERO_PHOTO_URL}}" alt="Gambar Pengantin"
+              onerror="this.parentElement.parentElement.parentElement.style.display='none'">
+          </div>
+          <div class="hfc hfc-tl"></div>
+          <div class="hfc hfc-tr"></div>
+          <div class="hfc hfc-bl"></div>
+          <div class="hfc hfc-br"></div>
+        </div>
+      </div>
         <div class="hp-eyebrow" data-ms="청첩장 · Kad Jemputan" data-en="Wedding Invitation" data-kor="청첩장">청첩장 · Kad Jemputan</div>
         <div class="hp-divider"><span>✿</span></div>
         <p style="font-size:0.7rem;color:var(--muted);font-style:italic;margin-bottom:1rem;" data-ms="Dengan penuh kesyukuran, kami menjemput tuan/puan ke majlis perkahwinan" data-en="With great joy, we invite you to our wedding celebration" data-kor="저희 두 사람의 결혼을 축하해 주세요">Dengan penuh kesyukuran, kami menjemput tuan/puan ke majlis perkahwinan</p>
@@ -509,6 +573,17 @@ body{font-family:'DM Sans',sans-serif;background:#faf8f5;color:#2c2419;font-size
       <div class="sec-header reveal">
         <div class="sh-eyebrow" data-ms="Majlis Perkahwinan" data-en="Wedding Ceremony" data-kor="결혼식">Majlis Perkahwinan</div>
         <div class="sh-title" data-ms="Pengantin <em>Kami</em>" data-en="Our <em>Couple</em>" data-kor="신랑 신부 <em>소개</em>">Pengantin <em>Kami</em></div>
+      </div>
+      <div class="photo2-wrap">
+        <div class="photo2-strip">
+          <img src="{{PHOTO2_URL}}" alt="Gambar Pengantin"
+            onerror="this.parentElement.parentElement.style.display='none'">
+        </div>
+        <div class="photo2-gradient"></div>
+        <div class="photo2-caption"
+          data-ms="Bersama Selamanya ✦"
+          data-en="Together Forever ✦"
+          data-kor="영원히 함께 ✦">Bersama Selamanya ✦</div>
       </div>
       <div class="duo-wrap reveal">
         <div class="duo-card">
@@ -877,7 +952,7 @@ function openEnvelope(){
   },1050);
 }
 
-// ══ AUDIO (YouTube IFrame API) ══
+// ══ AUDIO ══
 let isPlaying=false;
 let _ytPlayer=null;
 let _ytReady=false;
@@ -902,6 +977,7 @@ window.onYouTubeIframeAPIReady=function(){
           isPlaying=true;
           if(btn){btn.textContent='🔊';btn.classList.add('playing');}
           if(viz){viz.style.display='flex';viz.classList.add('viz-playing');}
+          updateMusicStatus(true);
           let v=0;
           const fade=setInterval(()=>{v=Math.min(v+3,75);_ytPlayer.setVolume(v);if(v>=75)clearInterval(fade);},200);
         }
@@ -916,6 +992,16 @@ function _doStartAudio(){
   try{_ytPlayer.playVideo();}catch(e){
     const btn=document.getElementById('audioBtn');
     if(btn){btn.textContent='▶️';btn.style.display='flex';}_audioPending=true;
+  }
+  const isSafari=/^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const notice=document.getElementById('safariNotice');
+  if(notice&&isSafari){
+    notice.style.display='block';
+    setTimeout(()=>{
+      notice.style.opacity='0';
+      notice.style.transition='opacity 0.5s ease';
+      setTimeout(()=>{notice.style.display='none';},500);
+    },3000);
   }
 }
 
@@ -933,9 +1019,25 @@ function toggleAudio(){
     isPlaying=false;
     if(btn){btn.textContent='🎵';btn.classList.remove('playing');}
     if(viz)viz.classList.remove('viz-playing');
+    updateMusicStatus(false);
   } else {
     _ytPlayer.playVideo();
   }
+}
+function updateMusicStatus(playing){
+  const el=document.getElementById('musicStatus');
+  if(!el) return;
+  const label='{{MUSIC_LABEL}}';
+  const hasLabel=label&&!label.includes('{{');
+  const songName=hasLabel?label:'Music';
+  const ms=playing?`🎵 ${songName} sedang dimainkan`:`⏸ ${songName} dihentikan`;
+  const en=playing?`🎵 ${songName} is playing`:`⏸ ${songName} is paused`;
+  const kor=playing?`🎵 ${songName} 재생 중`:`⏸ ${songName} 일시정지`;
+  el.setAttribute('data-ms',ms);
+  el.setAttribute('data-en',en);
+  el.setAttribute('data-kor',kor);
+  el.textContent=(window._lang==='en')?en:(window._lang==='kor')?kor:ms;
+  el.classList.add('show');
 }
 
 // ══ CHAPTER NAVIGATION ══
