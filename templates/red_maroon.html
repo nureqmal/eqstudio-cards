@@ -35,7 +35,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .seal-svg{width:148px;height:148px;position:absolute;top:0;left:0}
 .seal-text{position:relative;z-index:1;text-align:center;padding:0 12px}
 .seal-initials{font-family:'Cinzel',serif;font-size:1.3rem;letter-spacing:.1em;color:#fff;line-height:1;text-shadow:0 1px 4px rgba(0,0,0,.5)}
-.seal-buka{font-size:.38rem;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-top:.5rem;font-family:'Cinzel',serif;animation:pulse .4s ease infinite alternate}
+.seal-buka{font-size:.38rem;letter-spacing:.4em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 60%,transparent);margin-top:.5rem;font-family:'Cinzel',serif;animation:pulse .4s ease infinite alternate}
 @keyframes pulse{from{opacity:.5}to{opacity:.9}}
 
 /* ══ APP ══ */
@@ -49,6 +49,20 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 #audioFab svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 #audioFab.playing{background:var(--gold);border-color:var(--gold)}
 #audioFab.playing svg{stroke:var(--maroon4)}
+
+/* ══ LANG SWITCHER ══ */
+#langSwitch{
+  position:fixed;top:14px;right:14px;z-index:300;
+  display:none;gap:4px;background:rgba(58,14,26,.85);
+  border:1px solid rgba(255,255,255,.15);border-radius:20px;
+  padding:3px;backdrop-filter:blur(6px);
+}
+#langSwitch button{
+  font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.08em;
+  padding:4px 9px;border-radius:16px;border:none;background:transparent;
+  color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;
+}
+#langSwitch button.active{background:var(--gold);color:var(--maroon4);font-weight:600;}
 #eqWrap{position:fixed;bottom:100px;right:68px;z-index:299;display:none;align-items:flex-end;gap:2px;height:24px;padding:0 6px;background:rgba(58,14,26,.85);border:1px solid rgba(255,255,255,.12);border-radius:20px}
 #eqWrap.show{display:flex}
 .eq-bar{width:3px;border-radius:2px;background:var(--gold2);animation:eqAnim 0s ease infinite alternate}
@@ -58,13 +72,13 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .eq-bar:nth-child(4){animation-duration:.5s;height:12px;animation-delay:.15s}
 .eq-bar:nth-child(5){animation-duration:.45s;height:8px;animation-delay:.2s}
 @keyframes eqAnim{from{transform:scaleY(1)}to{transform:scaleY(.2)}}
-.eq-title{font-family:'Cinzel',serif;font-size:.3rem;letter-spacing:.1em;color:rgba(255,255,255,.5);white-space:nowrap;padding:0 2px;align-self:center}
+.eq-title{font-family:'Cinzel',serif;font-size:.3rem;letter-spacing:.1em;color:color-mix(in srgb,var(--white) 50%,transparent);white-space:nowrap;padding:0 2px;align-self:center}
 
 /* ══ TAB BAR ══ */
 #tabBar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--maroon4);border-top:1px solid rgba(255,255,255,.1);transform:translateY(0);transition:transform .3s ease;display:none}
 #tabBar.hidden{transform:translateY(100%)}
 .tabs{display:flex;max-width:480px;margin:0 auto}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:.48rem .1rem .38rem;cursor:pointer;border:none;background:transparent;color:rgba(255,255,255,.4);transition:color .2s}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:.48rem .1rem .38rem;cursor:pointer;border:none;background:transparent;color:color-mix(in srgb,var(--white) 40%,transparent);transition:color .2s}
 .tab.on{color:var(--gold2)}
 .tab svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .tab span{font-size:.3rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Cinzel',serif}
@@ -75,7 +89,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .hero-songket{position:absolute;inset:0;opacity:.2}
 .hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(58,8,8,.7) 100%)}
 .hero-content{position:relative;z-index:2;text-align:center;padding:2rem 1.5rem 7rem;width:100%;max-width:420px}
-.hero-eyebrow{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.55em;color:rgba(255,255,255,.65);margin-bottom:1.4rem}
+.hero-eyebrow{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.55em;color:color-mix(in srgb,var(--white) 65%,transparent);margin-bottom:1.4rem}
 
 /* frame */
 .frame-wrap{position:relative;margin:0 auto;width:min(310px,84vw);border:1px solid rgba(255,255,255,.22);background:rgba(107,15,26,.45);padding:.3rem}
@@ -87,18 +101,18 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .hero-amp{font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold2);margin:.4rem 0;display:block;letter-spacing:.3em}
 .hero-bride{font-family:'Great Vibes',cursive;font-size:clamp(3.2rem,13vw,5rem);color:var(--white);line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.4)}
 .hero-date-strip{margin-top:1.6rem;display:flex;align-items:center;justify-content:center;gap:.8rem}
-.hds-sep{width:1px;height:24px;background:rgba(255,255,255,.2)}
+.hds-sep{width:1px;height:24px;background:color-mix(in srgb,var(--white) 20%,transparent)}
 .hds-item{text-align:center}
 .hds-n{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--white);line-height:1}
-.hds-l{font-size:.36rem;letter-spacing:.25em;color:rgba(255,255,255,.5);margin-top:.15rem;font-family:'Cinzel',serif}
+.hds-l{font-size:.36rem;letter-spacing:.25em;color:color-mix(in srgb,var(--white) 50%,transparent);margin-top:.15rem;font-family:'Cinzel',serif}
 .hero-venue{margin-top:1.4rem}
 .hero-venue-name{font-family:'Great Vibes',cursive;font-size:1.7rem;color:var(--gold2)}
-.hero-venue-city{font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;color:rgba(255,255,255,.55);margin-top:.15rem}
+.hero-venue-city{font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;color:color-mix(in srgb,var(--white) 55%,transparent);margin-top:.15rem}
 
 /* scroll hint */
 .scroll-hint{position:absolute;bottom:5.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.3rem;animation:scrollBounce 2s ease infinite}
 .scroll-hint-line{width:1px;height:28px;background:linear-gradient(to bottom,rgba(255,255,255,.5),transparent)}
-.scroll-hint-txt{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.35em;color:rgba(255,255,255,.4);text-transform:uppercase}
+.scroll-hint-txt{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.35em;color:color-mix(in srgb,var(--white) 40%,transparent);text-transform:uppercase}
 @keyframes scrollBounce{0%,100%{opacity:.4;transform:translateX(-50%) translateY(0)}50%{opacity:.8;transform:translateX(-50%) translateY(5px)}}
 
 /* ══ SECTIONS ══ */
@@ -115,23 +129,33 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 /* ══ PESAN IBU BAPA ══ */
 .host-msg-wrap{border:1px solid rgba(255,255,255,.12);padding:1.4rem 1.2rem;background:rgba(255,255,255,.04);position:relative}
 .host-msg-q{font-family:'Great Vibes',cursive;font-size:3rem;color:var(--gold2);line-height:.7;margin-bottom:.5rem;opacity:.5}
-.host-msg-text{font-family:'Cinzel',serif;font-size:.7rem;color:rgba(255,255,255,.8);line-height:2;letter-spacing:.04em;font-style:italic}
-.host-msg-from{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:1rem}
+.host-msg-text{font-family:'Cinzel',serif;font-size:.7rem;color:color-mix(in srgb,var(--white) 80%,transparent);line-height:2;letter-spacing:.04em;font-style:italic}
+.host-msg-from{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.3em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 40%,transparent);margin-top:1rem}
 .host-msg-name{font-family:'Great Vibes',cursive;font-size:1.3rem;color:var(--gold2);margin-top:.15rem}
 
 /* ══ PENGANTIN ══ */
 .duo-wrap{display:flex;flex-direction:column;gap:0}
 .duo-card{text-align:center;padding:1.4rem .8rem}
-.duo-side{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:.4rem}
+.duo-side{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.4em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 40%,transparent);margin-bottom:.4rem}
 .duo-name{font-family:'Great Vibes',cursive;font-size:2.4rem;color:var(--white);margin-bottom:.25rem;line-height:1.1}
-.duo-conn{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);margin:.3rem 0}
-.duo-parents{font-family:'Cinzel',serif;font-size:.62rem;color:rgba(255,255,255,.65);line-height:2.2;letter-spacing:.04em}
+.duo-conn{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 35%,transparent);margin:.3rem 0}
+.duo-parents{font-family:'Cinzel',serif;font-size:.62rem;color:color-mix(in srgb,var(--white) 65%,transparent);line-height:2.2;letter-spacing:.04em}
 .duo-amp-row{display:flex;align-items:center;gap:.8rem;padding:.2rem 1.5rem}
 .duo-amp-row::before,.duo-amp-row::after{content:'';flex:1;height:.5px;background:rgba(255,255,255,.12)}
 .duo-amp-sym{font-family:'Great Vibes',cursive;font-size:1.8rem;color:var(--gold2)}
 
 /* ══ ATURCARA ══ */
 .tl-item{display:flex;gap:.9rem;padding:.9rem 0;border-bottom:1px solid rgba(255,255,255,.07)}
+
+/* ══ LOVE STORY ══ */
+.ls-wrap{display:flex;flex-direction:column;gap:1.4rem;margin-top:.4rem}
+.ls-item{display:flex;gap:1rem;align-items:flex-start}
+.ls-yr-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:54px}
+.ls-yr{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.1em;color:var(--gold);font-weight:500}
+.ls-dot{width:6px;height:6px;border-radius:50%;background:var(--gold2);margin-top:.4rem}
+.ls-line{width:1px;flex:1;background:linear-gradient(to bottom,var(--gold2),transparent);margin-top:.3rem;min-height:24px}
+.ls-item:last-child .ls-line{display:none}
+.ls-text{flex:1;font-family:'Inter',sans-serif;font-size:.66rem;line-height:1.85;color:color-mix(in srgb,var(--white) 78%,transparent);padding-bottom:.6rem;letter-spacing:.02em}
 .tl-item:last-child{border-bottom:none}
 .tl-t{font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.15em;color:var(--gold);min-width:72px;padding-top:.1rem}
 .tl-ev{font-family:'Cinzel',serif;font-size:.8rem;color:var(--white);letter-spacing:.05em}
@@ -140,7 +164,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .cd-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:340px;margin:0 auto}
 .cd-cell{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);padding:1rem .4rem;text-align:center}
 .cd-n{font-family:'Cinzel',serif;font-size:2rem;color:var(--white);line-height:1}
-.cd-l{font-size:.32rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:.3rem;font-family:'Cinzel',serif}
+.cd-l{font-size:.32rem;letter-spacing:.25em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 40%,transparent);margin-top:.3rem;font-family:'Cinzel',serif}
 #cdLive{display:none;text-align:center;padding:1rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);margin-top:6px}
 .cd-live-t{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.15em;color:var(--gold2)}
 .cd-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gold2);margin-right:5px;animation:blink 1.4s infinite}
@@ -156,14 +180,14 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .cal-btn{display:flex;flex-direction:column;align-items:center;gap:.45rem;padding:1rem .7rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);text-decoration:none;color:var(--white);transition:background .2s}
 .cal-btn:active{background:rgba(255,255,255,.1)}
 .cal-btn-ico{font-size:1.5rem}
-.cal-btn-lbl{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.cal-btn-lbl{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.15em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 60%,transparent)}
 
 /* ══ DRESS CODE ══ */
 .sw-row{display:flex;justify-content:center;gap:.9rem;flex-wrap:wrap}
 .sw{display:flex;flex-direction:column;align-items:center;gap:.35rem}
 .sw-ring{width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(255,255,255,.18)}
-.sw-lbl{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)}
-.dc-note{margin-top:1rem;font-size:.62rem;color:rgba(255,255,255,.55);text-align:center;line-height:1.8;font-style:italic;border-top:1px solid rgba(255,255,255,.08);padding-top:.8rem}
+.sw-lbl{font-family:'Cinzel',serif;font-size:.32rem;letter-spacing:.1em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 50%,transparent)}
+.dc-note{margin-top:1rem;font-size:.62rem;color:color-mix(in srgb,var(--white) 55%,transparent);text-align:center;line-height:1.8;font-style:italic;border-top:1px solid rgba(255,255,255,.08);padding-top:.8rem}
 
 /* ══ LOKASI ══ */
 .map-box{height:115px;background:rgba(0,0,0,.25);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.08);margin-bottom:.8rem}
@@ -171,34 +195,34 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .map-pin{position:absolute;top:50%;left:50%;transform:translate(-50%,-65%);font-size:1.8rem;animation:pf 2.5s ease infinite}
 @keyframes pf{0%,100%{transform:translate(-50%,-65%)}50%{transform:translate(-50%,-75%)}}
 .map-name{font-family:'Cinzel',serif;font-size:.88rem;color:var(--white);text-align:center;letter-spacing:.05em}
-.map-addr{font-size:.62rem;color:rgba(255,255,255,.55);line-height:1.7;text-align:center;margin:.3rem 0 .8rem}
+.map-addr{font-size:.62rem;color:color-mix(in srgb,var(--white) 55%,transparent);line-height:1.7;text-align:center;margin:.3rem 0 .8rem}
 .map-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.map-btn{text-align:center;padding:.62rem .3rem;font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;text-decoration:none;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.8);background:rgba(255,255,255,.04)}
+.map-btn{text-align:center;padding:.62rem .3rem;font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.12em;text-decoration:none;border:1px solid rgba(255,255,255,.15);color:color-mix(in srgb,var(--white) 80%,transparent);background:rgba(255,255,255,.04)}
 
 /* ══ SALAM KASIH ══ */
 .qr-block{text-align:center;margin-bottom:1.2rem}
 .qr-img{width:160px;height:160px;object-fit:contain;border:1px solid rgba(255,255,255,.1);margin:0 auto .5rem;display:block;background:rgba(255,255,255,.04)}
 .qr-placeholder{width:160px;height:160px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;margin:0 auto .5rem}
-.qr-lbl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.qr-lbl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.25em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 35%,transparent)}
 .reg-done{display:none;flex-direction:column;align-items:center;text-align:center;padding:1.5rem 0}
 .reg-done-mark{font-size:1.8rem;margin-bottom:.4rem;color:var(--gold2)}
 .reg-done-t{font-family:'Cinzel',serif;font-size:.85rem;color:var(--gold2);letter-spacing:.1em}
-#regMsg{font-size:.62rem;color:rgba(255,255,255,.55);margin:.4rem 0 .8rem;line-height:1.7}
+#regMsg{font-size:.62rem;color:color-mix(in srgb,var(--white) 55%,transparent);margin:.4rem 0 .8rem;line-height:1.7}
 
 /* ══ FORMS ══ */
 .fg{margin-bottom:.85rem}
-.fl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.5);display:block;margin-bottom:.4rem}
+.fl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.28em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 50%,transparent);display:block;margin-bottom:.4rem}
 .fi{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:.62rem .8rem;color:var(--white);font-family:'Inter',sans-serif;font-size:.8rem;font-weight:300;outline:none}
-.fi::placeholder{color:rgba(255,255,255,.25)}
+.fi::placeholder{color:color-mix(in srgb,var(--white) 25%,transparent)}
 .btn-gold{display:block;width:100%;padding:.78rem;background:var(--gold);color:var(--maroon4);border:none;font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.35em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;margin-top:.5rem;font-weight:500}
 .btn-gold:active{opacity:.8}
-.btn-ghost{display:block;width:100%;padding:.7rem;background:transparent;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15);font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;margin-top:.5rem}
+.btn-ghost{display:block;width:100%;padding:.7rem;background:transparent;color:color-mix(in srgb,var(--white) 60%,transparent);border:1px solid rgba(255,255,255,.15);font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;margin-top:.5rem}
 
 /* ══ RSVP ══ */
 .rsvp-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:280px;margin:0 auto 1.4rem}
 .rsvp-opt{display:flex;flex-direction:column;align-items:center;gap:.55rem;padding:1.1rem .8rem;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);cursor:pointer;transition:all .2s}
 .rsvp-opt svg{width:34px;height:34px;stroke:rgba(255,255,255,.5)}
-.rsvp-opt-lbl{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.rsvp-opt-lbl{font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 70%,transparent)}
 .rsvp-opt.chosen{background:rgba(212,175,106,.12);border-color:rgba(212,175,106,.4)}
 .rsvp-opt.chosen svg{stroke:var(--gold2)}
 .rsvp-opt.chosen .rsvp-opt-lbl{color:var(--gold2)}
@@ -208,32 +232,32 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .rsvp-done.show{display:block}
 .rsvp-done-mark{font-size:2.2rem;margin-bottom:.5rem;color:var(--gold2)}
 .rsvp-done-t{font-family:'Cinzel',serif;font-size:.82rem;color:var(--gold2);letter-spacing:.1em}
-.rsvp-done-s{font-size:.6rem;color:rgba(255,255,255,.5);margin-top:.3rem}
+.rsvp-done-s{font-size:.6rem;color:color-mix(in srgb,var(--white) 50%,transparent);margin-top:.3rem}
 
 /* rsvp live list */
 .rsvp-list-wrap{margin-top:1.6rem;border-top:1px solid rgba(255,255,255,.08);padding-top:1.2rem}
 .rl-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem}
-.rl-lbl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.rl-lbl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.35em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 40%,transparent)}
 #rsvpBadge{display:none;font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.08em;color:var(--gold2);background:rgba(212,175,106,.08);padding:.12rem .5rem;border:1px solid rgba(212,175,106,.2)}
 .search-wrap{display:flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:.42rem .7rem;margin-bottom:.6rem}
 .search-wrap input{flex:1;border:none;background:transparent;font-family:'Inter',sans-serif;font-size:.75rem;color:var(--white);outline:none;font-weight:300}
-.search-wrap input::placeholder{color:rgba(255,255,255,.25)}
+.search-wrap input::placeholder{color:color-mix(in srgb,var(--white) 25%,transparent)}
 .rsvp-row{display:flex;align-items:center;justify-content:space-between;padding:.52rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
 .rsvp-row:last-child{border-bottom:none}
 .rr-name{font-family:'Cinzel',serif;font-size:.76rem;color:var(--white)}
 .rr-pax{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.1em;color:var(--gold);background:rgba(212,175,106,.08);padding:.1rem .42rem;border:1px solid rgba(212,175,106,.18)}
-.list-empty{font-size:.6rem;font-style:italic;color:rgba(255,255,255,.28);text-align:center;padding:.8rem 0;font-family:'Cinzel',serif}
+.list-empty{font-size:.6rem;font-style:italic;color:color-mix(in srgb,var(--white) 28%,transparent);text-align:center;padding:.8rem 0;font-family:'Cinzel',serif}
 
 /* ══ UCAPAN ══ */
-.ucapan-notice{background:rgba(212,175,106,.06);border:1px solid rgba(212,175,106,.2);padding:.9rem 1rem;margin-bottom:1.2rem;font-size:.6rem;color:rgba(255,255,255,.6);line-height:1.8;font-style:italic;text-align:center}
+.ucapan-notice{background:rgba(212,175,106,.06);border:1px solid rgba(212,175,106,.2);padding:.9rem 1rem;margin-bottom:1.2rem;font-size:.6rem;color:color-mix(in srgb,var(--white) 60%,transparent);line-height:1.8;font-style:italic;text-align:center}
 .ucapan-notice strong{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.15em;color:var(--gold2);font-style:normal;display:block;margin-bottom:.3rem}
 .doa-wall-hd{display:flex;align-items:center;justify-content:space-between;margin-top:1.6rem;margin-bottom:.7rem;border-top:1px solid rgba(255,255,255,.08);padding-top:1.2rem}
-.doa-wall-lbl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.doa-wall-lbl{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.35em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 40%,transparent)}
 #doaCount{display:none;font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.08em;color:var(--gold2);background:rgba(212,175,106,.08);padding:.1rem .45rem;border:1px solid rgba(212,175,106,.18)}
 .doa-wall{display:flex;flex-direction:column;gap:6px}
 .doa-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:.85rem .95rem}
 .doa-n{font-family:'Cinzel',serif;font-size:.4rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold2);margin-bottom:.3rem}
-.doa-m{font-size:.75rem;color:rgba(255,255,255,.75);line-height:1.65}
+.doa-m{font-size:.75rem;color:color-mix(in srgb,var(--white) 75%,transparent);line-height:1.65}
 
 /* ══ HUBUNGI ══ */
 .contact-item{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0;border-bottom:1px solid rgba(74,10,18,.08)}
@@ -248,7 +272,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 /* ══ MINI GAME ══ */
 .game-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.9rem}
 .gs-c{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:.75rem;text-align:center}
-.gs-l{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:.22rem}
+.gs-l{font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.25em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 38%,transparent);margin-bottom:.22rem}
 .gs-v{font-family:'Cinzel',serif;font-size:1.6rem;color:var(--white)}
 #memGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
 .mc{aspect-ratio:1;cursor:pointer;perspective:500px}
@@ -256,20 +280,20 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .mc.fl .mc-in,.mc.ma .mc-in{transform:rotateY(180deg)}
 .mc-f,.mc-b{position:absolute;inset:0;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .mc-f{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
-.mc-f-g{font-size:.85rem;color:rgba(255,255,255,.18)}
+.mc-f-g{font-size:.85rem;color:color-mix(in srgb,var(--white) 18%,transparent)}
 .mc-b{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);transform:rotateY(180deg);font-size:1.35rem}
-.mc-lbl{font-size:.28rem;color:rgba(255,255,255,.45);margin-top:2px;letter-spacing:.05em;font-family:'Cinzel',serif}
+.mc-lbl{font-size:.28rem;color:color-mix(in srgb,var(--white) 45%,transparent);margin-top:2px;letter-spacing:.05em;font-family:'Cinzel',serif}
 .mc.ma .mc-b{background:rgba(212,175,106,.1);border-color:rgba(212,175,106,.3)}
 #gameResult{text-align:center;font-family:'Cinzel',serif;font-size:.7rem;color:var(--gold2);margin-top:.7rem;min-height:1.1rem;letter-spacing:.12em}
 
 /* ══ EQSTUDIO FOOTER ══ */
 .eq-footer{text-align:center;padding:1.8rem 1.4rem 1.2rem;border-top:1px solid rgba(255,255,255,.06)}
 .eq-footer-names{font-family:'Great Vibes',cursive;font-size:1.8rem;color:var(--gold2);margin-bottom:.4rem}
-.eq-footer-date{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.45em;color:rgba(255,255,255,.3);margin-bottom:1.2rem}
-.eq-footer-ayat{font-size:.9rem;color:rgba(255,255,255,.2);margin-bottom:.2rem}
-.eq-footer-trans{font-family:'Cinzel',serif;font-size:.42rem;font-style:italic;color:rgba(255,255,255,.2);margin-bottom:1.4rem}
-.eq-home-btn{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;padding:.4rem .9rem;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.3);font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.2em;text-transform:uppercase;transition:all .2s}
-.eq-home-btn:hover{color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.25)}
+.eq-footer-date{font-family:'Cinzel',serif;font-size:.38rem;letter-spacing:.45em;color:color-mix(in srgb,var(--white) 30%,transparent);margin-bottom:1.2rem}
+.eq-footer-ayat{font-size:.9rem;color:color-mix(in srgb,var(--white) 20%,transparent);margin-bottom:.2rem}
+.eq-footer-trans{font-family:'Cinzel',serif;font-size:.42rem;font-style:italic;color:color-mix(in srgb,var(--white) 20%,transparent);margin-bottom:1.4rem}
+.eq-home-btn{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;padding:.4rem .9rem;border:1px solid rgba(255,255,255,.1);color:color-mix(in srgb,var(--white) 30%,transparent);font-family:'Cinzel',serif;font-size:.36rem;letter-spacing:.2em;text-transform:uppercase;transition:all .2s}
+.eq-home-btn:hover{color:color-mix(in srgb,var(--white) 60%,transparent);border-color:color-mix(in srgb,var(--white) 25%,transparent)}
 .eq-home-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 
 /* ══ BOTTOM PAD ══ */
@@ -363,6 +387,12 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 <div id="app">
   <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:400;opacity:1"></canvas>
 
+  <!-- language switcher -->
+  <div id="langSwitch">
+    <button class="active" onclick="setLang('ms')">BM</button>
+    <button onclick="setLang('en')">EN</button>
+  </div>
+
   <!-- floating audio -->
   <button id="audioFab" onclick="toggleAudio()" aria-label="Muzik latar">
     <svg id="fabIco" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
@@ -405,13 +435,13 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 
         <div class="frame-wrap h-anim-2">
           <div class="frame-inner">
-            <div class="hero-groom">{{CONTACT1_NAME}}</div>
+            <div class="hero-groom">{{GROOM_NAME}}</div>
             <div class="hero-amp">&amp;</div>
-            <div class="hero-bride">{{CONTACT2_NAME}}</div>
+            <div class="hero-bride">{{BRIDE_NAME}}</div>
           </div>
         </div>
 
-        <div style="font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;color:rgba(255,255,255,.6);margin-bottom:.6rem" class="h-anim-3">{{DATE_DAY}}</div>
+        <div style="font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;color:color-mix(in srgb,var(--white) 60%,transparent);margin-bottom:.6rem" class="h-anim-3">{{DATE_DAY}}</div>
         <div class="hero-date-strip h-anim-3">
           <div class="hds-item"><div class="hds-n">{{DATE_DD}}</div><div class="hds-l">Hari</div></div>
           <div class="hds-sep"></div>
@@ -425,7 +455,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
           <div class="hero-venue-city">{{VENUE_CITY}}</div>
         </div>
 
-        <div style="margin-top:1rem;font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;color:rgba(255,255,255,.35)" class="h-anim-5">{{DATE_HIJRI}}</div>
+        <div style="margin-top:1rem;font-family:'Cinzel',serif;font-size:.42rem;letter-spacing:.25em;color:color-mix(in srgb,var(--white) 35%,transparent)" class="h-anim-5">{{DATE_HIJRI}}</div>
       </div>
 
       <div class="scroll-hint">
@@ -437,13 +467,13 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── PESAN IBU BAPA ── -->
     <section class="section dark rv">
       <div class="sec-header">
-        <div class="sec-eyebrow">Perutusan</div>
+        <div class="sec-eyebrow" data-ms="Perutusan" data-en="Message">Perutusan</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="host-msg-wrap rv rv-d1">
         <div class="host-msg-q">"</div>
         <div class="host-msg-text">{{HOST_MESSAGE_BM}}</div>
-        <div class="host-msg-from">Daripada</div>
+        <div class="host-msg-from" data-ms="Daripada" data-en="From">Daripada</div>
         <div class="host-msg-name">{{HOST_FAMILY_FULL}}</div>
       </div>
     </section>
@@ -451,22 +481,44 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── PENGANTIN ── -->
     <section class="section mid rv">
       <div class="sec-header">
-        <div class="sec-eyebrow">Pengantin Kami</div>
+        <div class="sec-eyebrow" data-ms="Pengantin Kami" data-en="Our Couple">Pengantin Kami</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="duo-wrap">
         <div class="duo-card rv rv-left">
-          <div class="duo-side">— Pengantin Lelaki —</div>
+          <div class="duo-side" data-ms="— Pengantin Lelaki —" data-en="— The Groom —">— Pengantin Lelaki —</div>
           <div class="duo-name">{{GROOM_FULL_NAME}}</div>
-          <div class="duo-conn">putera kepada</div>
+          <div class="duo-conn" data-ms="putera kepada" data-en="son of">putera kepada</div>
           <div class="duo-parents">{{GROOM_FATHER}}<br><span style="opacity:.3;font-size:.7rem">&amp;</span><br>{{GROOM_MOTHER}}</div>
         </div>
         <div class="duo-amp-row rv"><span class="duo-amp-sym">&amp;</span></div>
         <div class="duo-card rv rv-right">
-          <div class="duo-side">— Pengantin Perempuan —</div>
+          <div class="duo-side" data-ms="— Pengantin Perempuan —" data-en="— The Bride —">— Pengantin Perempuan —</div>
           <div class="duo-name">{{BRIDE_FULL_NAME}}</div>
-          <div class="duo-conn">puteri kepada</div>
+          <div class="duo-conn" data-ms="puteri kepada" data-en="daughter of">puteri kepada</div>
           <div class="duo-parents">{{BRIDE_FATHER}}<br><span style="opacity:.3;font-size:.7rem">&amp;</span><br>{{BRIDE_MOTHER}}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── KISAH CINTA ── -->
+    <section class="section dark rv">
+      <div class="sec-header">
+        <div class="sec-eyebrow" data-ms="Kisah Cinta" data-en="Love Story">Kisah Cinta</div>
+        <div class="ornament">✦ ─── ✦ ─── ✦</div>
+      </div>
+      <div class="ls-wrap rv rv-d1">
+        <div class="ls-item">
+          <div class="ls-yr-col"><div class="ls-yr">{{LOVE_YEAR_1}}</div><div class="ls-dot"></div><div class="ls-line"></div></div>
+          <div class="ls-text">{{LOVE_STORY_1}}</div>
+        </div>
+        <div class="ls-item">
+          <div class="ls-yr-col"><div class="ls-yr">{{LOVE_YEAR_2}}</div><div class="ls-dot"></div><div class="ls-line"></div></div>
+          <div class="ls-text">{{LOVE_STORY_2}}</div>
+        </div>
+        <div class="ls-item">
+          <div class="ls-yr-col"><div class="ls-yr">{{LOVE_YEAR_3}}</div><div class="ls-dot"></div><div class="ls-line"></div></div>
+          <div class="ls-text">{{LOVE_STORY_3}}</div>
         </div>
       </div>
     </section>
@@ -474,22 +526,22 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── ATURCARA ── -->
     <section class="section dark rv">
       <div class="sec-header">
-        <div class="sec-eyebrow">Aturcara Majlis</div>
+        <div class="sec-eyebrow" data-ms="Aturcara Majlis" data-en="Order of Events">Aturcara Majlis</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="rv rv-d1">
-        <div class="tl-item"><div class="tl-t">{{TIME_ARRIVAL}}</div><div class="tl-ev">Ketibaan Tetamu</div></div>
-        <div class="tl-item"><div class="tl-t">{{TIME_AKAD}}</div><div class="tl-ev">Akad Nikah</div></div>
-        <div class="tl-item"><div class="tl-t">{{TIME_BERSANDING}}</div><div class="tl-ev">Persandingan</div></div>
-        <div class="tl-item"><div class="tl-t">{{TIME_MAKAN}}</div><div class="tl-ev">Jamuan Makan</div></div>
-        <div class="tl-item" style="border-bottom:none"><div class="tl-t">{{TIME_BERSURAI}}</div><div class="tl-ev">Bersurai</div></div>
+        <div class="tl-item"><div class="tl-t">{{TIME_ARRIVAL}}</div><div class="tl-ev" data-ms="Ketibaan Tetamu" data-en="Guest Arrival">Ketibaan Tetamu</div></div>
+        <div class="tl-item"><div class="tl-t">{{TIME_AKAD}}</div><div class="tl-ev" data-ms="Akad Nikah" data-en="Solemnization">Akad Nikah</div></div>
+        <div class="tl-item"><div class="tl-t">{{TIME_BERSANDING}}</div><div class="tl-ev" data-ms="Persandingan" data-en="Reception">Persandingan</div></div>
+        <div class="tl-item"><div class="tl-t">{{TIME_MAKAN}}</div><div class="tl-ev" data-ms="Jamuan Makan" data-en="Feast">Jamuan Makan</div></div>
+        <div class="tl-item" style="border-bottom:none"><div class="tl-t">{{TIME_BERSURAI}}</div><div class="tl-ev" data-ms="Bersurai" data-en="End of Ceremony">Bersurai</div></div>
       </div>
     </section>
 
     <!-- ── MINI CALENDAR ── -->
     <section class="section light rv">
       <div class="sec-header">
-        <div class="sec-eyebrow dk">Kalendar</div>
+        <div class="sec-eyebrow dk" data-ms="Kalendar" data-en="Calendar">Kalendar</div>
         <div class="ornament dk">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="rv rv-scale rv-d1">
@@ -503,22 +555,22 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── COUNTDOWN ── -->
     <section class="section mid rv">
       <div class="sec-header">
-        <div class="sec-eyebrow">Kiraan Masa</div>
+        <div class="sec-eyebrow" data-ms="Kiraan Masa" data-en="Countdown">Kiraan Masa</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="cd-row rv rv-scale">
-        <div class="cd-cell"><div class="cd-n" id="cdD">00</div><div class="cd-l">Hari</div></div>
-        <div class="cd-cell"><div class="cd-n" id="cdH">00</div><div class="cd-l">Jam</div></div>
-        <div class="cd-cell"><div class="cd-n" id="cdM">00</div><div class="cd-l">Minit</div></div>
-        <div class="cd-cell"><div class="cd-n" id="cdS">00</div><div class="cd-l">Saat</div></div>
+        <div class="cd-cell"><div class="cd-n" id="cdD">00</div><div class="cd-l" data-ms="Hari" data-en="Days">Hari</div></div>
+        <div class="cd-cell"><div class="cd-n" id="cdH">00</div><div class="cd-l" data-ms="Jam" data-en="Hours">Jam</div></div>
+        <div class="cd-cell"><div class="cd-n" id="cdM">00</div><div class="cd-l" data-ms="Minit" data-en="Minutes">Minit</div></div>
+        <div class="cd-cell"><div class="cd-n" id="cdS">00</div><div class="cd-l" data-ms="Saat" data-en="Seconds">Saat</div></div>
       </div>
-      <div id="cdLive"><div class="cd-live-t"><span class="cd-dot"></span>Majlis Sedang Berlangsung</div></div>
+      <div id="cdLive"><div class="cd-live-t"><span class="cd-dot"></span><span data-ms="Majlis Sedang Berlangsung" data-en="Event In Progress">Majlis Sedang Berlangsung</span></div></div>
     </section>
 
     <!-- ── KALENDAR ── -->
     <section class="section dark rv">
       <div class="sec-header">
-        <div class="sec-eyebrow">Simpan Tarikh</div>
+        <div class="sec-eyebrow" data-ms="Simpan Tarikh" data-en="Save The Date">Simpan Tarikh</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="cal-btns rv rv-scale rv-d1">
@@ -526,7 +578,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
           <div class="cal-btn-ico">📅</div>
           <div class="cal-btn-lbl">Google Calendar</div>
         </a>
-        <a class="cal-btn" href="https://outlook.live.com/calendar/0/deeplink/compose?subject=Ahmad+Faris+%26+{{BRIDE_NAME_URL}}&startdt={{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}00&location={{VENUE_NAME_URL}}" target="_blank">
+        <a class="cal-btn" href="https://outlook.live.com/calendar/0/deeplink/compose?subject={{GROOM_NAME_URL}}+%26+{{BRIDE_NAME_URL}}&startdt={{DATE_YYYYMMDD}}T{{TIME_START_HHMM}}00&location={{VENUE_NAME_URL}}" target="_blank">
           <div class="cal-btn-ico">🗓</div>
           <div class="cal-btn-lbl">Apple / Outlook</div>
         </a>
@@ -536,9 +588,9 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── DRESS CODE ── -->
     <section class="section mid rv">
       <div class="sec-header">
-        <div class="sec-eyebrow">Kod Pakaian</div>
+        <div class="sec-eyebrow" data-ms="Kod Pakaian" data-en="Dress Code">Kod Pakaian</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
-        <div style="font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:.1em;color:rgba(255,255,255,.85)">{{DRESSCODE_THEME}}</div>
+        <div style="font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:.1em;color:color-mix(in srgb,var(--white) 85%,transparent)">{{DRESSCODE_THEME}}</div>
       </div>
       <div class="sw-row rv rv-d1">
         <div class="sw"><div class="sw-ring" style="background:{{COLOR1_HEX}}"></div><div class="sw-lbl">{{COLOR1_NAME}}</div></div>
@@ -553,7 +605,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── LOKASI ── -->
     <section class="section dark rv" id="sekLokasi">
       <div class="sec-header">
-        <div class="sec-eyebrow">Lokasi Majlis</div>
+        <div class="sec-eyebrow" data-ms="Lokasi Majlis" data-en="Venue">Lokasi Majlis</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="rv rv-scale rv-d1">
@@ -570,18 +622,18 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── SALAM KASIH ── -->
     <section class="section mid rv" id="sekSalamKasih">
       <div class="sec-header">
-        <div class="sec-eyebrow">Salam Kasih</div>
+        <div class="sec-eyebrow" data-ms="Salam Kasih" data-en="Digital Gift">Salam Kasih</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="qr-block rv rv-scale rv-d1">
         <div id="qrWrap">
-          <img src="{{QR_CODE_URL}}" class="qr-img" alt="QR DuitNow" onerror="this.parentNode.innerHTML='<div class=qr-placeholder><span style=font-size:.46rem;letter-spacing:.1em;color:rgba(255,255,255,.25);font-family:Cinzel,serif>QR DuitNow</span></div>'">
+          <img src="{{QR_CODE_URL}}" class="qr-img" alt="QR DuitNow" onerror="this.parentNode.innerHTML='<div class=qr-placeholder><span style=font-size:.46rem;letter-spacing:.1em;color:color-mix(in srgb,var(--white) 25%,transparent);font-family:Cinzel,serif>QR DuitNow</span></div>'">
         </div>
-        <div class="qr-lbl">Imbas untuk DuitNow</div>
+        <div class="qr-lbl" data-ms="Imbas untuk DuitNow" data-en="Scan for DuitNow">Imbas untuk DuitNow</div>
       </div>
       <div id="regForm" class="rv rv-d2">
-        <div class="fg"><label class="fl">Nama Anda</label><input type="text" class="fi" id="regName" placeholder="Nama anda..."></div>
-        <div class="fg"><label class="fl">Jumlah (RM) — Pilihan</label><input type="number" class="fi" id="regAmt" placeholder="cth: 50"></div>
+        <div class="fg"><label class="fl" data-ms="Nama Anda" data-en="Your Name">Nama Anda</label><input type="text" class="fi" id="regName" placeholder="Nama anda..." data-ph-ms="Nama anda..." data-ph-en="Your name..."></div>
+        <div class="fg"><label class="fl" data-ms="Jumlah (RM) — Pilihan" data-en="Amount (RM) — Optional">Jumlah (RM) — Pilihan</label><input type="number" class="fi" id="regAmt" placeholder="cth: 50" data-ph-ms="cth: 50" data-ph-en="e.g: 50"></div>
         <button class="btn-gold" onclick="submitReg()">Rekod Hadiah</button>
       </div>
       <div class="reg-done" id="regDone">
@@ -596,22 +648,22 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── RSVP ── -->
     <section class="section dark rv" id="sekRSVP">
       <div class="sec-header">
-        <div class="sec-eyebrow">Pengesahan Kehadiran</div>
+        <div class="sec-eyebrow" data-ms="Pengesahan Kehadiran" data-en="RSVP">Pengesahan Kehadiran</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
-        <div style="font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:.15em;color:rgba(255,255,255,.7)">RSVP</div>
+        <div style="font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:.15em;color:color-mix(in srgb,var(--white) 70%,transparent)">RSVP</div>
       </div>
       <div class="rsvp-choice rv rv-scale rv-d1" id="rsvpChoice">
         <div class="rsvp-opt" id="optHadir" onclick="chooseRSVP('hadir')">
           <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          <div class="rsvp-opt-lbl">Hadir</div>
+          <div class="rsvp-opt-lbl" data-ms="Hadir" data-en="Attending">Hadir</div>
         </div>
         <div class="rsvp-opt" id="optTidak" onclick="chooseRSVP('tidak')">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-          <div class="rsvp-opt-lbl">Tidak Hadir</div>
+          <div class="rsvp-opt-lbl" data-ms="Tidak Hadir" data-en="Not Attending">Tidak Hadir</div>
         </div>
       </div>
       <div class="rsvp-form" id="rsvpForm">
-        <div class="fg"><label class="fl">Nama Penuh</label><input type="text" class="fi" id="rsvpName" placeholder="Nama anda..."></div>
+        <div class="fg"><label class="fl" data-ms="Nama Penuh" data-en="Full Name">Nama Penuh</label><input type="text" class="fi" id="rsvpName" placeholder="Nama anda..." data-ph-ms="Nama anda..." data-ph-en="Your name..."></div>
         <div class="fg" id="paxWrap"><label class="fl">Bilangan Hadir</label>
           <div style="display:flex;align-items:center;gap:.7rem">
             <button onclick="rsvpAdj(-1)" style="width:30px;height:30px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:white;font-size:1.1rem;cursor:pointer">−</button>
@@ -631,11 +683,11 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
       <!-- live list -->
       <div class="rsvp-list-wrap rv rv-d2">
         <div class="rl-hd">
-          <div class="rl-lbl">Senarai Hadir</div>
+          <div class="rl-lbl" data-ms="Senarai Hadir" data-en="Guest List">Senarai Hadir</div>
           <div id="rsvpBadge"><span id="rsvpPax">0</span> pax dijangka</div>
         </div>
         <div id="rsvpSearchWrap" style="display:none">
-          <div class="search-wrap"><span style="font-size:.75rem;opacity:.3">🔍</span><input type="text" id="rsvpSearch" placeholder="Cari nama..." oninput="filterRSVP()"></div>
+          <div class="search-wrap"><span style="font-size:.75rem;opacity:.3">🔍</span><input type="text" id="rsvpSearch" placeholder="Cari nama..." data-ph-ms="Cari nama..." data-ph-en="Search name..." oninput="filterRSVP()"></div>
         </div>
         <div id="rsvpList"><div class="list-empty">Belum ada pendaftaran.</div></div>
       </div>
@@ -644,7 +696,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── UCAPAN ── -->
     <section class="section mid rv" id="sekUcapan">
       <div class="sec-header">
-        <div class="sec-eyebrow">Doa &amp; Ucapan</div>
+        <div class="sec-eyebrow" data-ms="Doa &amp; Ucapan" data-en="Wishes">Doa &amp; Ucapan</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <!-- notice -->
@@ -653,13 +705,13 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
         Ucapan anda direkodkan secara langsung dan boleh dilihat oleh semua tetamu. Sila jaga tutur kata dan gunakan bahasa yang sopan. Sebarang ucapan yang tidak sesuai akan dipadam. Terima kasih atas kerjasama anda.
       </div>
       <div class="rv rv-d2">
-        <div class="fg"><label class="fl">Nama Anda</label><input type="text" class="fi" id="doaName" placeholder="Nama anda..."></div>
-        <div class="fg"><label class="fl">Ucapan / Doa</label><textarea class="fi" id="doaMsg" rows="3" placeholder="Tuliskan ucapan atau doa..." style="resize:none;line-height:1.6"></textarea></div>
+        <div class="fg"><label class="fl" data-ms="Nama Anda" data-en="Your Name">Nama Anda</label><input type="text" class="fi" id="doaName" placeholder="Nama anda..." data-ph-ms="Nama anda..." data-ph-en="Your name..."></div>
+        <div class="fg"><label class="fl" data-ms="Ucapan / Doa" data-en="Message / Wishes">Ucapan / Doa</label><textarea class="fi" id="doaMsg" rows="3" placeholder="Tuliskan ucapan atau doa..." data-ph-ms="Tuliskan ucapan atau doa..." data-ph-en="Write your wishes..." style="resize:none;line-height:1.6"></textarea></div>
         <button class="btn-gold" id="doaBtn" onclick="submitDoa()">Hantar Ucapan</button>
       </div>
       <!-- wall -->
       <div class="doa-wall-hd rv rv-d3">
-        <div class="doa-wall-lbl">Ucapan Diterima</div>
+        <div class="doa-wall-lbl" data-ms="Ucapan Diterima" data-en="Wishes Received">Ucapan Diterima</div>
         <div id="doaCount"></div>
       </div>
       <div class="doa-wall rv rv-d3" id="doaWall">
@@ -670,7 +722,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── HUBUNGI ── -->
     <section class="section light rv" id="sekHubungi">
       <div class="sec-header">
-        <div class="sec-eyebrow dk">Hubungi Kami</div>
+        <div class="sec-eyebrow dk" data-ms="Hubungi Kami" data-en="Contact Us">Hubungi Kami</div>
         <div class="ornament dk">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="rv rv-d1">
@@ -694,7 +746,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
     <!-- ── CUACA ── -->
     <section class="section dark rv">
       <div class="sec-header">
-        <div class="sec-eyebrow">Cuaca Semasa</div>
+        <div class="sec-eyebrow" data-ms="Cuaca Semasa" data-en="Weather">Cuaca Semasa</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="rv rv-scale rv-d1" style="border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)">
@@ -702,36 +754,36 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
           <div id="wxIcon" style="font-size:2.5rem;line-height:1">🌡️</div>
           <div>
             <div id="wxTemp" style="font-family:'Cinzel',serif;font-size:2rem;color:var(--white);line-height:1">--°C</div>
-            <div id="wxDesc" style="font-size:.6rem;color:rgba(255,255,255,.5);margin-top:.2rem">Memuatkan...</div>
+            <div id="wxDesc" style="font-size:.6rem;color:color-mix(in srgb,var(--white) 50%,transparent);margin-top:.2rem">Memuatkan...</div>
           </div>
         </div>
         <div id="wxExtras" style="display:none;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,.06)">
           <div style="padding:.7rem .5rem;text-align:center;border-right:1px solid rgba(255,255,255,.06)">
-            <div style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.2rem">Kelembapan</div>
+            <div style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 35%,transparent);margin-bottom:.2rem">Kelembapan</div>
             <div id="wxHumidity" style="font-size:.78rem;color:var(--white)">--%</div>
           </div>
           <div style="padding:.7rem .5rem;text-align:center;border-right:1px solid rgba(255,255,255,.06)">
-            <div style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.2rem">Rasa Seperti</div>
+            <div style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 35%,transparent);margin-bottom:.2rem">Rasa Seperti</div>
             <div id="wxFeels" style="font-size:.78rem;color:var(--white)">--°C</div>
           </div>
           <div style="padding:.7rem .5rem;text-align:center">
-            <div style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.2rem">Angin</div>
+            <div style="font-family:'Cinzel',serif;font-size:.34rem;letter-spacing:.2em;text-transform:uppercase;color:color-mix(in srgb,var(--white) 35%,transparent);margin-bottom:.2rem">Angin</div>
             <div id="wxWind" style="font-size:.78rem;color:var(--white)">--</div>
           </div>
         </div>
       </div>
-      <div id="wxNote" style="font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-top:.6rem;text-align:center">📍 Rawang, Selangor</div>
+      <div id="wxNote" style="font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.08em;color:color-mix(in srgb,var(--white) 30%,transparent);margin-top:.6rem;text-align:center">📍 Rawang, Selangor</div>
     </section>
 
     <!-- ── MINI GAME ── -->
     <section class="section dark rv">
       <div class="sec-header">
-        <div class="sec-eyebrow">Mini Game</div>
+        <div class="sec-eyebrow" data-ms="Mini Game" data-en="Mini Game">Mini Game</div>
         <div class="ornament">✦ ─── ✦ ─── ✦</div>
       </div>
       <div class="game-stats rv rv-d1">
-        <div class="gs-c"><div class="gs-l">Langkah</div><div class="gs-v" id="moveCount">0</div></div>
-        <div class="gs-c"><div class="gs-l">Padanan</div><div class="gs-v" id="matchCount">0</div></div>
+        <div class="gs-c"><div class="gs-l" data-ms="Langkah" data-en="Moves">Langkah</div><div class="gs-v" id="moveCount">0</div></div>
+        <div class="gs-c"><div class="gs-l" data-ms="Padanan" data-en="Matches">Padanan</div><div class="gs-v" id="matchCount">0</div></div>
       </div>
       <div id="memGrid" class="rv rv-scale rv-d2"></div>
       <div id="gameResult"></div>
@@ -744,7 +796,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
       <div class="eq-footer-date">{{DATE_DD}} · {{DATE_MM}} · {{DATE_YYYY}}</div>
       <div class="eq-footer-ayat">وَجَعَلْنَاكُمْ أَزْوَاجًا</div>
       <div class="eq-footer-trans">"Dan kami telah menciptakan kamu berpasang-pasangan." — An-Naba': 8</div>
-      <a class="eq-home-btn" href="https://eqstudio.nreqmal.workers.dev/" target="_blank">
+      <a class="eq-home-btn" href="https://eqstudio.link" target="_blank">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         EQStudio
       </a>
@@ -788,11 +840,11 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-const _KAD_ID='{{KAD_ID}}';
-const _isTemplate=_KAD_ID.includes('{{');
+const KAD_ID='{{KAD_ID}}';
+const _isTemplate=KAD_ID.includes('{{');
 firebase.initializeApp({apiKey:"AIzaSyBiubRnhd-PPamnc0rxJ_NDmmxsa7W2Lsw",authDomain:"eqstudio-6225d.firebaseapp.com",databaseURL:"https://eqstudio-6225d-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"eqstudio-6225d",storageBucket:"eqstudio-6225d.firebasestorage.app",messagingSenderId:"702399155563",appId:"1:702399155563:web:2e397996948663fa27102e"});
 const _db=firebase.database();
-const _kadRef=_db.ref('kads/'+_KAD_ID);
+const _kadRef=_db.ref('kads/'+KAD_ID);
 window._fbPush=(path,d)=>{if(_isTemplate)return;return _kadRef.child(path).push(d)};
 window._fbListen=(path,cb)=>{if(_isTemplate)return;_kadRef.child(path).on('value',s=>cb(s.val()))};
 window._fbListenQ=(path,cb,order,limit)=>{if(_isTemplate)return;let q=_kadRef.child(path);if(order)q=q.orderByChild(order);if(limit)q=q.limitToLast(limit);q.on('value',s=>cb(s.val()))};
@@ -827,6 +879,7 @@ function openGate(){
     const app=document.getElementById('app');app.classList.add('on');
     document.getElementById('tabBar').style.display='block';
     document.getElementById('audioFab').style.display='flex';
+    document.getElementById('langSwitch').style.display='flex';
     document.getElementById('shareFab').style.display='flex';
     launchConfetti();
     startCountdown();initReveal();initGame();initMapCanvas();initScrollBehaviour();fetchWeather();
@@ -887,6 +940,24 @@ function initMapCanvas(){
   function rs(){c.width=c.offsetWidth;c.height=c.offsetHeight;draw()}
   function draw(){if(!c.width)return;x.clearRect(0,0,c.width,c.height);x.strokeStyle='rgba(255,255,255,.05)';x.lineWidth=.5;for(let i=0;i<c.width;i+=20){x.beginPath();x.moveTo(i,0);x.lineTo(i,c.height);x.stroke()}for(let i=0;i<c.height;i+=20){x.beginPath();x.moveTo(0,i);x.lineTo(c.width,i);x.stroke()}}
   window.addEventListener('resize',rs);rs()
+}
+
+// ══ LANGUAGE SWITCH ══
+let _curLang='ms';
+function setLang(l){
+  _curLang=l;
+  document.querySelectorAll('#langSwitch button').forEach(b=>{
+    b.classList.toggle('active', (b.textContent==='BM'&&l==='ms')||(b.textContent==='EN'&&l==='en'));
+  });
+  document.querySelectorAll('[data-ms]').forEach(el=>{
+    const txt = l==='en' ? (el.getAttribute('data-en')||el.getAttribute('data-ms')) : el.getAttribute('data-ms');
+    el.textContent = txt;
+  });
+  document.querySelectorAll('[data-ph-ms]').forEach(el=>{
+    const ph = l==='en' ? (el.getAttribute('data-ph-en')||el.getAttribute('data-ph-ms')) : el.getAttribute('data-ph-ms');
+    el.setAttribute('placeholder', ph);
+  });
+  document.documentElement.lang = l;
 }
 
 // ══ COUNTDOWN ══
