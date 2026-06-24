@@ -92,11 +92,7 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
 .hero-eyebrow{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.55em;color:color-mix(in srgb,var(--white) 65%,transparent);margin-bottom:1.4rem}
 
 /* frame */
-.frame-wrap{position:relative;margin:0 auto;width:min(310px,84vw);border:1px solid rgba(255,255,255,.22);background:rgba(107,15,26,.45);padding:.3rem}
-.frame-wrap::before{content:'';position:absolute;inset:6px;border:1px solid rgba(255,255,255,.1);pointer-events:none;z-index:0}
-.frame-wrap::after{content:'✦';position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:.8rem;color:var(--gold2);background:var(--maroon2);padding:0 8px;line-height:1}
-.frame-svg{display:none}
-.frame-inner{padding:2rem 1.4rem 1.8rem;position:relative;z-index:1;text-align:center}
+.hero-names-wrap{padding:1.6rem 0;text-align:center}
 .hero-groom{font-family:'Great Vibes',cursive;font-size:clamp(3.2rem,13vw,5rem);color:var(--white);line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.4)}
 .hero-amp{font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold2);margin:.4rem 0;display:block;letter-spacing:.3em}
 .hero-bride{font-family:'Great Vibes',cursive;font-size:clamp(3.2rem,13vw,5rem);color:var(--white);line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.4)}
@@ -433,12 +429,10 @@ body{font-family:'Inter',sans-serif;font-weight:300;background:var(--maroon4);co
       <div class="hero-content">
         <div class="hero-eyebrow h-anim-1">Walimatul Urus</div>
 
-        <div class="frame-wrap h-anim-2">
-          <div class="frame-inner">
-            <div class="hero-groom">{{GROOM_NAME}}</div>
-            <div class="hero-amp">&amp;</div>
-            <div class="hero-bride">{{BRIDE_NAME}}</div>
-          </div>
+        <div class="hero-names-wrap h-anim-2">
+          <div class="hero-groom">{{GROOM_NAME}}</div>
+          <div class="hero-amp">&amp;</div>
+          <div class="hero-bride">{{BRIDE_NAME}}</div>
         </div>
 
         <div style="font-family:'Cinzel',serif;font-size:.44rem;letter-spacing:.35em;color:color-mix(in srgb,var(--white) 60%,transparent);margin-bottom:.6rem" class="h-anim-3">{{DATE_DAY}}</div>
