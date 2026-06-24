@@ -18,7 +18,8 @@
       "has_portrait_photo": false,
       "preview_emoji": "✨",
       "desc": "#39FF14",
-      "style": "Modern GenZ"
+      "style": "Modern GenZ",
+      "preview_img": "previews/neon_green.png"
     },
     "Red Maroon": {
       "name": "Traditional",
