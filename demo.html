@@ -134,13 +134,15 @@ var DUMMY = {
   gallery1_url: '', gallery2_url: '', gallery3_url: '', gallery4_url: '', gallery5_url: '',
   order_id: 'DEMO0000000000', kad_id: 'demo0000000000'
 };
-function applyDummy(html) {
+function applyDummy(html, tmplName) {
   html = html.replace(/\{\{(\w+)\}\}/g, function(_, key) {
     if (DUMMY[key] !== undefined) return DUMMY[key];
     if (DUMMY[key.toLowerCase()] !== undefined) return DUMMY[key.toLowerCase()];
     return '';
   });
-  html = html.replace(/const KAD_ID\s*=\s*['"][^'"]*['"]/, "const KAD_ID='es-pb'");
+  var safeTmplId = (tmplName || 'unknown').replace(/\.html$/i, '').replace(/[^a-z0-9_]/gi, '_').toLowerCase();
+  var demoKadId = 'demo_' + safeTmplId;
+  html = html.replace(/const KAD_ID\s*=\s*['"][^'"]*['"]/, "const KAD_ID='" + demoKadId + "'");
   html = html.replace(
     /function initMonogram\(\)\{[\s\S]*?\}/,
     "function initMonogram(){var el=document.getElementById('sealInitials');if(el)el.textContent='I & H';}"
@@ -282,7 +284,7 @@ document.getElementById('btnTengok').addEventListener('click', function() {
     var url = 'https://raw.githubusercontent.com/nureqmal/eqstudio-cards/main/templates/' + tmpl;
     var res = await fetch(url);
     if (!res.ok) throw new Error('404');
-    var html = applyDummy(await res.text());
+    var html = applyDummy(await res.text(), tmpl);
     iframe.srcdoc = html;
     iframe.style.display = 'block';
     loading.style.display = 'none';
