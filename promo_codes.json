@@ -136,5 +136,11 @@
     "desc": "Diskaun RM10",
     "active": true,
     "expiry": null
+  },
+  "ANIQ10": {
+    "discount": 10,
+    "desc": "Harga promo",
+    "active": true,
+    "expiry": null
   }
 }
